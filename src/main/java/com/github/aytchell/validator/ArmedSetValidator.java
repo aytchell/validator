@@ -1,13 +1,11 @@
 package com.github.aytchell.validator;
 
 import com.github.aytchell.validator.exceptions.ValidationException;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.val;
 
 import java.util.Set;
 
-public class ArmedSetValidator<E> implements SetValidator<E> {
+// This class shall only be instantiated by Validator
+class ArmedSetValidator<E> implements SetValidator<E> {
     private final Set<E> value;
     private final String name;
     private final ArmedContainerValidator<E> containerValidator;

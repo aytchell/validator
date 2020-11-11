@@ -52,7 +52,7 @@ public class Validator {
     }
 
     public static NullableNameValueMapValidator throwIfNameValueMap(
-        Map<String, String> value, String name) {
+            Map<String, String> value, String name) {
         return new NullableNameValueMapValidator(value, name);
     }
 }

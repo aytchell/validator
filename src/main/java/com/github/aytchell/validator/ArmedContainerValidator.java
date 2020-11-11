@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 
+// This class shall only be instantiated by Validator
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 class ArmedContainerValidator<E> {
     private final String containerType;

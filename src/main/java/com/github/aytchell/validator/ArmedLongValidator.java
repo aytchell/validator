@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 
 // This class shall only be instantiated by Validator
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-public class ArmedLongValidator extends LongValidatorBase {
+class ArmedLongValidator extends LongValidatorBase {
     private static final int MIN_TCP_PORT_NUMBER = 1;
     private static final int MAX_TCP_PORT_NUMBER = 65535;
 

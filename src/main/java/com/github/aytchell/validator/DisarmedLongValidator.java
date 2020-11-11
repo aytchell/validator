@@ -4,8 +4,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// This class shall only be instantiated by Validator
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DisarmedLongValidator extends LongValidatorBase {
+class DisarmedLongValidator extends LongValidatorBase {
     @Getter
     public static final DisarmedLongValidator INSTANCE = new DisarmedLongValidator();
 

@@ -1,22 +1,21 @@
 package com.github.aytchell.validator;
 
 import com.github.aytchell.validator.exceptions.ValidationException;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 
 import java.util.Map;
 
-public class NameValueMapValidator {
+// This class shall only be instantiated by Validator
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+class NameValueMapValidator {
     private final Map<String, String> value;
     private final String name;
-
-    NameValueMapValidator(Map<String, String> value, String name) {
-        this.value = value;
-        this.name = name;
-    }
 
     public NameValueMapValidator isKeyMissing(String key) throws ValidationException {
         if (!value.containsKey(key)) {
             throw new ValidationException(
-                String.format("Parameter '%s' must contain '%s'", name, key));
+                    String.format("Parameter '%s' must contain '%s'", name, key));
         }
         return this;
     }

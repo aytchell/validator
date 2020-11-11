@@ -4,8 +4,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// This class shall only be instantiated by Validator
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DisarmedStringValidator implements StringValidator {
+class DisarmedStringValidator implements StringValidator {
     @Getter
     private static final DisarmedStringValidator INSTANCE = new DisarmedStringValidator();
 

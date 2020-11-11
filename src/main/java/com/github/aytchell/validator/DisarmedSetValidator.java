@@ -4,8 +4,9 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+// This class shall only be instantiated by Validator
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class DisarmedSetValidator<E> implements SetValidator<E> {
+class DisarmedSetValidator<E> implements SetValidator<E> {
 
     @Override
     public SetValidator<E> isKeyContained(Object key) throws ValidationException {

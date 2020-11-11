@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 
 // This class shall only be instantiated by Validator
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-public class ArmedStringValidator implements StringValidator {
+class ArmedStringValidator implements StringValidator {
     private final String value;
     private final String name;
 
