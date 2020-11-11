@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class DisarmedLongValidator extends LongValidatorBase {
     @Getter
-    public static final DisarmedLongValidator INSTANCE = new DisarmedLongValidator();
+    public static final LongValidator INSTANCE = new DisarmedLongValidator();
 
     @Override
     public LongValidator isLowerThan(long lowerBound) {

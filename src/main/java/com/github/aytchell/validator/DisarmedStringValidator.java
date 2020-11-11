@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class DisarmedStringValidator implements StringValidator {
     @Getter
-    private static final DisarmedStringValidator INSTANCE = new DisarmedStringValidator();
+    private static final StringValidator INSTANCE = new DisarmedStringValidator();
 
     @Override
     public StringValidator isEmpty() {

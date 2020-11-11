@@ -9,27 +9,27 @@ import lombok.NoArgsConstructor;
 class DisarmedSetValidator<E> implements SetValidator<E> {
 
     @Override
-    public SetValidator<E> isKeyContained(Object key) throws ValidationException {
+    public SetValidator<E> isKeyContained(Object key) {
         return this;
     }
 
     @Override
-    public SetValidator<E> isKeyMissing(Object key) throws ValidationException {
+    public SetValidator<E> isKeyMissing(Object key) {
         return this;
     }
 
     @Override
-    public SetValidator<E> isEmpty() throws ValidationException {
+    public SetValidator<E> isEmpty() {
         return this;
     }
 
     @Override
-    public SetValidator<E> containsLessThan(int minNumberOfElements) throws ValidationException {
+    public SetValidator<E> containsLessThan(int minNumberOfElements) {
         return this;
     }
 
     @Override
-    public SetValidator<E> containsMoreThan(int maxNumberOfElements) throws ValidationException {
+    public SetValidator<E> containsMoreThan(int maxNumberOfElements) {
         return this;
     }
 }
