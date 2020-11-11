@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
+import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class Validator {
@@ -37,6 +38,15 @@ public class Validator {
             @Override
             protected StringValidator createValidator(String value, String name) {
                 return new ArmedStringValidator(value, name);
+            }
+        };
+    }
+
+    public static <E> NullableObjectValidator<Set<E>, SetValidator<E>> throwIf(Set<E> value, String name) {
+        return new NullableObjectValidator<>(value, name, new DisarmedSetValidator<E>()) {
+            @Override
+            protected SetValidator<E> createValidator(Set<E> value, String name) {
+                return new ArmedSetValidator<E>(value, name);
             }
         };
     }

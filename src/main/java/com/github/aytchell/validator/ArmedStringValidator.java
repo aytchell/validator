@@ -1,15 +1,14 @@
 package com.github.aytchell.validator;
 
 import com.github.aytchell.validator.exceptions.ValidationException;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 
+// This class shall only be instantiated by Validator
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class ArmedStringValidator implements StringValidator {
     private final String value;
     private final String name;
-
-    public ArmedStringValidator(String value, String name) {
-        this.value = value;
-        this.name = name;
-    }
 
     @Override
     public StringValidator isEmpty() throws ValidationException {
