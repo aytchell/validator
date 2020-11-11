@@ -19,6 +19,20 @@ class ArmedContainerValidator<E> {
         }
     }
 
+    void isContained(E key) throws ValidationException {
+        if (value.contains(key)) {
+            throw new ValidationException(String.format("%s '%s' must not contain '%s'",
+                    containerType, name, key.toString()));
+        }
+    }
+
+    void isMissing(E key) throws ValidationException {
+        if (!value.contains(key)) {
+            throw new ValidationException(String.format("%s '%s' must contain '%s'",
+                    containerType, name, key.toString()));
+        }
+    }
+
     void containsLessThan(int minNumberOfElements)
             throws ValidationException {
         if (value.size() < minNumberOfElements) {

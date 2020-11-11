@@ -4,6 +4,7 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +39,15 @@ public class Validator {
             @Override
             protected StringValidator createValidator(String value, String name) {
                 return new ArmedStringValidator(value, name);
+            }
+        };
+    }
+
+    public static <E> NullableObjectValidator<List<E>, ListValidator<E>> throwIf(List<E> value, String name) {
+        return new NullableObjectValidator<>(value, name, new DisarmedListValidator<E>()) {
+            @Override
+            protected ListValidator<E> createValidator(List<E> value, String name) {
+                return new ArmedListValidator<E>(value, name);
             }
         };
     }
