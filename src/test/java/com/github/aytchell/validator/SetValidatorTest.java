@@ -98,52 +98,52 @@ public class SetValidatorTest {
     }
 
     @Test
-    void isKeyContainedWhileMissingPasses() throws ValidationException {
+    void isContainedWhileMissingPasses() throws ValidationException {
         final Set<Long> longSet = Set.of(1L, 2L, 3L, 5L, 8L, 13L, 21L);
         final Set<String> stringSet = Set.of("one", "two", "three", "five", "eight", "and so on");
         final Set<Integer> nullSet = null;
 
-        Validator.throwIf(longSet, "longSet").isNull().isKeyContained(6L);
-        Validator.throwIf(stringSet, "stringSet").isNull().isKeyContained("six");
-        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().isKeyContained(2020);
+        Validator.throwIf(longSet, "longSet").isNull().isContained(6L);
+        Validator.throwIf(stringSet, "stringSet").isNull().isContained("six");
+        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().isContained(2020);
     }
 
     @Test
-    void isKeyContainedWhileItIsThrows() {
+    void isContainedWhileItIsThrows() {
         final Set<Long> longSet = Set.of(1L, 2L, 3L, 5L, 6L, 8L, 13L, 21L);
         final Set<String> stringSet = Set.of("one", "two", "three", "five", "six", "eight", "and so on");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longSet, "longSet").isNotNullAnd().isKeyContained(6L),
+                () -> Validator.throwIf(longSet, "longSet").isNotNullAnd().isContained(6L),
                 List.of("Set", "longSet", "must not contain", "6"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(stringSet, "stringSet").isNotNullAnd().isKeyContained("six"),
+                () -> Validator.throwIf(stringSet, "stringSet").isNotNullAnd().isContained("six"),
                 List.of("Set", "stringSet", "must not contain", "six"));
     }
 
     @Test
-    void isKeyMissingWhileContainedPasses() throws ValidationException {
+    void isMissingWhileContainedPasses() throws ValidationException {
         final Set<Long> longSet = Set.of(1L, 2L, 3L, 5L, 8L, 13L, 21L);
         final Set<String> stringSet = Set.of("one", "two", "three", "five", "eight", "and so on");
         final Set<Integer> nullSet = null;
 
-        Validator.throwIf(longSet, "longSet").isNull().isKeyMissing(5L);
-        Validator.throwIf(stringSet, "stringSet").isNull().isKeyMissing("five");
-        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().isKeyMissing(2020);
+        Validator.throwIf(longSet, "longSet").isNull().isMissing(5L);
+        Validator.throwIf(stringSet, "stringSet").isNull().isMissing("five");
+        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().isMissing(2020);
     }
 
     @Test
-    void isKeyMissingWhileItIsThrows() {
+    void isMissingWhileItIsThrows() {
         final Set<Long> longSet = Set.of(1L, 2L, 3L, 8L, 13L, 21L);
         final Set<String> stringSet = Set.of("one", "two", "three", "eight", "and so on");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longSet, "longSet").isNotNullAnd().isKeyMissing(5L),
+                () -> Validator.throwIf(longSet, "longSet").isNotNullAnd().isMissing(5L),
                 List.of("Set", "longSet", "must contain", "5"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(stringSet, "stringSet").isNotNullAnd().isKeyMissing("five"),
+                () -> Validator.throwIf(stringSet, "stringSet").isNotNullAnd().isMissing("five"),
                 List.of("Set", "stringSet", "must contain", "five"));
     }
 }

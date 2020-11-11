@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 class DisarmedSetValidator<E> implements SetValidator<E> {
 
     @Override
-    public SetValidator<E> isKeyContained(Object key) {
+    public SetValidator<E> isContained(Object key) {
         return this;
     }
 
     @Override
-    public SetValidator<E> isKeyMissing(Object key) {
+    public SetValidator<E> isMissing(Object key) {
         return this;
     }
 

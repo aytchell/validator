@@ -9,7 +9,7 @@ public interface SetValidator<E> {
 
     SetValidator<E> containsMoreThan(int maxNumberOfElemens) throws ValidationException;
 
-    SetValidator<E> isKeyContained(E key) throws ValidationException;
+    SetValidator<E> isContained(E key) throws ValidationException;
 
-    SetValidator<E> isKeyMissing(E key) throws ValidationException;
+    SetValidator<E> isMissing(E key) throws ValidationException;
 }

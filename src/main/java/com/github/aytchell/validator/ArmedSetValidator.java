@@ -18,7 +18,7 @@ class ArmedSetValidator<E> implements SetValidator<E> {
     }
 
     @Override
-    public SetValidator<E> isKeyContained(E key) throws ValidationException {
+    public SetValidator<E> isContained(E key) throws ValidationException {
         if (value.contains(key)) {
             throw new ValidationException(String.format("Set '%s' must not contain '%s'", name, key.toString()));
         }
@@ -26,7 +26,7 @@ class ArmedSetValidator<E> implements SetValidator<E> {
     }
 
     @Override
-    public SetValidator<E> isKeyMissing(E key) throws ValidationException {
+    public SetValidator<E> isMissing(E key) throws ValidationException {
         if (!value.contains(key)) {
             throw new ValidationException(String.format("Set '%s' must contain '%s'", name, key.toString()));
         }
