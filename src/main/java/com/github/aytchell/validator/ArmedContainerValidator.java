@@ -49,4 +49,37 @@ class ArmedContainerValidator<E> {
                             containerType, name, value.size(), maxNumberOfElements));
         }
     }
+
+    void isAnyNumericEntry(ListValidator.LongEntryValidator validator) throws ValidationException {
+        for (E entry : value) {
+            if (entry instanceof Integer) {
+                final Integer value = (Integer)entry;
+                validator.apply(
+                        Validator.throwIf(Long.valueOf(value), String.format("inside %s <%s>", containerType, name))
+                );
+            } else if (entry instanceof Long) {
+                validator.apply(
+                        Validator.throwIf((Long)entry, String.format("inside %s <%s>", containerType, name))
+                );
+            } else {
+                throw new ClassCastException(String.format(
+                        "Tried to validate entries in '%s' as numeric values (but are '%s')",
+                        name, entry.getClass().getSimpleName()));
+            }
+        }
+    }
+
+    void isAnyStringEntry(ListValidator.StringEntryValidator validator) throws ValidationException {
+        for (E entry : value) {
+            if (entry instanceof String) {
+                validator.apply(
+                        Validator.throwIf((String) entry, String.format("inside %s <%s>", containerType, name))
+                );
+            } else {
+                throw new ClassCastException(String.format(
+                        "Tried to validate entries in '%s' as Strings (but are '%s')",
+                        name, entry.getClass().getSimpleName()));
+            }
+        }
+    }
 }

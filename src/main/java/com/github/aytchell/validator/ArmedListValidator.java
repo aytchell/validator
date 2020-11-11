@@ -13,18 +13,6 @@ class ArmedListValidator<E> implements ListValidator<E> {
     }
 
     @Override
-    public ListValidator<E> isContained(E key) throws ValidationException {
-        containerValidator.isContained(key);
-        return this;
-    }
-
-    @Override
-    public ListValidator<E> isMissing(E key) throws ValidationException {
-        containerValidator.isMissing(key);
-        return this;
-    }
-
-    @Override
     public ListValidator<E> isEmpty() throws ValidationException {
         containerValidator.isEmpty();
         return this;
@@ -39,6 +27,30 @@ class ArmedListValidator<E> implements ListValidator<E> {
     @Override
     public ListValidator<E> containsMoreThan(int maxNumberOfElements) throws ValidationException {
         containerValidator.containsMoreThan(maxNumberOfElements);
+        return this;
+    }
+
+    @Override
+    public ListValidator<E> isContained(E key) throws ValidationException {
+        containerValidator.isContained(key);
+        return this;
+    }
+
+    @Override
+    public ListValidator<E> isMissing(E key) throws ValidationException {
+        containerValidator.isMissing(key);
+        return this;
+    }
+
+    @Override
+    public ListValidator<E> isAnyNumericEntry(LongEntryValidator validator) throws ValidationException {
+        containerValidator.isAnyNumericEntry(validator);
+        return this;
+    }
+
+    @Override
+    public ListValidator<E> isAnyStringEntry(StringEntryValidator validator) throws ValidationException {
+        containerValidator.isAnyStringEntry(validator);
         return this;
     }
 }
