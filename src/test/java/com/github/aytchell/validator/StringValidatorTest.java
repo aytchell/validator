@@ -10,6 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StringValidatorTest {
     @Test
+    void isNullGivenNullThrows() {
+        final String nullString = null;
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(nullString, "nullString").isNull(),
+                List.of("nullString", "is missing"));
+    }
+
+    @Test
     void isEmptyGivenFilledStringPasses() throws ValidationException {
         final String blankString = "\t \n";
         final String filledString = "filled";
