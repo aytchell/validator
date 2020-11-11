@@ -32,14 +32,4 @@ abstract class DisarmedContainerValidator<TYPE, VALIDATOR> implements ContainerV
     public VALIDATOR isMissing(TYPE key) {
         return getValidator();
     }
-
-    @Override
-    public VALIDATOR isAnyNumericEntry(ContainerValidator.LongEntryValidator validator) {
-        return getValidator();
-    }
-
-    @Override
-    public VALIDATOR isAnyStringEntry(ContainerValidator.StringEntryValidator validator) {
-        return getValidator();
-    }
 }

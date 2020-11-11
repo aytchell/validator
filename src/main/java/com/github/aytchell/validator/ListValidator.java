@@ -1,4 +1,4 @@
 package com.github.aytchell.validator;
 
-public interface ListValidator<E> extends ContainerValidator<E, ListValidator<E>> {
+public interface ListValidator<E> extends CollectionValidator<E, ListValidator<E>> {
 }

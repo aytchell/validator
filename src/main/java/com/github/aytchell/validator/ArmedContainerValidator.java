@@ -3,11 +3,13 @@ package com.github.aytchell.validator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Collection;
 
 // This class shall only be instantiated by Validator
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Getter(value = AccessLevel.PROTECTED)
 abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerValidator<TYPE, VALIDATOR> {
     private final String containerType;
     private final Collection<TYPE> value;
@@ -54,43 +56,6 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
             throw new ValidationException(
                     String.format("%s '%s' (size: %d) must not contain more than %d entries",
                             containerType, name, value.size(), maxNumberOfElements));
-        }
-        return getValidator();
-    }
-
-    @Override
-    public VALIDATOR isAnyNumericEntry(LongEntryValidator entryValidator) throws ValidationException {
-        for (TYPE entry : value) {
-            if (entry instanceof Integer) {
-                final Integer value = (Integer) entry;
-                entryValidator.apply(
-                        Validator.throwIf(Long.valueOf(value), String.format("inside %s <%s>", containerType, name))
-                );
-            } else if (entry instanceof Long) {
-                entryValidator.apply(
-                        Validator.throwIf((Long) entry, String.format("inside %s <%s>", containerType, name))
-                );
-            } else {
-                throw new ClassCastException(String.format(
-                        "Tried to validate entries in '%s' as numeric values (but are '%s')",
-                        name, entry.getClass().getSimpleName()));
-            }
-        }
-        return getValidator();
-    }
-
-    @Override
-    public VALIDATOR isAnyStringEntry(StringEntryValidator entryValidator) throws ValidationException {
-        for (TYPE entry : value) {
-            if (entry instanceof String) {
-                entryValidator.apply(
-                        Validator.throwIf((String) entry, String.format("inside %s <%s>", containerType, name))
-                );
-            } else {
-                throw new ClassCastException(String.format(
-                        "Tried to validate entries in '%s' as Strings (but are '%s')",
-                        name, entry.getClass().getSimpleName()));
-            }
         }
         return getValidator();
     }
