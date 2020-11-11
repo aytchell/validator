@@ -9,15 +9,6 @@ import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAn
 
 public class LongValidatorTest {
     @Test
-    void isNullGivenValidLongPasses() throws ValidationException {
-        final Long validLong = 42L;
-        final Integer validInteger = 23;
-
-        Validator.throwIf(validLong, "validLong").isNull();
-        Validator.throwIf(validInteger, "validInteger").isNull();
-    }
-
-    @Test
     void isNullGivenNullThrows() {
         final Long nullLong = null;
 
@@ -44,24 +35,54 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isLowerThanGivenHighValuesThrows() throws ValidationException {
+    void isNullIsLowerThanGivenHighValuesThrows() throws ValidationException {
         final Long validLong = 42L;
         final Integer validInteger = 112;
 
+        // Test <Long> against <int>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validLong, "validLong").isNull().isLowerThan(1024),
                 List.of("validLong", "is too small", "42", "1024"));
 
+        // Test <Long> against <long>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validLong, "validLong").isNull().isLowerThan(2048L),
                 List.of("validLong", "is too small", "42", "2048"));
 
+        // Test <Integer> against <int>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(1024),
                 List.of("validInteger", "is too small", "112", "1024"));
 
+        // Test <Integer> against <long>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(2048L),
+                List.of("validInteger", "is too small", "112", "2048"));
+    }
+
+    @Test
+    void isNotNullAndIsLowerThanGivenHighValuesThrows() throws ValidationException {
+        final Long validLong = 42L;
+        final Integer validInteger = 112;
+
+        // Test <Long> against <int>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isLowerThan(1024),
+                List.of("validLong", "is too small", "42", "1024"));
+
+        // Test <Long> against <long>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isLowerThan(2048L),
+                List.of("validLong", "is too small", "42", "2048"));
+
+        // Test <Integer> against <int>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isLowerThan(1024),
+                List.of("validInteger", "is too small", "112", "1024"));
+
+        // Test <Integer> against <long>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isLowerThan(2048L),
                 List.of("validInteger", "is too small", "112", "2048"));
     }
 
@@ -83,24 +104,54 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isGreaterThanGivenLowValuesThrows() throws ValidationException {
+    void isNullIsGreaterThanGivenLowValuesThrows() throws ValidationException {
         final Long validLong = 42L;
         final Integer validInteger = 1729;
 
+        // Test <Long> against <int>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validLong, "validLong").isNull().isGreaterThan(3),
                 List.of("validLong", "is too big", "42", "3"));
 
+        // Test <Long> against <long>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validLong, "validLong").isNull().isGreaterThan(5L),
                 List.of("validLong", "is too big", "42", "5"));
 
+        // Test <Integer> against <int>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validInteger, "validInteger").isNull().isGreaterThan(3),
                 List.of("validInteger", "is too big", "1729", "3"));
 
+        // Test <Integer> against <long>  with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(validInteger, "validInteger").isNull().isGreaterThan(5L),
+                List.of("validInteger", "is too big", "1729", "5"));
+    }
+
+    @Test
+    void isNotNullAndisGreaterThanGivenLowValuesThrows() throws ValidationException {
+        final Long validLong = 42L;
+        final Integer validInteger = 1729;
+
+        // Test <Long> against <int>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isGreaterThan(3),
+                List.of("validLong", "is too big", "42", "3"));
+
+        // Test <Long> against <long>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isGreaterThan(5L),
+                List.of("validLong", "is too big", "42", "5"));
+
+        // Test <Integer> against <int>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isGreaterThan(3),
+                List.of("validInteger", "is too big", "1729", "3"));
+
+        // Test <Integer> against <long>  with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isGreaterThan(5L),
                 List.of("validInteger", "is too big", "1729", "5"));
     }
 
@@ -111,6 +162,9 @@ public class LongValidatorTest {
 
         Validator.throwIf(validLongPort, "validLongPort").isNull().isNoValidPortNumber();
         Validator.throwIf(validIntegerPort, "validIntegerPort").isNull().isNoValidPortNumber();
+
+        Validator.throwIf(validLongPort, "validLongPort").isNotNullAnd().isNoValidPortNumber();
+        Validator.throwIf(validIntegerPort, "validIntegerPort").isNotNullAnd().isNoValidPortNumber();
     }
 
     @Test
@@ -118,12 +172,24 @@ public class LongValidatorTest {
         final Long invalidLongPort = 0L;
         final Integer invalidIntegerPort = -5;
 
+        // Test <Long> with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(invalidLongPort, "invalidLongPort").isNull().isNoValidPortNumber(),
                 List.of("invalidLongPort", "0", "no valid port number"));
 
+        // Test <Integer> with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(invalidIntegerPort, "invalidIntegerPort").isNull().isNoValidPortNumber(),
+                List.of("invalidIntegerPort", "-5", "no valid port number"));
+
+        // Test <Long> with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(invalidLongPort, "invalidLongPort").isNotNullAnd().isNoValidPortNumber(),
+                List.of("invalidLongPort", "0", "no valid port number"));
+
+        // Test <Integer> with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(invalidIntegerPort, "invalidIntegerPort").isNotNullAnd().isNoValidPortNumber(),
                 List.of("invalidIntegerPort", "-5", "no valid port number"));
     }
 
@@ -132,12 +198,24 @@ public class LongValidatorTest {
         final Long invalidLongPort = 128247L;
         final Integer invalidIntegerPort = 65536;
 
+        // Test <Long> with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(invalidLongPort, "invalidLongPort").isNull().isNoValidPortNumber(),
                 List.of("invalidLongPort", "128247", "no valid port number"));
 
+        // Test <Integer> with mode 'isNull()'
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(invalidIntegerPort, "invalidIntegerPort").isNull().isNoValidPortNumber(),
+                List.of("invalidIntegerPort", "65536", "no valid port number"));
+
+        // Test <Long> with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(invalidLongPort, "invalidLongPort").isNotNullAnd().isNoValidPortNumber(),
+                List.of("invalidLongPort", "128247", "no valid port number"));
+
+        // Test <Integer> with mode 'isNotNullAnd()'
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(invalidIntegerPort, "invalidIntegerPort").isNotNullAnd().isNoValidPortNumber(),
                 List.of("invalidIntegerPort", "65536", "no valid port number"));
     }
 }
