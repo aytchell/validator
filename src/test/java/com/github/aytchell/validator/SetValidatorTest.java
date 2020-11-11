@@ -146,4 +146,77 @@ public class SetValidatorTest {
                 () -> Validator.throwIf(stringSet, "stringSet").isNotNullAnd().isMissing("five"),
                 List.of("Set", "stringSet", "must contain", "five"));
     }
+
+    @Test
+    void isAnyEntryWithEmptySetGivenPasses() throws ValidationException {
+        final Set<Integer> integerSet = Set.of();
+        final Set<Long> longSet = Set.of();
+        final Set<String> stringSet = Set.of();
+
+        Validator.throwIf(integerSet, "integerSet").isNull().isAnyNumericEntry(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+
+        Validator.throwIf(longSet, "longSet").isNull().isAnyNumericEntry(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+
+        Validator.throwIf(stringSet, "stringSet").isNull().isAnyStringEntry(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isEmpty().isLongerThan(0));
+    }
+
+    @Test
+    void isAnyEntryBelowFiveWithHighEntriesPasses() throws ValidationException {
+        final Set<Integer> integerSet = Set.of(67, 56, 45, 34, 23);
+        final Set<Long> longSet = Set.of(68L, 69L, 70L, 80L);
+        final Set<Long> nullSet = null;
+
+        Validator.throwIf(integerSet, "integerSet").isNull().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(longSet, "longSet").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+    }
+
+    @Test
+    void isAnyEntryBelowFiveWithLowEntriesThrows() throws ValidationException {
+        final Set<Integer> integerSet = Set.of(67, 56, 45, 34, 23);
+        final Set<Long> longSet = Set.of(11L, 12L, 13L, 14L);
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(integerSet, "integerSet").isNull()
+                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(24)),
+                List.of("Set", "inside", "integerSet", "is too small", "24", "23"));
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(longSet, "longSet").isNotNullAnd()
+                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(12)),
+                List.of("Set", "inside", "longSet", "is too small", "11", "12"));
+    }
+
+    @Test
+    void isAnyEntryBlankWithFilledStringsGivenPasses() throws ValidationException {
+        final Set<String> filledSet = Set.of("hello", "world");
+
+        Validator.throwIf(filledSet, "filledSet").isNull().isAnyStringEntry(
+                v -> v.isNull().isBlank());
+        Validator.throwIf(filledSet, "filledSet").isNotNullAnd().isAnyStringEntry(
+                v -> v.isNull().isLongerThan(20));
+    }
+
+    @Test
+    void isAnyEntryBlankWithBlankStringsGivenThrows() {
+        final Set<String> blankSet = Set.of("\t\t\t", "   \n", "\t\n");
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(blankSet, "blankSet").isNull().isAnyStringEntry(
+                        v -> v.isNull().isBlank()),
+                List.of("Set", "inside", "blankSet", "must not be blank")
+        );
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(blankSet, "blankSet").isNotNullAnd().isAnyStringEntry(
+                        v -> v.isNull().isBlank()),
+                List.of("Set", "inside", "blankSet", "must not be blank")
+        );
+    }
 }
