@@ -9,7 +9,7 @@
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
-    <name>A validator class to check input (e.g. for REST services)</name>
+    <name>Input validator</name>
     <description>
         This package contains a class Validator which is quite handy when
         validating user input e.g. in REST service.

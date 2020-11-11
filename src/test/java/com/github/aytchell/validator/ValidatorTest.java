@@ -3,8 +3,9 @@ package com.github.aytchell.validator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+
+import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageContains;
 
 class ValidatorTest {
 
@@ -23,11 +24,9 @@ class ValidatorTest {
     @Test
     void throwIfNullGivenNullThrows() {
         final String nullString = null;
-        final ValidationException e = assertThrows(ValidationException.class,
-                () -> Validator.throwIfNull(nullString, "nullString"));
 
-        final String message = e.getMessage();
-        assertTrue(message.contains("nullString"), "Failed message: " + message);
-        assertTrue(message.contains("is missing"), "Failed message: " + message);
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIfNull(nullString, "nullString"),
+                List.of("nullString", "is missing"));
     }
 }
