@@ -11,7 +11,7 @@ class DisarmedNameValueMapValidator implements NameValueMapValidator {
     public static final NameValueMapValidator INSTANCE = new DisarmedNameValueMapValidator();
 
     @Override
-    public NameValueMapValidator isKeyMissing(String key) {
+    public NameValueMapValidator isMissing(String key) {
         return this;
     }
 

@@ -13,7 +13,7 @@ class ArmedNameValueMapValidator implements NameValueMapValidator {
     private final String name;
 
     @Override
-    public ArmedNameValueMapValidator isKeyMissing(String key) throws ValidationException {
+    public ArmedNameValueMapValidator isMissing(String key) throws ValidationException {
         if (!value.containsKey(key)) {
             throw new ValidationException(
                     String.format("Parameter '%s' must contain '%s'", name, key));

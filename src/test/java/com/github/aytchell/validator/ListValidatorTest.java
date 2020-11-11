@@ -145,4 +145,77 @@ public class ListValidatorTest {
                 () -> Validator.throwIf(stringList, "stringList").isNotNullAnd().isMissing("five"),
                 List.of("List", "stringList", "must contain", "five"));
     }
+
+    @Test
+    void isAnyEntryWithEmptyListGivenPasses() throws ValidationException {
+        final List<Integer> integerList = List.of();
+        final List<Long> longList = List.of();
+        final List<String> stringList = List.of();
+
+        Validator.throwIf(integerList, "integerList").isNull().isAnyNumericEntry(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+
+        Validator.throwIf(longList, "longList").isNull().isAnyNumericEntry(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+
+        Validator.throwIf(stringList, "stringList").isNull().isAnyStringEntry(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isEmpty().isLongerThan(0));
+    }
+
+    @Test
+    void isAnyEntryBelowFiveWithHighEntriesPasses() throws ValidationException {
+        final List<Integer> integerList = List.of(67, 56, 45, 34, 23);
+        final List<Long> longList = List.of(68L, 69L, 70L, 80L);
+        final List<Long> nullList = null;
+
+        Validator.throwIf(integerList, "integerList").isNull().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(longList, "longList").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(nullList, "nullList").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+    }
+
+    @Test
+    void isAnyEntryBelowFiveWithLowEntriesThrows() throws ValidationException {
+        final List<Integer> integerList = List.of(67, 56, 45, 34, 23);
+        final List<Long> longList = List.of(11L, 12L, 13L, 14L);
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(integerList, "integerList").isNull()
+                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(24)),
+                List.of("List", "inside", "integerList", "is too small", "24", "23"));
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(longList, "longList").isNotNullAnd()
+                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(12)),
+                List.of("List", "inside", "longList", "is too small", "11", "12"));
+    }
+
+    @Test
+    void isAnyEntryBlankWithFilledStringsGivenPasses() throws ValidationException {
+        final List<String> filledList = List.of("hello", "world");
+
+        Validator.throwIf(filledList, "filledList").isNull().isAnyStringEntry(
+                v -> v.isNull().isBlank());
+        Validator.throwIf(filledList, "filledList").isNotNullAnd().isAnyStringEntry(
+                v -> v.isNull().isLongerThan(20));
+    }
+
+    @Test
+    void isAnyEntryBlankWithBlankStringsGivenThrows() {
+        final List<String> blankList = List.of("\t\t\t", "   \n", "\t\n");
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(blankList, "blankList").isNull().isAnyStringEntry(
+                        v -> v.isNull().isBlank()),
+                List.of("List", "inside", "blankList", "must not be blank")
+        );
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(blankList, "blankList").isNotNullAnd().isAnyStringEntry(
+                        v -> v.isNull().isBlank()),
+                List.of("List", "inside", "blankList", "must not be blank")
+        );
+    }
 }

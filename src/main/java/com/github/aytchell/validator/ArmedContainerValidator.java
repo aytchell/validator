@@ -8,58 +8,67 @@ import java.util.Collection;
 
 // This class shall only be instantiated by Validator
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-class ArmedContainerValidator<E> {
+abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerValidator<TYPE, VALIDATOR> {
     private final String containerType;
-    private final Collection<E> value;
+    private final Collection<TYPE> value;
     private final String name;
 
-    void isEmpty() throws ValidationException {
+    protected abstract VALIDATOR getValidator();
+
+    @Override
+    public VALIDATOR isEmpty() throws ValidationException {
         if (value.isEmpty()) {
             throw new ValidationException(String.format("%s '%s' must not be empty", containerType, name));
         }
+        return getValidator();
     }
 
-    void isContained(E key) throws ValidationException {
+    public VALIDATOR isContained(TYPE key) throws ValidationException {
         if (value.contains(key)) {
             throw new ValidationException(String.format("%s '%s' must not contain '%s'",
                     containerType, name, key.toString()));
         }
+        return getValidator();
     }
 
-    void isMissing(E key) throws ValidationException {
+    public VALIDATOR isMissing(TYPE key) throws ValidationException {
         if (!value.contains(key)) {
             throw new ValidationException(String.format("%s '%s' must contain '%s'",
                     containerType, name, key.toString()));
         }
+        return getValidator();
     }
 
-    void containsLessThan(int minNumberOfElements)
+    public VALIDATOR containsLessThan(int minNumberOfElements)
             throws ValidationException {
         if (value.size() < minNumberOfElements) {
             throw new ValidationException(String.format("%s '%s' (size: %d) must contain at least %d entries",
                     containerType, name, value.size(), minNumberOfElements));
         }
+        return getValidator();
     }
 
-    void containsMoreThan(int maxNumberOfElements)
+    public VALIDATOR containsMoreThan(int maxNumberOfElements)
             throws ValidationException {
         if (value.size() > maxNumberOfElements) {
             throw new ValidationException(
                     String.format("%s '%s' (size: %d) must not contain more than %d entries",
                             containerType, name, value.size(), maxNumberOfElements));
         }
+        return getValidator();
     }
 
-    void isAnyNumericEntry(ListValidator.LongEntryValidator validator) throws ValidationException {
-        for (E entry : value) {
+    @Override
+    public VALIDATOR isAnyNumericEntry(LongEntryValidator entryValidator) throws ValidationException {
+        for (TYPE entry : value) {
             if (entry instanceof Integer) {
-                final Integer value = (Integer)entry;
-                validator.apply(
+                final Integer value = (Integer) entry;
+                entryValidator.apply(
                         Validator.throwIf(Long.valueOf(value), String.format("inside %s <%s>", containerType, name))
                 );
             } else if (entry instanceof Long) {
-                validator.apply(
-                        Validator.throwIf((Long)entry, String.format("inside %s <%s>", containerType, name))
+                entryValidator.apply(
+                        Validator.throwIf((Long) entry, String.format("inside %s <%s>", containerType, name))
                 );
             } else {
                 throw new ClassCastException(String.format(
@@ -67,12 +76,14 @@ class ArmedContainerValidator<E> {
                         name, entry.getClass().getSimpleName()));
             }
         }
+        return getValidator();
     }
 
-    void isAnyStringEntry(ListValidator.StringEntryValidator validator) throws ValidationException {
-        for (E entry : value) {
+    @Override
+    public VALIDATOR isAnyStringEntry(StringEntryValidator entryValidator) throws ValidationException {
+        for (TYPE entry : value) {
             if (entry instanceof String) {
-                validator.apply(
+                entryValidator.apply(
                         Validator.throwIf((String) entry, String.format("inside %s <%s>", containerType, name))
                 );
             } else {
@@ -81,5 +92,6 @@ class ArmedContainerValidator<E> {
                         name, entry.getClass().getSimpleName()));
             }
         }
+        return getValidator();
     }
 }
