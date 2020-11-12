@@ -184,12 +184,12 @@ public class ListValidatorTest {
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(integerList, "integerList").notNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(24)),
-                List.of("entry", "23", "in List", "integerList", "is greater or equal", "24"));
+                List.of("entry", "23", "integerList", "type: List", "is greater or equal", "24"));
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longList, "longList").ifNotNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(12)),
-                List.of("entry", "11", "in List", "longList", "is greater or equal", "12"));
+                List.of("entry", "11", "longList", "type: List", "is greater or equal", "12"));
     }
 
     @Test
@@ -209,13 +209,13 @@ public class ListValidatorTest {
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankList, "blankList").notNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("entry", "in List", "blankList", "is not blank")
+                List.of("entry", "blankList", "type: List", "is not blank")
         );
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankList, "blankList").ifNotNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("entry", "in List", "blankList", "is not blank")
+                List.of("entry", "blankList", "type: List", "is not blank")
         );
     }
 }

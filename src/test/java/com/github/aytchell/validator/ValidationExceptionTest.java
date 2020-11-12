@@ -27,7 +27,9 @@ public class ValidationExceptionTest {
                         .setActualValuesName("actualName")
                         .setValuesType("valueType")
                         .setValuesExtraInfo("extraInfo")
-                        .setSurroundingContainerInfo("type", "name", "entry")
+                        .setSurroundingContainerInfo(
+                                "type", "name",
+                                "info", "entry")
                         .setExpectation("expectation")
                         .setExpectedValuesName("expectedName");
 
@@ -38,6 +40,7 @@ public class ValidationExceptionTest {
         assertEquals("extraInfo", exception.getValuesExtraInfo());
         assertEquals("type", exception.getSurroundingContainerType());
         assertEquals("name", exception.getSurroundingContainerName());
+        assertEquals("info", exception.getSurroundingContainersInfo());
         assertEquals("entry", exception.getTypeOfContainerEntry());
         assertEquals("expectation", exception.getExpectation());
         assertEquals("expectedName", exception.getExpectedValuesName());
@@ -97,14 +100,38 @@ public class ValidationExceptionTest {
                         .setValuesType("valuesType")
                         .setValuesExtraInfo("valuesExtraInfo")
                         .setSurroundingContainerInfo(
-                                "containerType", "containerName", "entryType")
+                                "containerType", "containerName",
+                                "containerInfo", "entryType")
                         .setExpectation("expectation")
                         .setExpectedValue("expectedValue")
                         .setExpectedValuesName("expectedValuesName");
 
         final String expectedMessage = "Expecting that entryType 'actualValuesName' " +
                 "(type: valuesType, value: 'actualValue', info: valuesExtraInfo) " +
-                "in containerType 'containerName' expectation " +
+                "in 'containerName' (type: containerType, info: containerInfo) expectation " +
+                "'expectedValuesName' (value: 'expectedValue')";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void getMessageWhenAllInformationExceptContainerInfoIsGiven() {
+        final ValidationException exception =
+                new ValidationException()
+                        .setActualValue("actualValue")
+                        .setActualValuesName("actualValuesName")
+                        .setValuesType("valuesType")
+                        .setValuesExtraInfo("valuesExtraInfo")
+                        .setSurroundingContainerInfo(
+                                "containerType", "containerName",
+                                null, "entryType")
+                        .setExpectation("expectation")
+                        .setExpectedValue("expectedValue")
+                        .setExpectedValuesName("expectedValuesName");
+
+        final String expectedMessage = "Expecting that entryType 'actualValuesName' " +
+                "(type: valuesType, value: 'actualValue', info: valuesExtraInfo) " +
+                "in 'containerName' (type: containerType) expectation " +
                 "'expectedValuesName' (value: 'expectedValue')";
 
         assertEquals(expectedMessage, exception.getMessage());

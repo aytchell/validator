@@ -19,6 +19,7 @@ public class ValidationException extends Exception {
 
     private String surroundingContainerType;
     private String surroundingContainerName;
+    private String surroundingContainersInfo;
 
     private String expectation;
 
@@ -41,9 +42,9 @@ public class ValidationException extends Exception {
         }
 
         // build this kind of string depending on what information is available:
-        //      <typeOfContainerEntry> '<actualValuesName>' (type: <valuesType>, value: <actualValue>)
-        //          in <surroundingContainerType> '<surroundingContainerName>'
-        //      <expectation> '<expectedValuesName>' (value: <expectedValue>)
+        //      <typeOfContainerEntry> '<actualValuesName>' (type: <valuesType>, value: <actualValue>,
+        //          info: <extraInfo>) in <surroundingContainerType> '<surroundingContainerName>'
+        //              <expectation> '<expectedValuesName>' (value: <expectedValue>)
         return String.format("Expecting that %s %s%s",
                 buildActualValueString(),
                 expectation,
@@ -52,14 +53,17 @@ public class ValidationException extends Exception {
 
     private String buildActualValueString() {
         // build this kind of string depending on what information is available:
-        //      <typeOfContainerEntry> '<actualValuesName>' (type: <valuesType>, value: <actualValue>)
-        //          in <surroundingContainerType> '<surroundingContainerName>'
+        //      <typeOfContainerEntry> '<actualValuesName>'
+        //          (type: <valuesType>, value: <actualValue>, info: <extraInfo>)
+        //              in <surroundingContainerType> '<surroundingContainerName>'
         final String actualValueCoreString = buildActualValueCoreString();
 
         if (surroundingContainerName != null) {
             // is the surrounding container's name is set, then the other two container infos are set, too
-            return String.format("%s %s in %s '%s'", typeOfContainerEntry, actualValueCoreString,
-                    surroundingContainerType, surroundingContainerName);
+            return String.format("%s %s in '%s' (type: %s%s)",
+                    typeOfContainerEntry, actualValueCoreString,
+                    surroundingContainerName, surroundingContainerType,
+                    (surroundingContainersInfo != null) ? (", info: " + surroundingContainersInfo) : "");
         } else {
             return actualValueCoreString;
         }
@@ -152,9 +156,11 @@ public class ValidationException extends Exception {
     }
 
     public ValidationException setSurroundingContainerInfo(
-            @NonNull String containerType, @NonNull String containerName, @NonNull String entryType) {
+            @NonNull String containerType, @NonNull String containerName,
+            String containerInfo, @NonNull String entryType) {
         this.surroundingContainerType = containerType;
         this.surroundingContainerName = containerName;
+        this.surroundingContainersInfo = containerInfo;
         this.typeOfContainerEntry = entryType;
         return this;
     }

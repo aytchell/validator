@@ -198,12 +198,12 @@ public class MapValidatorTest {
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(integerMap, "integerMap").notNull()
                         .eachNumericValue(v -> v.notNull().greaterEqThan(24)),
-                List.of("value", "23", "in Map", "integerMap", "is greater or equal", "24"));
+                List.of("value", "23", "integerMap", "type: Map", "is greater or equal", "24"));
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longMap, "longMap").ifNotNull()
                         .eachNumericValue(v -> v.notNull().greaterEqThan(12)),
-                List.of("value", "11", "in Map", "longMap", "is greater or equal", "12"));
+                List.of("value", "11", "longMap", "type: Map", "is greater or equal", "12"));
     }
 
     @Test
@@ -223,13 +223,13 @@ public class MapValidatorTest {
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankMap, "blankMap").notNull().eachStringValue(
                         v -> v.notNull().notBlank()),
-                List.of("value", "in Map", "blankMap", "is not blank")
+                List.of("value", "blankMap", "type: Map", "is not blank")
         );
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankMap, "blankMap").ifNotNull().eachStringValue(
                         v -> v.notNull().notBlank()),
-                List.of("value", "in Map", "blankMap", "is not blank")
+                List.of("value", "blankMap", "type: Map", "is not blank")
         );
     }
 
@@ -256,6 +256,6 @@ public class MapValidatorTest {
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longMap, "longMap").notNull().eachNumericValue(
                         v -> v.notNull().greaterEqThan(500L)),
-                List.of("value", "in Map", "longMap", "is not null"));
+                List.of("value", "longMap", "type: Map", "is not null"));
     }
 }
