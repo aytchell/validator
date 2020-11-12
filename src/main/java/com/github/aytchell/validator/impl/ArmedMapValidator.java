@@ -46,10 +46,7 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
             }
             return this;
         } catch (ValidationException exception) {
-            throw exception
-                    .setSurroundingContainerName(getName())
-                    .setSurroundingContainerType(getContainerType())
-                    .setTypeOfContainerEntry("value");
+            throw exception.setSurroundingContainerInfo(getName(), getContainerType(), "value");
         }
     }
 
@@ -70,10 +67,7 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
             }
             return this;
         } catch (ValidationException exception) {
-            throw exception
-                    .setSurroundingContainerName(getName())
-                    .setSurroundingContainerType(getContainerType())
-                    .setTypeOfContainerEntry("value");
+            throw exception.setSurroundingContainerInfo(getName(), getContainerType(), "value");
         }
     }
 
