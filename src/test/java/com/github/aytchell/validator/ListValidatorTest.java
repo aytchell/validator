@@ -152,15 +152,15 @@ public class ListValidatorTest {
         final List<Long> longList = List.of();
         final List<String> stringList = List.of();
 
-        Validator.throwIf(integerList, "integerList").isNull().isAnyNumericEntry(
+        Validator.throwIf(integerList, "integerList").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isLowerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(longList, "longList").isNull().isAnyNumericEntry(
+        Validator.throwIf(longList, "longList").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isLowerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(stringList, "stringList").isNull().isAnyStringEntry(
+        Validator.throwIf(stringList, "stringList").isNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isEmpty().isLongerThan(0));
     }
@@ -171,9 +171,9 @@ public class ListValidatorTest {
         final List<Long> longList = List.of(68L, 69L, 70L, 80L);
         final List<Long> nullList = null;
 
-        Validator.throwIf(integerList, "integerList").isNull().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(longList, "longList").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(integerList, "integerList").isNull().anyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(longList, "longList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(nullList, "nullList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
     }
 
     @Test
@@ -183,12 +183,12 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(integerList, "integerList").isNull()
-                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(24)),
+                        .anyNumericEntry(v -> v.isNull().isLowerThan(24)),
                 List.of("List", "inside", "integerList", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(longList, "longList").isNotNullAnd()
-                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(12)),
+                        .anyNumericEntry(v -> v.isNull().isLowerThan(12)),
                 List.of("List", "inside", "longList", "is too small", "11", "12"));
     }
 
@@ -196,9 +196,9 @@ public class ListValidatorTest {
     void isAnyEntryBlankWithFilledStringsGivenPasses() throws ValidationException {
         final List<String> filledList = List.of("hello", "world");
 
-        Validator.throwIf(filledList, "filledList").isNull().isAnyStringEntry(
+        Validator.throwIf(filledList, "filledList").isNull().anyStringEntry(
                 v -> v.isNull().isBlank());
-        Validator.throwIf(filledList, "filledList").isNotNullAnd().isAnyStringEntry(
+        Validator.throwIf(filledList, "filledList").isNotNullAnd().anyStringEntry(
                 v -> v.isNull().isLongerThan(20));
     }
 
@@ -207,13 +207,13 @@ public class ListValidatorTest {
         final List<String> blankList = List.of("\t\t\t", "   \n", "\t\n");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankList, "blankList").isNull().isAnyStringEntry(
+                () -> Validator.throwIf(blankList, "blankList").isNull().anyStringEntry(
                         v -> v.isNull().isBlank()),
                 List.of("List", "inside", "blankList", "must not be blank")
         );
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankList, "blankList").isNotNullAnd().isAnyStringEntry(
+                () -> Validator.throwIf(blankList, "blankList").isNotNullAnd().anyStringEntry(
                         v -> v.isNull().isBlank()),
                 List.of("List", "inside", "blankList", "must not be blank")
         );

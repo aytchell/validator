@@ -153,15 +153,15 @@ public class SetValidatorTest {
         final Set<Long> longSet = Set.of();
         final Set<String> stringSet = Set.of();
 
-        Validator.throwIf(integerSet, "integerSet").isNull().isAnyNumericEntry(
+        Validator.throwIf(integerSet, "integerSet").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isLowerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(longSet, "longSet").isNull().isAnyNumericEntry(
+        Validator.throwIf(longSet, "longSet").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isLowerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(stringSet, "stringSet").isNull().isAnyStringEntry(
+        Validator.throwIf(stringSet, "stringSet").isNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isEmpty().isLongerThan(0));
     }
@@ -172,9 +172,9 @@ public class SetValidatorTest {
         final Set<Long> longSet = Set.of(68L, 69L, 70L, 80L);
         final Set<Long> nullSet = null;
 
-        Validator.throwIf(integerSet, "integerSet").isNull().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(longSet, "longSet").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().isAnyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(integerSet, "integerSet").isNull().anyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(longSet, "longSet").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
     }
 
     @Test
@@ -184,12 +184,12 @@ public class SetValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(integerSet, "integerSet").isNull()
-                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(24)),
+                        .anyNumericEntry(v -> v.isNull().isLowerThan(24)),
                 List.of("Set", "inside", "integerSet", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(longSet, "longSet").isNotNullAnd()
-                        .isAnyNumericEntry(v -> v.isNull().isLowerThan(12)),
+                        .anyNumericEntry(v -> v.isNull().isLowerThan(12)),
                 List.of("Set", "inside", "longSet", "is too small", "11", "12"));
     }
 
@@ -197,9 +197,9 @@ public class SetValidatorTest {
     void isAnyEntryBlankWithFilledStringsGivenPasses() throws ValidationException {
         final Set<String> filledSet = Set.of("hello", "world");
 
-        Validator.throwIf(filledSet, "filledSet").isNull().isAnyStringEntry(
+        Validator.throwIf(filledSet, "filledSet").isNull().anyStringEntry(
                 v -> v.isNull().isBlank());
-        Validator.throwIf(filledSet, "filledSet").isNotNullAnd().isAnyStringEntry(
+        Validator.throwIf(filledSet, "filledSet").isNotNullAnd().anyStringEntry(
                 v -> v.isNull().isLongerThan(20));
     }
 
@@ -208,13 +208,13 @@ public class SetValidatorTest {
         final Set<String> blankSet = Set.of("\t\t\t", "   \n", "\t\n");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankSet, "blankSet").isNull().isAnyStringEntry(
+                () -> Validator.throwIf(blankSet, "blankSet").isNull().anyStringEntry(
                         v -> v.isNull().isBlank()),
                 List.of("Set", "inside", "blankSet", "must not be blank")
         );
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankSet, "blankSet").isNotNullAnd().isAnyStringEntry(
+                () -> Validator.throwIf(blankSet, "blankSet").isNotNullAnd().anyStringEntry(
                         v -> v.isNull().isBlank()),
                 List.of("Set", "inside", "blankSet", "must not be blank")
         );
