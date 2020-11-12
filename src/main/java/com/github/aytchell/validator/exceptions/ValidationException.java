@@ -19,7 +19,12 @@ public class ValidationException extends Exception {
     private String nameOfContainerEntry;
 
     public ValidationException() {
-        super("dummy message");
+        super();
+    }
+
+    @Override
+    public String getMessage() {
+        return "dummy message";
     }
 
     public ValidationException setValuesType(String valuesType) {
