@@ -1,6 +1,5 @@
 package com.github.aytchell.validator;
 
-import com.github.aytchell.validator.exceptions.ValidationException;
 import com.github.aytchell.validator.impl.ValidatorImpl;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,14 +10,6 @@ import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class Validator {
-    public static void throwIfNull(Object value, String valueName) throws ValidationException {
-        if (value == null) {
-            throw new ValidationException()
-                    .setActualValuesName(valueName)
-                    .setExpectation("is not null");
-        }
-    }
-
     public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value) {
         return ValidatorImpl.expect(value, null);
     }
