@@ -11,8 +11,8 @@ import java.util.Collection;
 abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
         extends ArmedContainerValidator<TYPE, VALIDATOR>
         implements CollectionValidator<TYPE, VALIDATOR> {
-    ArmedCollectionValidator(String containerType, Collection<TYPE> value, String name) {
-        super(containerType, value, name);
+    ArmedCollectionValidator(String containerType, Collection<TYPE> value, String name, String extraInfo) {
+        super(containerType, value, name, extraInfo);
     }
 
     @Override

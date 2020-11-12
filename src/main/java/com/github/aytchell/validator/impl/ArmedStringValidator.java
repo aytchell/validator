@@ -9,11 +9,12 @@ import lombok.AllArgsConstructor;
 class ArmedStringValidator implements StringValidator {
     private final String value;
     private final String name;
+    private final String extraInfo;
 
     @Override
     public StringValidator notEmpty() throws ValidationException {
         if (this.value.isEmpty()) {
-            throw newExceptionWithNameAndValue()
+            throw newExceptionWithBasics()
                     .setExpectation("is not empty");
         }
         return this;
@@ -22,7 +23,7 @@ class ArmedStringValidator implements StringValidator {
     @Override
     public StringValidator notBlank() throws ValidationException {
         if (this.value.isBlank()) {
-            throw newExceptionWithNameAndValue()
+            throw newExceptionWithBasics()
                     .setExpectation("is not blank");
         }
         return this;
@@ -34,15 +35,17 @@ class ArmedStringValidator implements StringValidator {
             throw new ValidationException()
                     .setActualValuesName("length of " + name)
                     .setActualValue(value.length())
+                    .setValuesExtraInfo(extraInfo)
                     .setExpectation("is at most")
                     .setExpectedValue(maxLength);
         }
         return this;
     }
 
-    private ValidationException newExceptionWithNameAndValue() {
+    private ValidationException newExceptionWithBasics() {
         return new ValidationException()
                 .setActualValuesName(name)
-                .setActualValue(value);
+                .setActualValue(value)
+                .setValuesExtraInfo(extraInfo);
     }
 }

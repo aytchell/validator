@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 class ArmedBooleanValidator implements BooleanValidator {
     private final Boolean value;
     private final String name;
+    private final String extraInfo;
 
     @Override
     public void isTrue() throws ValidationException {
@@ -16,6 +17,7 @@ class ArmedBooleanValidator implements BooleanValidator {
             throw new ValidationException()
                     .setActualValuesName(name)
                     .setActualValue(value)
+                    .setValuesExtraInfo(extraInfo)
                     .setExpectation("is " + Boolean.TRUE.toString());
         }
     }
@@ -26,6 +28,7 @@ class ArmedBooleanValidator implements BooleanValidator {
             throw new ValidationException()
                     .setActualValuesName(name)
                     .setActualValue(value)
+                    .setValuesExtraInfo(extraInfo)
                     .setExpectation("is " + Boolean.FALSE.toString());
         }
     }

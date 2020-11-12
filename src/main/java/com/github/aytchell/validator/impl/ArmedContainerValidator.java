@@ -14,13 +14,14 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
     private final String containerType;
     private final Collection<TYPE> value;
     private final String name;
+    private final String extraInfo;
 
     protected abstract VALIDATOR getValidator();
 
     @Override
     public VALIDATOR notEmpty() throws ValidationException {
         if (value.isEmpty()) {
-            throw newExceptionWithNameAndType()
+            throw newExceptionWithBasics()
                     .setExpectation("is not empty");
         }
         return getValidator();
@@ -28,7 +29,7 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
 
     public VALIDATOR containsNot(TYPE key) throws ValidationException {
         if (value.contains(key)) {
-            throw newExceptionWithNameAndType()
+            throw newExceptionWithBasics()
                     .setExpectation("contains not")
                     .setExpectedValue(key);
         }
@@ -37,7 +38,7 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
 
     public VALIDATOR contains(TYPE key) throws ValidationException {
         if (!value.contains(key)) {
-            throw newExceptionWithNameAndType()
+            throw newExceptionWithBasics()
                     .setExpectation("contains")
                     .setExpectedValue(key);
         }
@@ -50,6 +51,7 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
             throw new ValidationException()
                     .setActualValue(value.size())
                     .setActualValuesName("size of " + getName())
+                    .setValuesExtraInfo(extraInfo)
                     .setExpectation("is at least")
                     .setExpectedValue(minNumberOfElements);
         }
@@ -62,15 +64,17 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
             throw new ValidationException()
                     .setActualValue(value.size())
                     .setActualValuesName("size of " + getName())
+                    .setValuesExtraInfo(extraInfo)
                     .setExpectation("is at most")
                     .setExpectedValue(maxNumberOfElements);
         }
         return getValidator();
     }
 
-    private ValidationException newExceptionWithNameAndType() {
+    private ValidationException newExceptionWithBasics() {
         return new ValidationException()
                 .setValuesType(containerType)
+                .setValuesExtraInfo(extraInfo)
                 .setActualValuesName(name);
     }
 }

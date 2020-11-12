@@ -15,8 +15,8 @@ import java.util.Map;
 class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K, V>> implements MapValidator<K, V> {
     private final Map<K, V> theMap;
 
-    ArmedMapValidator(Map<K, V> value, String name) {
-        super("Map", new MapCollectionWrapper<>(value), name);
+    ArmedMapValidator(Map<K, V> value, String name, String extraInfo) {
+        super("Map", new MapCollectionWrapper<>(value), name, extraInfo);
         this.theMap = value;
     }
 

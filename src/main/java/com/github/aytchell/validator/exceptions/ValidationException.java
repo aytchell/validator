@@ -3,6 +3,9 @@ package com.github.aytchell.validator.exceptions;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 // unfortunately lombok can't create "fluent setters" so we have to roll our own
 public class ValidationException extends Exception {
@@ -11,6 +14,7 @@ public class ValidationException extends Exception {
     private String typeOfContainerEntry;
     private String actualValuesName;
     private String valuesType;
+    private String valuesExtraInfo;
     private String actualValue;
 
     private String surroundingContainerType;
@@ -63,20 +67,13 @@ public class ValidationException extends Exception {
 
     private String buildActualValueCoreString() {
         // build one of these strings depending on what information is available:
-        //      '<actualValuesName>' (type: <valuesType>, value: <actualValue>) or
-        //      '<actualValuesName>' (type: <valuesType>) or
-        //      '<actualValuesName>' (value: <actualValue>) or
+        //      '<actualValuesName>' ([type: <valuesType>], [value: <actualValue>], [info: <valuesExtraInfo>]) or
         //      '<actualValuesName>' or
         //      '<actualValue>'
         if (actualValuesName != null) {
-            if (valuesType != null) {
-                if (actualValue != null) {
-                    return String.format("'%s' (type: %s, value: %s)", actualValuesName, valuesType, actualValue);
-                } else {
-                    return String.format("'%s' (type: %s)", actualValuesName, valuesType);
-                }
-            } else if (actualValue != null) {
-                return String.format("'%s' (value: %s)", actualValuesName, actualValue);
+            final String info = buildValuesInfo();
+            if (info != null) {
+                return String.format("'%s' (%s)", actualValuesName, info);
             } else {
                 return String.format("'%s'", actualValuesName);
             }
@@ -84,6 +81,22 @@ public class ValidationException extends Exception {
             // if the name and the value are null ... then we don't provide any hint
             return (actualValue != null) ? actualValue : "(null)";
         }
+    }
+
+    private String buildValuesInfo() {
+        // build this string depending on what information is available:
+        //      ([type: <valuesType>], [value: <actualValue>], [info: <valuesExtraInfo>])
+        final List<String> information = new ArrayList<>();
+        if (valuesType != null) {
+            information.add(String.format("type: %s", valuesType));
+        }
+        if (actualValue != null) {
+            information.add(String.format("value: %s", actualValue));
+        }
+        if (valuesExtraInfo != null) {
+            information.add(String.format("info: %s", valuesExtraInfo));
+        }
+        return String.join(", ", information);
     }
 
     private String buildExpectedValueString() {
@@ -105,6 +118,11 @@ public class ValidationException extends Exception {
 
     public ValidationException setValuesType(String valuesType) {
         this.valuesType = valuesType;
+        return this;
+    }
+
+    public ValidationException setValuesExtraInfo(String valuesExtraInfo) {
+        this.valuesExtraInfo = valuesExtraInfo;
         return this;
     }
 

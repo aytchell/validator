@@ -16,75 +16,80 @@ import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class ValidatorImpl {
-    public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, DisarmedBooleanValidator.getINSTANCE()) {
+    public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value, String name,
+            String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedBooleanValidator.getINSTANCE()) {
             @Override
-            protected BooleanValidator createValidator(Boolean value, String name) {
-                return new ArmedBooleanValidator(value, name);
+            protected BooleanValidator createValidator(Boolean value, String name, String extraInfo) {
+                return new ArmedBooleanValidator(value, name, extraInfo);
             }
         };
     }
 
-    public static NullableObjectValidator<Short, LongValidator> expect(Short value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, DisarmedLongValidator.getINSTANCE()) {
+    public static NullableObjectValidator<Short, LongValidator> expect(Short value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedLongValidator.getINSTANCE()) {
             @Override
-            protected LongValidator createValidator(Short value, String name) {
-                return new ArmedLongValidator(Long.valueOf(value), name);
+            protected LongValidator createValidator(Short value, String name, String extraInfo) {
+                return new ArmedLongValidator(Long.valueOf(value), name, extraInfo);
             }
         };
     }
 
-    public static NullableObjectValidator<Integer, LongValidator> expect(Integer value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, DisarmedLongValidator.getINSTANCE()) {
+    public static NullableObjectValidator<Integer, LongValidator> expect(Integer value, String name,
+            String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedLongValidator.getINSTANCE()) {
             @Override
-            protected LongValidator createValidator(Integer value, String name) {
-                return new ArmedLongValidator(Long.valueOf(value), name);
+            protected LongValidator createValidator(Integer value, String name, String extraInfo) {
+                return new ArmedLongValidator(Long.valueOf(value), name, extraInfo);
             }
         };
     }
 
-    public static NullableObjectValidator<Long, LongValidator> expect(Long value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, DisarmedLongValidator.getINSTANCE()) {
+    public static NullableObjectValidator<Long, LongValidator> expect(Long value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedLongValidator.getINSTANCE()) {
             @Override
-            protected LongValidator createValidator(Long value, String name) {
-                return new ArmedLongValidator(value, name);
+            protected LongValidator createValidator(Long value, String name, String extraInfo) {
+                return new ArmedLongValidator(value, name, extraInfo);
             }
         };
     }
 
-    public static NullableObjectValidator<String, StringValidator> expect(String value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, DisarmedStringValidator.getINSTANCE()) {
+    public static NullableObjectValidator<String, StringValidator> expect(String value, String name,
+            String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedStringValidator.getINSTANCE()) {
             @Override
-            protected StringValidator createValidator(String value, String name) {
-                return new ArmedStringValidator(value, name);
+            protected StringValidator createValidator(String value, String name, String extraInfo) {
+                return new ArmedStringValidator(value, name, extraInfo);
             }
         };
     }
 
-    public static <E> NullableObjectValidator<List<E>, ListValidator<E>> expect(List<E> value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, new DisarmedListValidator<E>()) {
+    public static <E> NullableObjectValidator<List<E>, ListValidator<E>> expect(List<E> value, String name,
+            String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, new DisarmedListValidator<E>()) {
             @Override
-            protected ListValidator<E> createValidator(List<E> value, String name) {
-                return new ArmedListValidator<E>(value, name);
+            protected ListValidator<E> createValidator(List<E> value, String name, String extraInfo) {
+                return new ArmedListValidator<E>(value, name, extraInfo);
             }
         };
     }
 
-    public static <E> NullableObjectValidator<Set<E>, SetValidator<E>> expect(Set<E> value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, new DisarmedSetValidator<E>()) {
+    public static <E> NullableObjectValidator<Set<E>, SetValidator<E>> expect(Set<E> value, String name,
+            String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, new DisarmedSetValidator<E>()) {
             @Override
-            protected SetValidator<E> createValidator(Set<E> value, String name) {
-                return new ArmedSetValidator<E>(value, name);
+            protected SetValidator<E> createValidator(Set<E> value, String name, String extraInfo) {
+                return new ArmedSetValidator<E>(value, name, extraInfo);
             }
         };
     }
 
     public static <K, V> NullableObjectValidator<Map<K, V>, MapValidator<K, V>> expect(
-            Map<K, V> value, String name) {
-        return new NullableObjectValidatorImpl<>(value, name, new DisarmedMapValidator<K, V>()) {
+            Map<K, V> value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, new DisarmedMapValidator<K, V>()) {
             @Override
-            protected MapValidator<K, V> createValidator(Map<K, V> stringStringMap, String name) {
-                return new ArmedMapValidator<>(value, name);
+            protected MapValidator<K, V> createValidator(Map<K, V> stringStringMap, String name, String extraInfo) {
+                return new ArmedMapValidator<>(value, name, extraInfo);
             }
         };
     }
