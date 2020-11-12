@@ -1,5 +1,6 @@
 package com.github.aytchell.validator;
 
+import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -8,12 +9,17 @@ import lombok.NoArgsConstructor;
 class DisarmedMapValidator<K, V> extends DisarmedContainerValidator<K, MapValidator<K, V>>
         implements MapValidator<K, V> {
     @Override
-    public MapValidator<K, V> anyValueIsLongerThan(int maxLength) {
+    protected MapValidator<K, V> getValidator() {
         return this;
     }
 
     @Override
-    protected MapValidator<K, V> getValidator() {
+    public MapValidator<K, V> anyNumericValue(LongEntryValidator validator) throws ValidationException {
+        return this;
+    }
+
+    @Override
+    public MapValidator<K, V> anyStringValue(StringEntryValidator validator) throws ValidationException {
         return this;
     }
 }

@@ -3,11 +3,13 @@ package com.github.aytchell.validator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageContains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MapValidatorTest {
     @Test
@@ -155,5 +157,105 @@ public class MapValidatorTest {
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(stringMap, "stringMap").isNotNullAnd().isMissing("five"),
                 List.of("Map", "stringMap", "must contain", "five"));
+    }
+
+    @Test
+    void isAnyValueWithEmptyMapGivenPasses() throws ValidationException {
+        final Map<Integer, Integer> integerMap = Map.of();
+        final Map<Long, Integer> longMap = Map.of();
+        final Map<String, Integer> stringMap = Map.of();
+
+        Validator.throwIf(integerMap, "integerMap").isNull().anyNumericValue(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+
+        Validator.throwIf(longMap, "longMap").isNull().anyNumericValue(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+
+        Validator.throwIf(stringMap, "stringMap").isNull().anyStringValue(
+                // this should fail with anything but a non-null empty list
+                v -> v.isNull().isEmpty().isLongerThan(0));
+    }
+
+    @Test
+    void isAnyValueBelowFiveWithHighEntriesPasses() throws ValidationException {
+        final Map<Integer, Integer> integerMap = Map.of(1, 67, 2, 56, 3, 45,
+                4, 34, 5, 23);
+        final Map<Integer, Long> longMap = Map.of(1, 68L, 2, 69L, 3, 70L, 4, 80L);
+        final Map<Integer, Long> nullMap = null;
+
+        Validator.throwIf(integerMap, "integerMap").isNull().anyNumericValue(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(longMap, "longMap").isNotNullAnd().anyNumericValue(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(nullMap, "nullMap").isNotNullAnd().anyNumericValue(v -> v.isNull().isLowerThan(5));
+    }
+
+    @Test
+    void isAnyValueBelowFiveWithLowEntriesThrows() throws ValidationException {
+        final Map<Integer, Integer> integerMap = Map.of(1, 67, 2, 56, 3, 45, 4, 34, 5, 23);
+        final Map<Integer, Long> longMap = Map.of(1, 11L, 2, 12L, 3, 13L, 4, 14L);
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(integerMap, "integerMap").isNull()
+                        .anyNumericValue(v -> v.isNull().isLowerThan(24)),
+                List.of("Map", "inside", "integerMap", "is too small", "24", "23"));
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(longMap, "longMap").isNotNullAnd()
+                        .anyNumericValue(v -> v.isNull().isLowerThan(12)),
+                List.of("Map", "inside", "longMap", "is too small", "11", "12"));
+    }
+
+    @Test
+    void isAnyValueBlankWithFilledStringsGivenPasses() throws ValidationException {
+        final Map<Integer, String> filledMap = Map.of(1, "hello", 2, "world");
+
+        Validator.throwIf(filledMap, "filledMap").isNull().anyStringValue(
+                v -> v.isNull().isBlank());
+        Validator.throwIf(filledMap, "filledMap").isNotNullAnd().anyStringValue(
+                v -> v.isNull().isLongerThan(20));
+    }
+
+    @Test
+    void isAnyValueBlankWithBlankStringsGivenThrows() {
+        final Map<Integer, String> blankMap = Map.of(1, "\t\t\t", 2, "   \n", 3, "\t\n");
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(blankMap, "blankMap").isNull().anyStringValue(
+                        v -> v.isNull().isBlank()),
+                List.of("Map", "inside", "blankMap", "must not be blank")
+        );
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(blankMap, "blankMap").isNotNullAnd().anyStringValue(
+                        v -> v.isNull().isBlank()),
+                List.of("Map", "inside", "blankMap", "must not be blank")
+        );
+    }
+
+    @Test
+    void isAnyValueCanHandleNull() throws ValidationException {
+        final Map<Integer, String> stringMap = new HashMap<>(Map.of(1, "one", 2, "two"));
+        stringMap.put(3, null);
+
+        assertEquals(3, stringMap.size());
+        assertNull(stringMap.get(3));
+
+        Validator.throwIf(stringMap, "stringMap").isNull().anyStringValue(
+                v -> v.isNotNullAnd().isBlank());
+    }
+
+    @Test
+    void isAnyValueWillThrowOnNullEntries() throws ValidationException {
+        final Map<Integer, Long> longMap = new HashMap<>(Map.of(1, 1001L, 2, 1002L));
+        longMap.put(3, null);
+
+        assertEquals(3, longMap.size());
+        assertNull(longMap.get(3));
+
+        assertThrowsAndMessageContains(
+                () -> Validator.throwIf(longMap, "longMap").isNull().anyNumericValue(
+                        v -> v.isNull().isLowerThan(500L)),
+                List.of("Map", "inside", "longMap", "is missing"));
     }
 }

@@ -10,19 +10,65 @@ import java.util.Map;
 
 // This class shall only be instantiated by Validator
 class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K, V>> implements MapValidator<K, V> {
+    private final Map<K, V> theMap;
 
     ArmedMapValidator(Map<K, V> value, String name) {
         super("Map", new MapCollectionWrapper<>(value), name);
-    }
-
-    @Override
-    public ArmedMapValidator<K, V> anyValueIsLongerThan(int maxLength) throws ValidationException {
-        // TODO: Replace with generic method
-        return this;
+        this.theMap = value;
     }
 
     @Override
     protected MapValidator<K, V> getValidator() {
+        return this;
+    }
+
+    @Override
+    public MapValidator<K, V> anyNumericValue(LongEntryValidator entryValidator) throws ValidationException {
+        for (V value : theMap.values()) {
+            if (value == null) {
+                final Long nullLong = null;
+                entryValidator.apply(
+                        Validator.throwIf(nullLong, String.format("inside %s <%s>", getContainerType(), getName()))
+                );
+            } else if (value instanceof Integer) {
+                entryValidator.apply(
+                        Validator.throwIf(Long.valueOf((Integer)value),
+                                String.format("inside %s <%s>", getContainerType(), getName()))
+                );
+            } else if (value instanceof Long) {
+                entryValidator.apply(
+                        Validator.throwIf((Long) value,
+                                String.format("inside %s <%s>", getContainerType(), getName()))
+                );
+            } else {
+                throw new ClassCastException(String.format(
+                        "Tried to validate entries in '%s' as numeric values (but are '%s')",
+                        getName(), value.getClass().getSimpleName()));
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public MapValidator<K, V> anyStringValue(StringEntryValidator entryValidator) throws ValidationException {
+        for (V value : theMap.values()) {
+            if (value == null) {
+                final String nullString = null;
+                entryValidator.apply(
+                        Validator.throwIf(nullString,
+                                String.format("inside %s <%s>", getContainerType(), getName()))
+                );
+            } else if (value instanceof String) {
+                entryValidator.apply(
+                        Validator.throwIf((String) value,
+                                String.format("inside %s <%s>", getContainerType(), getName()))
+                );
+            } else {
+                throw new ClassCastException(
+                        String.format("Tried to validate values in '%s' as Strings (but are '%s')",
+                                getName(), value.getClass().getSimpleName()));
+            }
+        }
         return this;
     }
 
