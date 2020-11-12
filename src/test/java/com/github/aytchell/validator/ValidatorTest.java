@@ -27,6 +27,6 @@ class ValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIfNull(nullString, "nullString"),
-                List.of("nullString", "is missing"));
+                List.of("nullString", "is not null"));
     }
 }

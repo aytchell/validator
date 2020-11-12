@@ -15,7 +15,7 @@ public class StringValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(nullString, "nullString").notNull(),
-                List.of("nullString", "is missing"));
+                List.of("nullString", "is not null"));
     }
 
     @Test
@@ -38,12 +38,12 @@ public class StringValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(emptyString, "emptyString").notNull().notEmpty(),
-                List.of("emptyString", "must not be empty")
+                List.of("emptyString", "is not empty")
         );
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(emptyString, "emptyString").ifNotNull().notEmpty(),
-                List.of("emptyString", "must not be empty")
+                List.of("emptyString", "is not empty")
         );
     }
 
@@ -64,12 +64,12 @@ public class StringValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankString, "blankString").notNull().notBlank(),
-                List.of("blankString", "must not be blank")
+                List.of("blankString", "is not blank")
         );
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankString, "blankString").ifNotNull().notBlank(),
-                List.of("blankString", "must not be blank")
+                List.of("blankString", "is not blank")
         );
     }
 
@@ -96,12 +96,12 @@ public class StringValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(longString, "longString").notNull().lengthAtMost(10),
-                List.of("longString", "must not be longer than", "10", stringSize)
+                List.of("length of longString", stringSize, "is at most", "10")
         );
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(longString, "longString").ifNotNull().lengthAtMost(10),
-                List.of("longString", "must not be longer than", "10", stringSize)
+                List.of("length of longString", stringSize, "is at most", "10")
         );
     }
 }
