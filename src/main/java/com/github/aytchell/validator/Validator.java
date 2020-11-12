@@ -10,10 +10,16 @@ import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class Validator {
-    public static void throwIfNull(Object value, String parameterName) throws ValidationException {
+    public static void throwIfNull(Object value, String valueName) throws ValidationException {
         if (value == null) {
-            throw new ValidationException("Parameter '" + parameterName + "' is missing");
+            throw new ValidationException()
+                    .setActualValuesName(valueName)
+                    .setExpectation("shall not be null");
         }
+    }
+
+    public static NullableObjectValidator<Short, LongValidator> throwIf(Short value) {
+        return throwIf(value, null);
     }
 
     public static NullableObjectValidator<Short, LongValidator> throwIf(Short value, String name) {
@@ -25,6 +31,10 @@ public class Validator {
         };
     }
 
+    public static NullableObjectValidator<Integer, LongValidator> throwIf(Integer value) {
+        return throwIf(value, null);
+    }
+
     public static NullableObjectValidator<Integer, LongValidator> throwIf(Integer value, String name) {
         return new NullableObjectValidator<>(value, name, DisarmedLongValidator.getINSTANCE()) {
             @Override
@@ -32,6 +42,10 @@ public class Validator {
                 return new ArmedLongValidator(Long.valueOf(value), name);
             }
         };
+    }
+
+    public static NullableObjectValidator<Long, LongValidator> throwIf(Long value) {
+        return throwIf(value, null);
     }
 
     public static NullableObjectValidator<Long, LongValidator> throwIf(Long value, String name) {
@@ -43,6 +57,10 @@ public class Validator {
         };
     }
 
+    public static NullableObjectValidator<String, StringValidator> throwIf(String value) {
+        return throwIf(value, null);
+    }
+
     public static NullableObjectValidator<String, StringValidator> throwIf(String value, String name) {
         return new NullableObjectValidator<>(value, name, DisarmedStringValidator.getINSTANCE()) {
             @Override
@@ -50,6 +68,10 @@ public class Validator {
                 return new ArmedStringValidator(value, name);
             }
         };
+    }
+
+    public static <E> NullableObjectValidator<List<E>, ListValidator<E>> throwIf(List<E> value) {
+        return throwIf(value, null);
     }
 
     public static <E> NullableObjectValidator<List<E>, ListValidator<E>> throwIf(List<E> value, String name) {
@@ -61,6 +83,10 @@ public class Validator {
         };
     }
 
+    public static <E> NullableObjectValidator<Set<E>, SetValidator<E>> throwIf(Set<E> value) {
+        return throwIf(value, null);
+    }
+
     public static <E> NullableObjectValidator<Set<E>, SetValidator<E>> throwIf(Set<E> value, String name) {
         return new NullableObjectValidator<>(value, name, new DisarmedSetValidator<E>()) {
             @Override
@@ -68,6 +94,10 @@ public class Validator {
                 return new ArmedSetValidator<E>(value, name);
             }
         };
+    }
+
+    public static <K, V> NullableObjectValidator<Map<K, V>, MapValidator<K, V>> throwIf(Map<K, V> value) {
+        return throwIf(value, null);
     }
 
     public static <K, V> NullableObjectValidator<Map<K, V>, MapValidator<K, V>> throwIf(

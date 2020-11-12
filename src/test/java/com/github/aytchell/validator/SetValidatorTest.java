@@ -155,11 +155,11 @@ public class SetValidatorTest {
 
         Validator.throwIf(integerSet, "integerSet").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+                v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
         Validator.throwIf(longSet, "longSet").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+                v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
         Validator.throwIf(stringSet, "stringSet").isNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
@@ -172,9 +172,9 @@ public class SetValidatorTest {
         final Set<Long> longSet = Set.of(68L, 69L, 70L, 80L);
         final Set<Long> nullSet = null;
 
-        Validator.throwIf(integerSet, "integerSet").isNull().anyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(longSet, "longSet").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(integerSet, "integerSet").isNull().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
+        Validator.throwIf(longSet, "longSet").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
+        Validator.throwIf(nullSet, "nullSet").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
     }
 
     @Test
@@ -184,12 +184,12 @@ public class SetValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(integerSet, "integerSet").isNull()
-                        .anyNumericEntry(v -> v.isNull().isLowerThan(24)),
+                        .anyNumericEntry(v -> v.isNull().isSmallerThan(24)),
                 List.of("Set", "inside", "integerSet", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(longSet, "longSet").isNotNullAnd()
-                        .anyNumericEntry(v -> v.isNull().isLowerThan(12)),
+                        .anyNumericEntry(v -> v.isNull().isSmallerThan(12)),
                 List.of("Set", "inside", "longSet", "is too small", "11", "12"));
     }
 

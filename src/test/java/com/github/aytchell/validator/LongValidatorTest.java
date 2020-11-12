@@ -24,17 +24,17 @@ public class LongValidatorTest {
         final Long validLong = 42L;
         final Long nullLong = null;
 
-        Validator.throwIf(validLong, "validLong").isNull().isLowerThan(2);
-        Validator.throwIf(validLong, "validLong").isNull().isLowerThan(4L);
-        Validator.throwIf(validShort, "validShort").isNull().isLowerThan(2);
-        Validator.throwIf(validShort, "validShort").isNull().isLowerThan(4L);
-        Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(2);
-        Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(4L);
+        Validator.throwIf(validLong, "validLong").isNull().isSmallerThan(2);
+        Validator.throwIf(validLong, "validLong").isNull().isSmallerThan(4L);
+        Validator.throwIf(validShort, "validShort").isNull().isSmallerThan(2);
+        Validator.throwIf(validShort, "validShort").isNull().isSmallerThan(4L);
+        Validator.throwIf(validInteger, "validInteger").isNull().isSmallerThan(2);
+        Validator.throwIf(validInteger, "validInteger").isNull().isSmallerThan(4L);
 
-        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isLowerThan(2);
-        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isLowerThan(4L);
-        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isLowerThan(1024);
-        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isLowerThan(2048L);
+        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isSmallerThan(2);
+        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isSmallerThan(4L);
+        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isSmallerThan(1024);
+        Validator.throwIf(nullLong, "nullLong").isNotNullAnd().isSmallerThan(2048L);
     }
 
     @Test
@@ -44,22 +44,22 @@ public class LongValidatorTest {
 
         // Test <Long> against <int>  with mode 'isNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validLong, "validLong").isNull().isLowerThan(1024),
+                () -> Validator.throwIf(validLong, "validLong").isNull().isSmallerThan(1024),
                 List.of("validLong", "is too small", "42", "1024"));
 
         // Test <Long> against <long>  with mode 'isNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validLong, "validLong").isNull().isLowerThan(2048L),
+                () -> Validator.throwIf(validLong, "validLong").isNull().isSmallerThan(2048L),
                 List.of("validLong", "is too small", "42", "2048"));
 
         // Test <Integer> against <int>  with mode 'isNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(1024),
+                () -> Validator.throwIf(validInteger, "validInteger").isNull().isSmallerThan(1024),
                 List.of("validInteger", "is too small", "112", "1024"));
 
         // Test <Integer> against <long>  with mode 'isNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(2048L),
+                () -> Validator.throwIf(validInteger, "validInteger").isNull().isSmallerThan(2048L),
                 List.of("validInteger", "is too small", "112", "2048"));
     }
 
@@ -70,22 +70,22 @@ public class LongValidatorTest {
 
         // Test <Long> against <int>  with mode 'isNotNullAnd()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isLowerThan(1024),
+                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isSmallerThan(1024),
                 List.of("validLong", "is too small", "42", "1024"));
 
         // Test <Long> against <long>  with mode 'isNotNullAnd()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isLowerThan(2048L),
+                () -> Validator.throwIf(validLong, "validLong").isNotNullAnd().isSmallerThan(2048L),
                 List.of("validLong", "is too small", "42", "2048"));
 
         // Test <Integer> against <int>  with mode 'isNotNullAnd()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isLowerThan(1024),
+                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isSmallerThan(1024),
                 List.of("validInteger", "is too small", "112", "1024"));
 
         // Test <Integer> against <long>  with mode 'isNotNullAnd()'
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isLowerThan(2048L),
+                () -> Validator.throwIf(validInteger, "validInteger").isNotNullAnd().isSmallerThan(2048L),
                 List.of("validInteger", "is too small", "112", "2048"));
     }
 

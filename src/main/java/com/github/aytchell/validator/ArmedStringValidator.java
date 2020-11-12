@@ -13,7 +13,8 @@ class ArmedStringValidator implements StringValidator {
     @Override
     public StringValidator isEmpty() throws ValidationException {
         if (this.value.isEmpty()) {
-            throw new ValidationException(String.format("Parameter '%s' must not be empty", name));
+            throw newExceptionWithNameAndValue()
+                    .setExpectation("shall not be empty");
         }
         return this;
     }
@@ -21,7 +22,8 @@ class ArmedStringValidator implements StringValidator {
     @Override
     public StringValidator isBlank() throws ValidationException {
         if (this.value.isBlank()) {
-            throw new ValidationException(String.format("Parameter '%s' must not be blank", name));
+            throw newExceptionWithNameAndValue()
+                    .setExpectation("shall not be blank");
         }
         return this;
     }
@@ -29,10 +31,18 @@ class ArmedStringValidator implements StringValidator {
     @Override
     public StringValidator isLongerThan(int maxLength) throws ValidationException {
         if (value.length() > maxLength) {
-            throw new ValidationException(
-                String.format("Parameter '%s' (given length: %d) must not be longer than %d",
-                    name, value.length(), maxLength));
+            throw new ValidationException()
+                    .setActualValuesName("length of " + name)
+                    .setActualValue(String.valueOf(value.length()))
+                    .setExpectation("shall not be longer than")
+                    .setExpectedValue(String.valueOf(maxLength));
         }
         return this;
+    }
+
+    private ValidationException newExceptionWithNameAndValue() {
+        return new ValidationException()
+                .setActualValuesName(name)
+                .setActualValue(value);
     }
 }

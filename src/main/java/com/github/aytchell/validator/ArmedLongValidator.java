@@ -14,11 +14,11 @@ class ArmedLongValidator extends LongValidatorBase {
     private final String name;
 
     @Override
-    public LongValidator isLowerThan(long lowerBound) throws ValidationException {
+    public LongValidator isSmallerThan(long lowerBound) throws ValidationException {
         if (value < lowerBound) {
-            throw new ValidationException(
-                String.format("Parameter '%s' (given value: %d) is too small (min. value: %d)",
-                    name, value, lowerBound));
+            throw newExceptionWithNameAndValue()
+                    .setExpectation("shall not be smaller than")
+                    .setExpectedValue(String.valueOf(lowerBound));
         }
         return this;
     }
@@ -26,9 +26,9 @@ class ArmedLongValidator extends LongValidatorBase {
     @Override
     public LongValidator isGreaterThan(long upperBound) throws ValidationException {
         if (value > upperBound) {
-            throw new ValidationException(
-                String.format("Parameter '%s' (given value: %d) is too big (max. value: %d)",
-                    name, value, upperBound));
+            throw newExceptionWithNameAndValue()
+                    .setExpectation("shall not be greater than")
+                    .setExpectedValue(String.valueOf(upperBound));
         }
         return this;
     }
@@ -36,9 +36,17 @@ class ArmedLongValidator extends LongValidatorBase {
     @Override
     public LongValidator isNoValidPortNumber() throws ValidationException {
         if ((value < MIN_TCP_PORT_NUMBER) || (value > MAX_TCP_PORT_NUMBER)) {
-            throw new ValidationException(
-                String.format("Parameter '%s' (given value: %d) is no valid port number", name, value));
+            throw newExceptionWithNameAndValue()
+                    .setExpectation(
+                            String.format("shall be a valid port number (%d to %d)",
+                                    MIN_TCP_PORT_NUMBER, MAX_TCP_PORT_NUMBER));
         }
         return this;
+    }
+
+    private ValidationException newExceptionWithNameAndValue() {
+        return new ValidationException()
+                .setActualValuesName(name)
+                .setActualValue(String.valueOf(value));
     }
 }

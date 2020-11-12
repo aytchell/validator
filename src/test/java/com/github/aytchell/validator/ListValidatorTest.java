@@ -154,11 +154,11 @@ public class ListValidatorTest {
 
         Validator.throwIf(integerList, "integerList").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+                v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
         Validator.throwIf(longList, "longList").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.isNull().isLowerThan(5).isGreaterThan(3));
+                v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
         Validator.throwIf(stringList, "stringList").isNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
@@ -171,9 +171,9 @@ public class ListValidatorTest {
         final List<Long> longList = List.of(68L, 69L, 70L, 80L);
         final List<Long> nullList = null;
 
-        Validator.throwIf(integerList, "integerList").isNull().anyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(longList, "longList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isLowerThan(5));
+        Validator.throwIf(integerList, "integerList").isNull().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
+        Validator.throwIf(longList, "longList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
+        Validator.throwIf(nullList, "nullList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
     }
 
     @Test
@@ -183,12 +183,12 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(integerList, "integerList").isNull()
-                        .anyNumericEntry(v -> v.isNull().isLowerThan(24)),
+                        .anyNumericEntry(v -> v.isNull().isSmallerThan(24)),
                 List.of("List", "inside", "integerList", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.throwIf(longList, "longList").isNotNullAnd()
-                        .anyNumericEntry(v -> v.isNull().isLowerThan(12)),
+                        .anyNumericEntry(v -> v.isNull().isSmallerThan(12)),
                 List.of("List", "inside", "longList", "is too small", "11", "12"));
     }
 

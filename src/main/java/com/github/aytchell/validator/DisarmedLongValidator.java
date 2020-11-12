@@ -11,7 +11,7 @@ class DisarmedLongValidator extends LongValidatorBase {
     public static final LongValidator INSTANCE = new DisarmedLongValidator();
 
     @Override
-    public LongValidator isLowerThan(long lowerBound) {
+    public LongValidator isSmallerThan(long lowerBound) {
         return this;
     }
 

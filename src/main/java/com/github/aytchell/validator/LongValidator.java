@@ -3,9 +3,9 @@ package com.github.aytchell.validator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 
 public interface LongValidator {
-    LongValidator isLowerThan(int lowerBound) throws ValidationException;
+    LongValidator isSmallerThan(int lowerBound) throws ValidationException;
 
-    LongValidator isLowerThan(long lowerBound) throws ValidationException;
+    LongValidator isSmallerThan(long lowerBound) throws ValidationException;
 
     LongValidator isGreaterThan(int upperBound) throws ValidationException;
 

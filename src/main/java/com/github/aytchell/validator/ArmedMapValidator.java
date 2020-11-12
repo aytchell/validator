@@ -24,52 +24,54 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
 
     @Override
     public MapValidator<K, V> anyNumericValue(LongEntryValidator entryValidator) throws ValidationException {
-        for (V value : theMap.values()) {
-            if (value == null) {
-                final Long nullLong = null;
-                entryValidator.apply(
-                        Validator.throwIf(nullLong, String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else if (value instanceof Integer) {
-                entryValidator.apply(
-                        Validator.throwIf(Long.valueOf((Integer)value),
-                                String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else if (value instanceof Long) {
-                entryValidator.apply(
-                        Validator.throwIf((Long) value,
-                                String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else {
-                throw new ClassCastException(String.format(
-                        "Tried to validate entries in '%s' as numeric values (but are '%s')",
-                        getName(), value.getClass().getSimpleName()));
+        try {
+            for (V value : theMap.values()) {
+                if (value == null) {
+                    final Long nullLong = null;
+                    entryValidator.apply(Validator.throwIf(nullLong));
+                } else if (value instanceof Short) {
+                    entryValidator.apply(Validator.throwIf(Long.valueOf((Short) value)));
+                } else if (value instanceof Integer) {
+                    entryValidator.apply(Validator.throwIf(Long.valueOf((Integer) value)));
+                } else if (value instanceof Long) {
+                    entryValidator.apply(Validator.throwIf((Long) value));
+                } else {
+                    throw new ClassCastException(String.format(
+                            "Tried to validate entries in Map '%s' as numeric values (but are '%s')",
+                            getName(), value.getClass().getSimpleName()));
+                }
             }
+            return this;
+        } catch (ValidationException exception) {
+            throw exception
+                    .setSurroundingContainerName(getName())
+                    .setSurroundingContainerType(getContainerType())
+                    .setTypeOfContainerEntry("value");
         }
-        return this;
     }
 
     @Override
     public MapValidator<K, V> anyStringValue(StringEntryValidator entryValidator) throws ValidationException {
-        for (V value : theMap.values()) {
-            if (value == null) {
-                final String nullString = null;
-                entryValidator.apply(
-                        Validator.throwIf(nullString,
-                                String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else if (value instanceof String) {
-                entryValidator.apply(
-                        Validator.throwIf((String) value,
-                                String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else {
-                throw new ClassCastException(
-                        String.format("Tried to validate values in '%s' as Strings (but are '%s')",
-                                getName(), value.getClass().getSimpleName()));
+        try {
+            for (V value : theMap.values()) {
+                if (value == null) {
+                    final String nullString = null;
+                    entryValidator.apply(Validator.throwIf(nullString));
+                } else if (value instanceof String) {
+                    entryValidator.apply(Validator.throwIf((String) value));
+                } else {
+                    throw new ClassCastException(
+                            String.format("Tried to validate values in Map '%s' as Strings (but are '%s')",
+                                    getName(), value.getClass().getSimpleName()));
+                }
             }
+            return this;
+        } catch (ValidationException exception) {
+            throw exception
+                    .setSurroundingContainerName(getName())
+                    .setSurroundingContainerType(getContainerType())
+                    .setTypeOfContainerEntry("value");
         }
-        return this;
     }
 
     @AllArgsConstructor(access = AccessLevel.PACKAGE)

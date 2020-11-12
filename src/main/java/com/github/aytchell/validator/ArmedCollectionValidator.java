@@ -13,41 +13,46 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
 
     @Override
     public VALIDATOR anyNumericEntry(LongEntryValidator entryValidator) throws ValidationException {
-        for (TYPE entry : getValue()) {
-            if (entry instanceof Integer) {
-                final Integer value = (Integer) entry;
-                entryValidator.apply(
-                        Validator.throwIf(Long.valueOf(value),
-                                String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else if (entry instanceof Long) {
-                entryValidator.apply(
-                        Validator.throwIf((Long) entry,
-                                String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else {
-                throw new ClassCastException(String.format(
-                        "Tried to validate entries in '%s' as numeric values (but are '%s')",
-                        getName(), entry.getClass().getSimpleName()));
+        try {
+            for (TYPE entry : getValue()) {
+                if (entry instanceof Integer) {
+                    final Integer value = (Integer) entry;
+                    entryValidator.apply(Validator.throwIf(Long.valueOf(value)));
+                } else if (entry instanceof Long) {
+                    entryValidator.apply(Validator.throwIf((Long) entry));
+                } else {
+                    throw new ClassCastException(String.format(
+                            "Tried to validate entries in %s '%s' as numeric values (but are '%s')",
+                            getContainerType(), getName(), entry.getClass().getSimpleName()));
+                }
             }
+            return getValidator();
+        } catch (ValidationException exception) {
+            throw exception
+                    .setSurroundingContainerName(getName())
+                    .setSurroundingContainerType(getContainerType())
+                    .setTypeOfContainerEntry("entry");
         }
-        return getValidator();
     }
 
     @Override
     public VALIDATOR anyStringEntry(StringEntryValidator entryValidator) throws ValidationException {
-        for (TYPE entry : getValue()) {
-            if (entry instanceof String) {
-                entryValidator.apply(
-                        Validator.throwIf((String) entry,
-                                String.format("inside %s <%s>", getContainerType(), getName()))
-                );
-            } else {
-                throw new ClassCastException(
-                        String.format("Tried to validate entries in '%s' as Strings (but are '%s')",
-                                getName(), entry.getClass().getSimpleName()));
+        try {
+            for (TYPE entry : getValue()) {
+                if (entry instanceof String) {
+                    entryValidator.apply(Validator.throwIf((String) entry));
+                } else {
+                    throw new ClassCastException(
+                            String.format("Tried to validate entries in %s '%s' as Strings (but are '%s')",
+                                    getContainerType(), getName(), entry.getClass().getSimpleName()));
+                }
             }
+            return getValidator();
+        } catch (ValidationException exception) {
+            throw exception
+                    .setSurroundingContainerName(getName())
+                    .setSurroundingContainerType(getContainerType())
+                    .setTypeOfContainerEntry("entry");
         }
-        return getValidator();
     }
 }

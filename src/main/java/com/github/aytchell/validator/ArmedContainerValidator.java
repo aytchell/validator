@@ -20,23 +20,26 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
     @Override
     public VALIDATOR isEmpty() throws ValidationException {
         if (value.isEmpty()) {
-            throw new ValidationException(String.format("%s '%s' must not be empty", containerType, name));
+            throw newExceptionWithNameAndType()
+                    .setExpectation("shall not be empty");
         }
         return getValidator();
     }
 
     public VALIDATOR isContained(TYPE key) throws ValidationException {
         if (value.contains(key)) {
-            throw new ValidationException(String.format("%s '%s' must not contain '%s'",
-                    containerType, name, key.toString()));
+            throw newExceptionWithNameAndType()
+                    .setExpectation("shall not contain")
+                    .setExpectedValue(key.toString());
         }
         return getValidator();
     }
 
     public VALIDATOR isMissing(TYPE key) throws ValidationException {
         if (!value.contains(key)) {
-            throw new ValidationException(String.format("%s '%s' must contain '%s'",
-                    containerType, name, key.toString()));
+            throw newExceptionWithNameAndType()
+                    .setExpectation("shall contain")
+                    .setExpectedValue(key.toString());
         }
         return getValidator();
     }
@@ -44,8 +47,9 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
     public VALIDATOR containsLessThan(int minNumberOfElements)
             throws ValidationException {
         if (value.size() < minNumberOfElements) {
-            throw new ValidationException(String.format("%s '%s' (size: %d) must contain at least %d entries",
-                    containerType, name, value.size(), minNumberOfElements));
+            throw newExceptionWithNameAndType()
+                    .setExpectation("shall contain more elements than")
+                    .setExpectedValue(String.valueOf(minNumberOfElements));
         }
         return getValidator();
     }
@@ -53,10 +57,16 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
     public VALIDATOR containsMoreThan(int maxNumberOfElements)
             throws ValidationException {
         if (value.size() > maxNumberOfElements) {
-            throw new ValidationException(
-                    String.format("%s '%s' (size: %d) must not contain more than %d entries",
-                            containerType, name, value.size(), maxNumberOfElements));
+            throw newExceptionWithNameAndType()
+                    .setExpectation("shall not contain more elements than")
+                    .setExpectedValue(String.valueOf(maxNumberOfElements));
         }
         return getValidator();
+    }
+
+    private ValidationException newExceptionWithNameAndType() {
+        return new ValidationException()
+                .setValuesType(containerType)
+                .setActualValuesName(name);
     }
 }
