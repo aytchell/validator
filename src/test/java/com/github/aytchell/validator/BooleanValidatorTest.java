@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageContains;
+import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 
 public class BooleanValidatorTest {
     @Test
     void isNullGivenNullThrows() {
         final Boolean nullBoolean = null;
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullBoolean, "nullBoolean").notNull(),
                 List.of("nullBoolean", "is not null"));
     }
@@ -33,11 +33,11 @@ public class BooleanValidatorTest {
 
     @Test
     void testForWrongValueFails() {
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(true, "trueValue").notNull().isFalse(),
                 List.of("trueValue", "value: true", "is false"));
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(false, "falseValue").notNull().isTrue(),
                 List.of("falseValue", "value: false", "is true"));
     }

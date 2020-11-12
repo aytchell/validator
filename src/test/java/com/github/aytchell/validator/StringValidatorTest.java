@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageContains;
+import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StringValidatorTest {
@@ -13,7 +13,7 @@ public class StringValidatorTest {
     void isNullGivenNullThrows() {
         final String nullString = null;
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullString, "nullString").notNull(),
                 List.of("nullString", "is not null"));
     }
@@ -36,12 +36,12 @@ public class StringValidatorTest {
     void isEmptyGivenEmptyStringThrows() {
         final String emptyString = "";
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptyString, "emptyString").notNull().notEmpty(),
                 List.of("emptyString", "is not empty")
         );
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptyString, "emptyString").ifNotNull().notEmpty(),
                 List.of("emptyString", "is not empty")
         );
@@ -62,12 +62,12 @@ public class StringValidatorTest {
     void isBlankGivenBlankStringThrows() {
         final String blankString = "\t \n";
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankString, "blankString").notNull().notBlank(),
                 List.of("blankString", "is not blank")
         );
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankString, "blankString").ifNotNull().notBlank(),
                 List.of("blankString", "is not blank")
         );
@@ -94,12 +94,12 @@ public class StringValidatorTest {
 
         assertEquals(stringSize, String.valueOf(longString.length()));
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longString, "longString").notNull().lengthAtMost(10),
                 List.of("length of longString", stringSize, "is at most", "10")
         );
 
-        assertThrowsAndMessageContains(
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longString, "longString").ifNotNull().lengthAtMost(10),
                 List.of("length of longString", stringSize, "is at most", "10")
         );
