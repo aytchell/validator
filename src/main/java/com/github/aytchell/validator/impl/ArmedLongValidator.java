@@ -14,12 +14,34 @@ class ArmedLongValidator extends LongValidatorBase {
     private final String name;
 
     @Override
+    public LongValidator greaterThan(long lowerBound, String otherName) throws ValidationException {
+        if (value <= lowerBound) {
+            throw newExceptionWithNameAndValue()
+                    .setExpectation("is greater than")
+                    .setExpectedValuesName(otherName)
+                    .setExpectedValue(lowerBound);
+        }
+        return this;
+    }
+
+    @Override
     public LongValidator greaterEqThan(long lowerBound, String otherName) throws ValidationException {
         if (value < lowerBound) {
             throw newExceptionWithNameAndValue()
                     .setExpectation("is greater or equal than")
                     .setExpectedValuesName(otherName)
                     .setExpectedValue(lowerBound);
+        }
+        return this;
+    }
+
+    @Override
+    public LongValidator lessThan(long upperBound, String otherName) throws ValidationException {
+        if (value >= upperBound) {
+            throw newExceptionWithNameAndValue()
+                    .setExpectation("is smaller than")
+                    .setExpectedValuesName(otherName)
+                    .setExpectedValue(upperBound);
         }
         return this;
     }
