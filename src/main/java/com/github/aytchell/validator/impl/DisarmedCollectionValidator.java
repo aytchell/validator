@@ -9,12 +9,12 @@ abstract class DisarmedCollectionValidator<TYPE, VALIDATOR>
         implements CollectionValidator<TYPE, VALIDATOR> {
 
     @Override
-    public VALIDATOR anyNumericEntry(LongEntryValidator validator) {
+    public VALIDATOR eachNumericEntry(LongEntryValidator validator) {
         return getValidator();
     }
 
     @Override
-    public VALIDATOR anyStringEntry(StringEntryValidator validator) {
+    public VALIDATOR eachStringEntry(StringEntryValidator validator) {
         return getValidator();
     }
 }

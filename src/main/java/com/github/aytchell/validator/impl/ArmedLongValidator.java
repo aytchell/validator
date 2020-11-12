@@ -14,7 +14,7 @@ class ArmedLongValidator extends LongValidatorBase {
     private final String name;
 
     @Override
-    public LongValidator gtEqThan(long lowerBound) throws ValidationException {
+    public LongValidator greaterEqThan(long lowerBound) throws ValidationException {
         if (value < lowerBound) {
             throw newExceptionWithNameAndValue()
                     .setExpectation("greater or eqal than")
@@ -24,7 +24,7 @@ class ArmedLongValidator extends LongValidatorBase {
     }
 
     @Override
-    public LongValidator ltEqThan(long upperBound) throws ValidationException {
+    public LongValidator lessEqThan(long upperBound) throws ValidationException {
         if (value > upperBound) {
             throw newExceptionWithNameAndValue()
                     .setExpectation("smaller or equal than")

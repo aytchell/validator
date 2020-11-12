@@ -16,7 +16,7 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     @Override
-    public VALIDATOR anyNumericEntry(LongEntryValidator entryValidator) throws ValidationException {
+    public VALIDATOR eachNumericEntry(LongEntryValidator entryValidator) throws ValidationException {
         try {
             for (TYPE entry : getValue()) {
                 if (entry instanceof Integer) {
@@ -40,7 +40,7 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     @Override
-    public VALIDATOR anyStringEntry(StringEntryValidator entryValidator) throws ValidationException {
+    public VALIDATOR eachStringEntry(StringEntryValidator entryValidator) throws ValidationException {
         try {
             for (TYPE entry : getValue()) {
                 if (entry instanceof String) {

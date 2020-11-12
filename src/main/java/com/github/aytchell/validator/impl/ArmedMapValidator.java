@@ -26,7 +26,7 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
     }
 
     @Override
-    public MapValidator<K, V> anyNumericValue(LongEntryValidator entryValidator) throws ValidationException {
+    public MapValidator<K, V> eachNumericValue(LongEntryValidator entryValidator) throws ValidationException {
         try {
             for (V value : theMap.values()) {
                 if (value == null) {
@@ -54,7 +54,7 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
     }
 
     @Override
-    public MapValidator<K, V> anyStringValue(StringEntryValidator entryValidator) throws ValidationException {
+    public MapValidator<K, V> eachStringValue(StringEntryValidator entryValidator) throws ValidationException {
         try {
             for (V value : theMap.values()) {
                 if (value == null) {

@@ -9,7 +9,7 @@ public interface ContainerValidator<TYPE, VALIDATOR> {
 
     VALIDATOR sizeAtMost(int maxNumberOfElements) throws ValidationException;
 
-    VALIDATOR misses(TYPE key) throws ValidationException;
+    VALIDATOR containsNot(TYPE key) throws ValidationException;
 
     VALIDATOR contains(TYPE key) throws ValidationException;
 }

@@ -25,7 +25,7 @@ abstract class DisarmedContainerValidator<TYPE, VALIDATOR> implements ContainerV
     }
 
     @Override
-    public VALIDATOR misses(TYPE key) {
+    public VALIDATOR containsNot(TYPE key) {
         return getValidator();
     }
 

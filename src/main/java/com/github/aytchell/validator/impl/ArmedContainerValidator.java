@@ -26,10 +26,10 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
         return getValidator();
     }
 
-    public VALIDATOR misses(TYPE key) throws ValidationException {
+    public VALIDATOR containsNot(TYPE key) throws ValidationException {
         if (value.contains(key)) {
             throw newExceptionWithNameAndType()
-                    .setExpectation("misses")
+                    .setExpectation("contains not")
                     .setExpectedValue(key.toString());
         }
         return getValidator();

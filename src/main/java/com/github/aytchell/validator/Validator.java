@@ -15,7 +15,7 @@ public class Validator {
         if (value == null) {
             throw new ValidationException()
                     .setActualValuesName(valueName)
-                    .setExpectation("shall not be null");
+                    .setExpectation("not null");
         }
     }
 

@@ -16,12 +16,12 @@ class DisarmedMapValidator<K, V> extends DisarmedContainerValidator<K, MapValida
     }
 
     @Override
-    public MapValidator<K, V> anyNumericValue(LongEntryValidator validator) throws ValidationException {
+    public MapValidator<K, V> eachNumericValue(LongEntryValidator validator) throws ValidationException {
         return this;
     }
 
     @Override
-    public MapValidator<K, V> anyStringValue(StringEntryValidator validator) throws ValidationException {
+    public MapValidator<K, V> eachStringValue(StringEntryValidator validator) throws ValidationException {
         return this;
     }
 }
