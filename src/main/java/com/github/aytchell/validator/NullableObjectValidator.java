@@ -11,12 +11,16 @@ public abstract class NullableObjectValidator<VALUE, VALIDATOR> {
     private final String name;
     private final VALIDATOR disarmedValidator;
 
-    public VALIDATOR isNull() throws ValidationException {
-        Validator.throwIfNull(value, name);
+    public VALIDATOR notNull() throws ValidationException {
+        if (value == null) {
+            throw new ValidationException()
+                    .setActualValuesName(name)
+                    .setExpectation("not null");
+        }
         return createValidator(value, name);
     }
 
-    public VALIDATOR isNotNullAnd() {
+    public VALIDATOR ifNotNull() {
         if (value != null) {
             return createValidator(value, name);
         } else {

@@ -13,7 +13,7 @@ public class LongValidatorTest {
         final Long nullLong = null;
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(nullLong, "nullLong").isNull(),
+                () -> Validator.expect(nullLong, "nullLong").notNull(),
                 List.of("nullLong", "is missing"));
     }
 
@@ -24,17 +24,17 @@ public class LongValidatorTest {
         final Long validLong = 42L;
         final Long nullLong = null;
 
-        Validator.expect(validLong, "validLong").isNull().isSmallerThan(2);
-        Validator.expect(validLong, "validLong").isNull().isSmallerThan(4L);
-        Validator.expect(validShort, "validShort").isNull().isSmallerThan(2);
-        Validator.expect(validShort, "validShort").isNull().isSmallerThan(4L);
-        Validator.expect(validInteger, "validInteger").isNull().isSmallerThan(2);
-        Validator.expect(validInteger, "validInteger").isNull().isSmallerThan(4L);
+        Validator.expect(validLong, "validLong").notNull().isSmallerThan(2);
+        Validator.expect(validLong, "validLong").notNull().isSmallerThan(4L);
+        Validator.expect(validShort, "validShort").notNull().isSmallerThan(2);
+        Validator.expect(validShort, "validShort").notNull().isSmallerThan(4L);
+        Validator.expect(validInteger, "validInteger").notNull().isSmallerThan(2);
+        Validator.expect(validInteger, "validInteger").notNull().isSmallerThan(4L);
 
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isSmallerThan(2);
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isSmallerThan(4L);
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isSmallerThan(1024);
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isSmallerThan(2048L);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isSmallerThan(2);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isSmallerThan(4L);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isSmallerThan(1024);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isSmallerThan(2048L);
     }
 
     @Test
@@ -42,24 +42,24 @@ public class LongValidatorTest {
         final Long validLong = 42L;
         final Integer validInteger = 112;
 
-        // Test <Long> against <int>  with mode 'isNull()'
+        // Test <Long> against <int>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNull().isSmallerThan(1024),
+                () -> Validator.expect(validLong, "validLong").notNull().isSmallerThan(1024),
                 List.of("validLong", "is too small", "42", "1024"));
 
-        // Test <Long> against <long>  with mode 'isNull()'
+        // Test <Long> against <long>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNull().isSmallerThan(2048L),
+                () -> Validator.expect(validLong, "validLong").notNull().isSmallerThan(2048L),
                 List.of("validLong", "is too small", "42", "2048"));
 
-        // Test <Integer> against <int>  with mode 'isNull()'
+        // Test <Integer> against <int>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNull().isSmallerThan(1024),
+                () -> Validator.expect(validInteger, "validInteger").notNull().isSmallerThan(1024),
                 List.of("validInteger", "is too small", "112", "1024"));
 
-        // Test <Integer> against <long>  with mode 'isNull()'
+        // Test <Integer> against <long>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNull().isSmallerThan(2048L),
+                () -> Validator.expect(validInteger, "validInteger").notNull().isSmallerThan(2048L),
                 List.of("validInteger", "is too small", "112", "2048"));
     }
 
@@ -68,24 +68,24 @@ public class LongValidatorTest {
         final Long validLong = 42L;
         final Integer validInteger = 112;
 
-        // Test <Long> against <int>  with mode 'isNotNullAnd()'
+        // Test <Long> against <int>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNotNullAnd().isSmallerThan(1024),
+                () -> Validator.expect(validLong, "validLong").ifNotNull().isSmallerThan(1024),
                 List.of("validLong", "is too small", "42", "1024"));
 
-        // Test <Long> against <long>  with mode 'isNotNullAnd()'
+        // Test <Long> against <long>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNotNullAnd().isSmallerThan(2048L),
+                () -> Validator.expect(validLong, "validLong").ifNotNull().isSmallerThan(2048L),
                 List.of("validLong", "is too small", "42", "2048"));
 
-        // Test <Integer> against <int>  with mode 'isNotNullAnd()'
+        // Test <Integer> against <int>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNotNullAnd().isSmallerThan(1024),
+                () -> Validator.expect(validInteger, "validInteger").ifNotNull().isSmallerThan(1024),
                 List.of("validInteger", "is too small", "112", "1024"));
 
-        // Test <Integer> against <long>  with mode 'isNotNullAnd()'
+        // Test <Integer> against <long>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNotNullAnd().isSmallerThan(2048L),
+                () -> Validator.expect(validInteger, "validInteger").ifNotNull().isSmallerThan(2048L),
                 List.of("validInteger", "is too small", "112", "2048"));
     }
 
@@ -95,15 +95,15 @@ public class LongValidatorTest {
         final Integer validInteger = 110;
         final Long nullLong = null;
 
-        Validator.expect(validLong, "validLong").isNull().isGreaterThan(1024);
-        Validator.expect(validLong, "validLong").isNull().isGreaterThan(4096L);
-        Validator.expect(validInteger, "validInteger").isNull().isGreaterThan(1024);
-        Validator.expect(validInteger, "validInteger").isNull().isGreaterThan(4096L);
+        Validator.expect(validLong, "validLong").notNull().isGreaterThan(1024);
+        Validator.expect(validLong, "validLong").notNull().isGreaterThan(4096L);
+        Validator.expect(validInteger, "validInteger").notNull().isGreaterThan(1024);
+        Validator.expect(validInteger, "validInteger").notNull().isGreaterThan(4096L);
 
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isGreaterThan(2);
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isGreaterThan(4L);
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isGreaterThan(1024);
-        Validator.expect(nullLong, "nullLong").isNotNullAnd().isGreaterThan(2048L);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isGreaterThan(2);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isGreaterThan(4L);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isGreaterThan(1024);
+        Validator.expect(nullLong, "nullLong").ifNotNull().isGreaterThan(2048L);
     }
 
     @Test
@@ -111,24 +111,24 @@ public class LongValidatorTest {
         final Long validLong = 42L;
         final Integer validInteger = 1729;
 
-        // Test <Long> against <int>  with mode 'isNull()'
+        // Test <Long> against <int>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNull().isGreaterThan(3),
+                () -> Validator.expect(validLong, "validLong").notNull().isGreaterThan(3),
                 List.of("validLong", "is too big", "42", "3"));
 
-        // Test <Long> against <long>  with mode 'isNull()'
+        // Test <Long> against <long>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNull().isGreaterThan(5L),
+                () -> Validator.expect(validLong, "validLong").notNull().isGreaterThan(5L),
                 List.of("validLong", "is too big", "42", "5"));
 
-        // Test <Integer> against <int>  with mode 'isNull()'
+        // Test <Integer> against <int>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNull().isGreaterThan(3),
+                () -> Validator.expect(validInteger, "validInteger").notNull().isGreaterThan(3),
                 List.of("validInteger", "is too big", "1729", "3"));
 
-        // Test <Integer> against <long>  with mode 'isNull()'
+        // Test <Integer> against <long>  with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNull().isGreaterThan(5L),
+                () -> Validator.expect(validInteger, "validInteger").notNull().isGreaterThan(5L),
                 List.of("validInteger", "is too big", "1729", "5"));
     }
 
@@ -137,24 +137,24 @@ public class LongValidatorTest {
         final Long validLong = 42L;
         final Integer validInteger = 1729;
 
-        // Test <Long> against <int>  with mode 'isNotNullAnd()'
+        // Test <Long> against <int>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNotNullAnd().isGreaterThan(3),
+                () -> Validator.expect(validLong, "validLong").ifNotNull().isGreaterThan(3),
                 List.of("validLong", "is too big", "42", "3"));
 
-        // Test <Long> against <long>  with mode 'isNotNullAnd()'
+        // Test <Long> against <long>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validLong, "validLong").isNotNullAnd().isGreaterThan(5L),
+                () -> Validator.expect(validLong, "validLong").ifNotNull().isGreaterThan(5L),
                 List.of("validLong", "is too big", "42", "5"));
 
-        // Test <Integer> against <int>  with mode 'isNotNullAnd()'
+        // Test <Integer> against <int>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNotNullAnd().isGreaterThan(3),
+                () -> Validator.expect(validInteger, "validInteger").ifNotNull().isGreaterThan(3),
                 List.of("validInteger", "is too big", "1729", "3"));
 
-        // Test <Integer> against <long>  with mode 'isNotNullAnd()'
+        // Test <Integer> against <long>  with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(validInteger, "validInteger").isNotNullAnd().isGreaterThan(5L),
+                () -> Validator.expect(validInteger, "validInteger").ifNotNull().isGreaterThan(5L),
                 List.of("validInteger", "is too big", "1729", "5"));
     }
 
@@ -163,11 +163,11 @@ public class LongValidatorTest {
         final Long validLongPort = 19377L;
         final Integer validIntegerPort = 4711;
 
-        Validator.expect(validLongPort, "validLongPort").isNull().isNoValidPortNumber();
-        Validator.expect(validIntegerPort, "validIntegerPort").isNull().isNoValidPortNumber();
+        Validator.expect(validLongPort, "validLongPort").notNull().isNoValidPortNumber();
+        Validator.expect(validIntegerPort, "validIntegerPort").notNull().isNoValidPortNumber();
 
-        Validator.expect(validLongPort, "validLongPort").isNotNullAnd().isNoValidPortNumber();
-        Validator.expect(validIntegerPort, "validIntegerPort").isNotNullAnd().isNoValidPortNumber();
+        Validator.expect(validLongPort, "validLongPort").ifNotNull().isNoValidPortNumber();
+        Validator.expect(validIntegerPort, "validIntegerPort").ifNotNull().isNoValidPortNumber();
     }
 
     @Test
@@ -175,24 +175,24 @@ public class LongValidatorTest {
         final Long invalidLongPort = 0L;
         final Integer invalidIntegerPort = -5;
 
-        // Test <Long> with mode 'isNull()'
+        // Test <Long> with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidLongPort, "invalidLongPort").isNull().isNoValidPortNumber(),
+                () -> Validator.expect(invalidLongPort, "invalidLongPort").notNull().isNoValidPortNumber(),
                 List.of("invalidLongPort", "0", "no valid port number"));
 
-        // Test <Integer> with mode 'isNull()'
+        // Test <Integer> with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").isNull().isNoValidPortNumber(),
+                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").notNull().isNoValidPortNumber(),
                 List.of("invalidIntegerPort", "-5", "no valid port number"));
 
-        // Test <Long> with mode 'isNotNullAnd()'
+        // Test <Long> with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidLongPort, "invalidLongPort").isNotNullAnd().isNoValidPortNumber(),
+                () -> Validator.expect(invalidLongPort, "invalidLongPort").ifNotNull().isNoValidPortNumber(),
                 List.of("invalidLongPort", "0", "no valid port number"));
 
-        // Test <Integer> with mode 'isNotNullAnd()'
+        // Test <Integer> with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").isNotNullAnd().isNoValidPortNumber(),
+                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").ifNotNull().isNoValidPortNumber(),
                 List.of("invalidIntegerPort", "-5", "no valid port number"));
     }
 
@@ -201,24 +201,24 @@ public class LongValidatorTest {
         final Long invalidLongPort = 128247L;
         final Integer invalidIntegerPort = 65536;
 
-        // Test <Long> with mode 'isNull()'
+        // Test <Long> with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidLongPort, "invalidLongPort").isNull().isNoValidPortNumber(),
+                () -> Validator.expect(invalidLongPort, "invalidLongPort").notNull().isNoValidPortNumber(),
                 List.of("invalidLongPort", "128247", "no valid port number"));
 
-        // Test <Integer> with mode 'isNull()'
+        // Test <Integer> with mode 'notNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").isNull().isNoValidPortNumber(),
+                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").notNull().isNoValidPortNumber(),
                 List.of("invalidIntegerPort", "65536", "no valid port number"));
 
-        // Test <Long> with mode 'isNotNullAnd()'
+        // Test <Long> with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidLongPort, "invalidLongPort").isNotNullAnd().isNoValidPortNumber(),
+                () -> Validator.expect(invalidLongPort, "invalidLongPort").ifNotNull().isNoValidPortNumber(),
                 List.of("invalidLongPort", "128247", "no valid port number"));
 
-        // Test <Integer> with mode 'isNotNullAnd()'
+        // Test <Integer> with mode 'ifNotNull()'
         assertThrowsAndMessageContains(
-                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").isNotNullAnd().isNoValidPortNumber(),
+                () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").ifNotNull().isNoValidPortNumber(),
                 List.of("invalidIntegerPort", "65536", "no valid port number"));
     }
 }
