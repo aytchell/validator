@@ -61,12 +61,12 @@ public class Validator {
         };
     }
 
-    public static NullableObjectValidator<Map<String, String>, NameValueMapValidator> throwIfNameValueMap(
-            Map<String, String> value, String name) {
-        return new NullableObjectValidator<>(value, name, DisarmedNameValueMapValidator.getINSTANCE()) {
+    public static <K, V> NullableObjectValidator<Map<K, V>, MapValidator<K, V>> throwIfNameValueMap(
+            Map<K, V> value, String name) {
+        return new NullableObjectValidator<>(value, name, new DisarmedMapValidator<K, V>()) {
             @Override
-            protected NameValueMapValidator createValidator(Map<String, String> stringStringMap, String name) {
-                return new ArmedNameValueMapValidator(value, name);
+            protected MapValidator<K, V> createValidator(Map<K, V> stringStringMap, String name) {
+                return new ArmedMapValidator<>(value, name);
             }
         };
     }
