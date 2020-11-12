@@ -162,7 +162,7 @@ public class ListValidatorTest {
 
         Validator.expect(stringList, "stringList").notNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.notNull().isEmpty().isLongerThan(0));
+                v -> v.notNull().notEmpty().lengthAtMost(0));
     }
 
     @Test
@@ -197,9 +197,9 @@ public class ListValidatorTest {
         final List<String> filledList = List.of("hello", "world");
 
         Validator.expect(filledList, "filledList").notNull().anyStringEntry(
-                v -> v.notNull().isBlank());
+                v -> v.notNull().notBlank());
         Validator.expect(filledList, "filledList").ifNotNull().anyStringEntry(
-                v -> v.notNull().isLongerThan(20));
+                v -> v.notNull().lengthAtMost(20));
     }
 
     @Test
@@ -208,13 +208,13 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankList, "blankList").notNull().anyStringEntry(
-                        v -> v.notNull().isBlank()),
+                        v -> v.notNull().notBlank()),
                 List.of("List", "inside", "blankList", "must not be blank")
         );
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankList, "blankList").ifNotNull().anyStringEntry(
-                        v -> v.notNull().isBlank()),
+                        v -> v.notNull().notBlank()),
                 List.of("List", "inside", "blankList", "must not be blank")
         );
     }

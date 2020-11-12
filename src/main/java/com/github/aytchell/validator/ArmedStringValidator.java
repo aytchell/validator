@@ -11,30 +11,30 @@ class ArmedStringValidator implements StringValidator {
     private final String name;
 
     @Override
-    public StringValidator isEmpty() throws ValidationException {
+    public StringValidator notEmpty() throws ValidationException {
         if (this.value.isEmpty()) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("shall not be empty");
+                    .setExpectation("not empty");
         }
         return this;
     }
 
     @Override
-    public StringValidator isBlank() throws ValidationException {
+    public StringValidator notBlank() throws ValidationException {
         if (this.value.isBlank()) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("shall not be blank");
+                    .setExpectation("not blank");
         }
         return this;
     }
 
     @Override
-    public StringValidator isLongerThan(int maxLength) throws ValidationException {
+    public StringValidator lengthAtMost(int maxLength) throws ValidationException {
         if (value.length() > maxLength) {
             throw new ValidationException()
                     .setActualValuesName("length of " + name)
                     .setActualValue(String.valueOf(value.length()))
-                    .setExpectation("shall not be longer than")
+                    .setExpectation("at most")
                     .setExpectedValue(String.valueOf(maxLength));
         }
         return this;

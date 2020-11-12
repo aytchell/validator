@@ -11,17 +11,17 @@ class DisarmedStringValidator implements StringValidator {
     private static final StringValidator INSTANCE = new DisarmedStringValidator();
 
     @Override
-    public StringValidator isEmpty() {
+    public StringValidator notEmpty() {
         return this;
     }
 
     @Override
-    public StringValidator isBlank() {
+    public StringValidator notBlank() {
         return this;
     }
 
     @Override
-    public StringValidator isLongerThan(int maxLength) {
+    public StringValidator lengthAtMost(int maxLength) {
         return this;
     }
 }

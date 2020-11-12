@@ -175,7 +175,7 @@ public class MapValidatorTest {
 
         Validator.expect(stringMap, "stringMap").notNull().anyStringValue(
                 // this should fail with anything but a non-null empty list
-                v -> v.notNull().isEmpty().isLongerThan(0));
+                v -> v.notNull().notEmpty().lengthAtMost(0));
     }
 
     @Test
@@ -211,9 +211,9 @@ public class MapValidatorTest {
         final Map<Integer, String> filledMap = Map.of(1, "hello", 2, "world");
 
         Validator.expect(filledMap, "filledMap").notNull().anyStringValue(
-                v -> v.notNull().isBlank());
+                v -> v.notNull().notBlank());
         Validator.expect(filledMap, "filledMap").ifNotNull().anyStringValue(
-                v -> v.notNull().isLongerThan(20));
+                v -> v.notNull().lengthAtMost(20));
     }
 
     @Test
@@ -222,13 +222,13 @@ public class MapValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankMap, "blankMap").notNull().anyStringValue(
-                        v -> v.notNull().isBlank()),
+                        v -> v.notNull().notBlank()),
                 List.of("Map", "inside", "blankMap", "must not be blank")
         );
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankMap, "blankMap").ifNotNull().anyStringValue(
-                        v -> v.notNull().isBlank()),
+                        v -> v.notNull().notBlank()),
                 List.of("Map", "inside", "blankMap", "must not be blank")
         );
     }
@@ -242,7 +242,7 @@ public class MapValidatorTest {
         assertNull(stringMap.get(3));
 
         Validator.expect(stringMap, "stringMap").notNull().anyStringValue(
-                v -> v.ifNotNull().isBlank());
+                v -> v.ifNotNull().notBlank());
     }
 
     @Test
