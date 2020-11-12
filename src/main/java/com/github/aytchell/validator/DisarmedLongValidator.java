@@ -11,17 +11,17 @@ class DisarmedLongValidator extends LongValidatorBase {
     public static final LongValidator INSTANCE = new DisarmedLongValidator();
 
     @Override
-    public LongValidator isSmallerThan(long lowerBound) {
+    public LongValidator gtEqThan(long lowerBound) {
         return this;
     }
 
     @Override
-    public LongValidator isGreaterThan(long upperBound) {
+    public LongValidator ltEqThan(long upperBound) {
         return this;
     }
 
     @Override
-    public LongValidator isNoValidPortNumber() {
+    public LongValidator validPortNumber() {
         return this;
     }
 }

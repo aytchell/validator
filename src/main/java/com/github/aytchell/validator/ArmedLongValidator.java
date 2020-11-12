@@ -14,31 +14,31 @@ class ArmedLongValidator extends LongValidatorBase {
     private final String name;
 
     @Override
-    public LongValidator isSmallerThan(long lowerBound) throws ValidationException {
+    public LongValidator gtEqThan(long lowerBound) throws ValidationException {
         if (value < lowerBound) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("shall not be smaller than")
+                    .setExpectation("greater or eqal than")
                     .setExpectedValue(String.valueOf(lowerBound));
         }
         return this;
     }
 
     @Override
-    public LongValidator isGreaterThan(long upperBound) throws ValidationException {
+    public LongValidator ltEqThan(long upperBound) throws ValidationException {
         if (value > upperBound) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("shall not be greater than")
+                    .setExpectation("smaller or equal than")
                     .setExpectedValue(String.valueOf(upperBound));
         }
         return this;
     }
 
     @Override
-    public LongValidator isNoValidPortNumber() throws ValidationException {
+    public LongValidator validPortNumber() throws ValidationException {
         if ((value < MIN_TCP_PORT_NUMBER) || (value > MAX_TCP_PORT_NUMBER)) {
             throw newExceptionWithNameAndValue()
                     .setExpectation(
-                            String.format("shall be a valid port number (%d to %d)",
+                            String.format("a valid port number (%d to %d)",
                                     MIN_TCP_PORT_NUMBER, MAX_TCP_PORT_NUMBER));
         }
         return this;

@@ -154,11 +154,11 @@ public class ListValidatorTest {
 
         Validator.expect(integerList, "integerList").notNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.notNull().isSmallerThan(5).isGreaterThan(3));
+                v -> v.notNull().gtEqThan(5).ltEqThan(3));
 
         Validator.expect(longList, "longList").notNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.notNull().isSmallerThan(5).isGreaterThan(3));
+                v -> v.notNull().gtEqThan(5).ltEqThan(3));
 
         Validator.expect(stringList, "stringList").notNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
@@ -171,9 +171,9 @@ public class ListValidatorTest {
         final List<Long> longList = List.of(68L, 69L, 70L, 80L);
         final List<Long> nullList = null;
 
-        Validator.expect(integerList, "integerList").notNull().anyNumericEntry(v -> v.notNull().isSmallerThan(5));
-        Validator.expect(longList, "longList").ifNotNull().anyNumericEntry(v -> v.notNull().isSmallerThan(5));
-        Validator.expect(nullList, "nullList").ifNotNull().anyNumericEntry(v -> v.notNull().isSmallerThan(5));
+        Validator.expect(integerList, "integerList").notNull().anyNumericEntry(v -> v.notNull().gtEqThan(5));
+        Validator.expect(longList, "longList").ifNotNull().anyNumericEntry(v -> v.notNull().gtEqThan(5));
+        Validator.expect(nullList, "nullList").ifNotNull().anyNumericEntry(v -> v.notNull().gtEqThan(5));
     }
 
     @Test
@@ -183,12 +183,12 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(integerList, "integerList").notNull()
-                        .anyNumericEntry(v -> v.notNull().isSmallerThan(24)),
+                        .anyNumericEntry(v -> v.notNull().gtEqThan(24)),
                 List.of("List", "inside", "integerList", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(longList, "longList").ifNotNull()
-                        .anyNumericEntry(v -> v.notNull().isSmallerThan(12)),
+                        .anyNumericEntry(v -> v.notNull().gtEqThan(12)),
                 List.of("List", "inside", "longList", "is too small", "11", "12"));
     }
 

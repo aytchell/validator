@@ -155,11 +155,11 @@ public class SetValidatorTest {
 
         Validator.expect(integerSet, "integerSet").notNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.notNull().isSmallerThan(5).isGreaterThan(3));
+                v -> v.notNull().gtEqThan(5).ltEqThan(3));
 
         Validator.expect(longSet, "longSet").notNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
-                v -> v.notNull().isSmallerThan(5).isGreaterThan(3));
+                v -> v.notNull().gtEqThan(5).ltEqThan(3));
 
         Validator.expect(stringSet, "stringSet").notNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
@@ -172,9 +172,9 @@ public class SetValidatorTest {
         final Set<Long> longSet = Set.of(68L, 69L, 70L, 80L);
         final Set<Long> nullSet = null;
 
-        Validator.expect(integerSet, "integerSet").notNull().anyNumericEntry(v -> v.notNull().isSmallerThan(5));
-        Validator.expect(longSet, "longSet").ifNotNull().anyNumericEntry(v -> v.notNull().isSmallerThan(5));
-        Validator.expect(nullSet, "nullSet").ifNotNull().anyNumericEntry(v -> v.notNull().isSmallerThan(5));
+        Validator.expect(integerSet, "integerSet").notNull().anyNumericEntry(v -> v.notNull().gtEqThan(5));
+        Validator.expect(longSet, "longSet").ifNotNull().anyNumericEntry(v -> v.notNull().gtEqThan(5));
+        Validator.expect(nullSet, "nullSet").ifNotNull().anyNumericEntry(v -> v.notNull().gtEqThan(5));
     }
 
     @Test
@@ -184,12 +184,12 @@ public class SetValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(integerSet, "integerSet").notNull()
-                        .anyNumericEntry(v -> v.notNull().isSmallerThan(24)),
+                        .anyNumericEntry(v -> v.notNull().gtEqThan(24)),
                 List.of("Set", "inside", "integerSet", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(longSet, "longSet").ifNotNull()
-                        .anyNumericEntry(v -> v.notNull().isSmallerThan(12)),
+                        .anyNumericEntry(v -> v.notNull().gtEqThan(12)),
                 List.of("Set", "inside", "longSet", "is too small", "11", "12"));
     }
 
