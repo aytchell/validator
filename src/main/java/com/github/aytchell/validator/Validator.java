@@ -61,7 +61,7 @@ public class Validator {
         };
     }
 
-    public static <K, V> NullableObjectValidator<Map<K, V>, MapValidator<K, V>> throwIfNameValueMap(
+    public static <K, V> NullableObjectValidator<Map<K, V>, MapValidator<K, V>> throwIf(
             Map<K, V> value, String name) {
         return new NullableObjectValidator<>(value, name, new DisarmedMapValidator<K, V>()) {
             @Override
