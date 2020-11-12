@@ -19,6 +19,14 @@ public class Validator {
         }
     }
 
+    public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value) {
+        return ValidatorImpl.expect(value, null);
+    }
+
+    public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value, String name) {
+        return ValidatorImpl.expect(value, name);
+    }
+
     public static NullableObjectValidator<Short, LongValidator> expect(Short value) {
         return ValidatorImpl.expect(value, null);
     }

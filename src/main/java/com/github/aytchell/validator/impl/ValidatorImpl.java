@@ -1,5 +1,6 @@
 package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.BooleanValidator;
 import com.github.aytchell.validator.ListValidator;
 import com.github.aytchell.validator.LongValidator;
 import com.github.aytchell.validator.MapValidator;
@@ -15,6 +16,15 @@ import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class ValidatorImpl {
+    public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value, String name) {
+        return new NullableObjectValidatorImpl<>(value, name, DisarmedBooleanValidator.getINSTANCE()) {
+            @Override
+            protected BooleanValidator createValidator(Boolean value, String name) {
+                return new ArmedBooleanValidator(value, name);
+            }
+        };
+    }
+
     public static NullableObjectValidator<Short, LongValidator> expect(Short value, String name) {
         return new NullableObjectValidatorImpl<>(value, name, DisarmedLongValidator.getINSTANCE()) {
             @Override
