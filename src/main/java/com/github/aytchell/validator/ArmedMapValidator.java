@@ -28,13 +28,13 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
             for (V value : theMap.values()) {
                 if (value == null) {
                     final Long nullLong = null;
-                    entryValidator.apply(Validator.throwIf(nullLong));
+                    entryValidator.apply(Validator.expect(nullLong));
                 } else if (value instanceof Short) {
-                    entryValidator.apply(Validator.throwIf(Long.valueOf((Short) value)));
+                    entryValidator.apply(Validator.expect(Long.valueOf((Short) value)));
                 } else if (value instanceof Integer) {
-                    entryValidator.apply(Validator.throwIf(Long.valueOf((Integer) value)));
+                    entryValidator.apply(Validator.expect(Long.valueOf((Integer) value)));
                 } else if (value instanceof Long) {
-                    entryValidator.apply(Validator.throwIf((Long) value));
+                    entryValidator.apply(Validator.expect((Long) value));
                 } else {
                     throw new ClassCastException(String.format(
                             "Tried to validate entries in Map '%s' as numeric values (but are '%s')",
@@ -56,9 +56,9 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
             for (V value : theMap.values()) {
                 if (value == null) {
                     final String nullString = null;
-                    entryValidator.apply(Validator.throwIf(nullString));
+                    entryValidator.apply(Validator.expect(nullString));
                 } else if (value instanceof String) {
-                    entryValidator.apply(Validator.throwIf((String) value));
+                    entryValidator.apply(Validator.expect((String) value));
                 } else {
                     throw new ClassCastException(
                             String.format("Tried to validate values in Map '%s' as Strings (but are '%s')",

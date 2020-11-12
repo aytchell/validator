@@ -17,7 +17,7 @@ public class MapValidatorTest {
         final Map<Integer, String> nullMap = null;
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(nullMap, "nullMap").isNull(),
+                () -> Validator.expect(nullMap, "nullMap").isNull(),
                 List.of("nullMap", "is missing"));
     }
 
@@ -26,10 +26,10 @@ public class MapValidatorTest {
         final Map<Integer, String> filledMap = Map.of(1, "one", 2, "two", 3, "three");
         final Map<String, Integer> nullMap = null;
 
-        Validator.throwIf(filledMap, "filledMap").isNull().isEmpty();
+        Validator.expect(filledMap, "filledMap").isNull().isEmpty();
 
-        Validator.throwIf(filledMap, "filledMap").isNotNullAnd().isEmpty();
-        Validator.throwIf(nullMap, "nullMap").isNotNullAnd().isEmpty();
+        Validator.expect(filledMap, "filledMap").isNotNullAnd().isEmpty();
+        Validator.expect(nullMap, "nullMap").isNotNullAnd().isEmpty();
     }
 
     @Test
@@ -37,11 +37,11 @@ public class MapValidatorTest {
         final Map<Long, Integer> emptyMap = Map.of();
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(emptyMap, "emptyMap").isNull().isEmpty(),
+                () -> Validator.expect(emptyMap, "emptyMap").isNull().isEmpty(),
                 List.of("Map", "emptyMap", "must not be empty"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(emptyMap, "emptyMap").isNotNullAnd().isEmpty(),
+                () -> Validator.expect(emptyMap, "emptyMap").isNotNullAnd().isEmpty(),
                 List.of("Map", "emptyMap", "must not be empty"));
     }
 
@@ -50,10 +50,10 @@ public class MapValidatorTest {
         final Map<Integer, Integer> bigMap = Map.of(1, 1, 2, 2, 3, 3, 4, 4, 5, 5);
         final Map<Integer, Integer> nullMap = null;
 
-        Validator.throwIf(bigMap, "bigMap").isNull().containsLessThan(5);
+        Validator.expect(bigMap, "bigMap").isNull().containsLessThan(5);
 
-        Validator.throwIf(bigMap, "bigMap").isNotNullAnd().containsLessThan(5);
-        Validator.throwIf(nullMap, "nullMap").isNotNullAnd().containsLessThan(20);
+        Validator.expect(bigMap, "bigMap").isNotNullAnd().containsLessThan(5);
+        Validator.expect(nullMap, "nullMap").isNotNullAnd().containsLessThan(20);
     }
 
     @Test
@@ -65,11 +65,11 @@ public class MapValidatorTest {
         assertEquals(mapSize, String.valueOf(smallMap.size()));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(smallMap, "smallMap").isNull().containsLessThan(8),
+                () -> Validator.expect(smallMap, "smallMap").isNull().containsLessThan(8),
                 List.of("Map", "smallMap", "must contain at least", "8", mapSize));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(smallMap, "smallMap").isNotNullAnd().containsLessThan(8),
+                () -> Validator.expect(smallMap, "smallMap").isNotNullAnd().containsLessThan(8),
                 List.of("Map", "smallMap", "must contain at least", "8", mapSize));
     }
 
@@ -78,10 +78,10 @@ public class MapValidatorTest {
         final Map<Integer, Long> smallMap = Map.of(1, 1L, 2, 2L, 3, 3L, 4, 4L);
         final Map<Long, Long> nullMap = null;
 
-        Validator.throwIf(smallMap, "smallMap").isNull().containsMoreThan(4);
+        Validator.expect(smallMap, "smallMap").isNull().containsMoreThan(4);
 
-        Validator.throwIf(smallMap, "smallMap").isNotNullAnd().containsMoreThan(7);
-        Validator.throwIf(nullMap, "nullMap").isNotNullAnd().containsMoreThan(2);
+        Validator.expect(smallMap, "smallMap").isNotNullAnd().containsMoreThan(7);
+        Validator.expect(nullMap, "nullMap").isNotNullAnd().containsMoreThan(2);
     }
 
     @Test
@@ -93,11 +93,11 @@ public class MapValidatorTest {
         assertEquals(setSize, String.valueOf(bigMap.size()));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(bigMap, "bigMap").isNull().containsMoreThan(7),
+                () -> Validator.expect(bigMap, "bigMap").isNull().containsMoreThan(7),
                 List.of("Map", "bigMap", "must not contain more than", "7", setSize));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(bigMap, "bigMap").isNotNullAnd().containsMoreThan(2),
+                () -> Validator.expect(bigMap, "bigMap").isNotNullAnd().containsMoreThan(2),
                 List.of("Map", "bigMap", "must not contain more than", "2", setSize));
     }
 
@@ -109,9 +109,9 @@ public class MapValidatorTest {
                 "five", 4, "eight", 5, "and so on", 6);
         final Map<Integer, Integer> nullMap = null;
 
-        Validator.throwIf(longMap, "longMap").isNull().isContained(6L);
-        Validator.throwIf(stringMap, "stringMap").isNull().isContained("six");
-        Validator.throwIf(nullMap, "nullMap").isNotNullAnd().isContained(2020);
+        Validator.expect(longMap, "longMap").isNull().isContained(6L);
+        Validator.expect(stringMap, "stringMap").isNull().isContained("six");
+        Validator.expect(nullMap, "nullMap").isNotNullAnd().isContained(2020);
     }
 
     @Test
@@ -122,11 +122,11 @@ public class MapValidatorTest {
                 "five", 4, "six", 5, "eight", 6, "and so on", 7);
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longMap, "longMap").isNotNullAnd().isContained(6L),
+                () -> Validator.expect(longMap, "longMap").isNotNullAnd().isContained(6L),
                 List.of("Map", "longMap", "must not contain", "6"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(stringMap, "stringMap").isNotNullAnd().isContained("six"),
+                () -> Validator.expect(stringMap, "stringMap").isNotNullAnd().isContained("six"),
                 List.of("Map", "stringMap", "must not contain", "six"));
     }
 
@@ -138,9 +138,9 @@ public class MapValidatorTest {
                 "five", 4, "eight", 5, "and so on", 6);
         final Map<Integer, Integer> nullMap = null;
 
-        Validator.throwIf(longMap, "longMap").isNull().isMissing(5L);
-        Validator.throwIf(stringMap, "stringMap").isNull().isMissing("five");
-        Validator.throwIf(nullMap, "nullMap").isNotNullAnd().isMissing(2020);
+        Validator.expect(longMap, "longMap").isNull().isMissing(5L);
+        Validator.expect(stringMap, "stringMap").isNull().isMissing("five");
+        Validator.expect(nullMap, "nullMap").isNotNullAnd().isMissing(2020);
     }
 
     @Test
@@ -151,11 +151,11 @@ public class MapValidatorTest {
                 "three", 3, "eight", 4, "and so on", 5);
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longMap, "longMap").isNotNullAnd().isMissing(5L),
+                () -> Validator.expect(longMap, "longMap").isNotNullAnd().isMissing(5L),
                 List.of("Map", "longMap", "must contain", "5"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(stringMap, "stringMap").isNotNullAnd().isMissing("five"),
+                () -> Validator.expect(stringMap, "stringMap").isNotNullAnd().isMissing("five"),
                 List.of("Map", "stringMap", "must contain", "five"));
     }
 
@@ -165,15 +165,15 @@ public class MapValidatorTest {
         final Map<Long, Integer> longMap = Map.of();
         final Map<String, Integer> stringMap = Map.of();
 
-        Validator.throwIf(integerMap, "integerMap").isNull().anyNumericValue(
+        Validator.expect(integerMap, "integerMap").isNull().anyNumericValue(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(longMap, "longMap").isNull().anyNumericValue(
+        Validator.expect(longMap, "longMap").isNull().anyNumericValue(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(stringMap, "stringMap").isNull().anyStringValue(
+        Validator.expect(stringMap, "stringMap").isNull().anyStringValue(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isEmpty().isLongerThan(0));
     }
@@ -185,9 +185,9 @@ public class MapValidatorTest {
         final Map<Integer, Long> longMap = Map.of(1, 68L, 2, 69L, 3, 70L, 4, 80L);
         final Map<Integer, Long> nullMap = null;
 
-        Validator.throwIf(integerMap, "integerMap").isNull().anyNumericValue(v -> v.isNull().isSmallerThan(5));
-        Validator.throwIf(longMap, "longMap").isNotNullAnd().anyNumericValue(v -> v.isNull().isSmallerThan(5));
-        Validator.throwIf(nullMap, "nullMap").isNotNullAnd().anyNumericValue(v -> v.isNull().isSmallerThan(5));
+        Validator.expect(integerMap, "integerMap").isNull().anyNumericValue(v -> v.isNull().isSmallerThan(5));
+        Validator.expect(longMap, "longMap").isNotNullAnd().anyNumericValue(v -> v.isNull().isSmallerThan(5));
+        Validator.expect(nullMap, "nullMap").isNotNullAnd().anyNumericValue(v -> v.isNull().isSmallerThan(5));
     }
 
     @Test
@@ -196,12 +196,12 @@ public class MapValidatorTest {
         final Map<Integer, Long> longMap = Map.of(1, 11L, 2, 12L, 3, 13L, 4, 14L);
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(integerMap, "integerMap").isNull()
+                () -> Validator.expect(integerMap, "integerMap").isNull()
                         .anyNumericValue(v -> v.isNull().isSmallerThan(24)),
                 List.of("Map", "inside", "integerMap", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longMap, "longMap").isNotNullAnd()
+                () -> Validator.expect(longMap, "longMap").isNotNullAnd()
                         .anyNumericValue(v -> v.isNull().isSmallerThan(12)),
                 List.of("Map", "inside", "longMap", "is too small", "11", "12"));
     }
@@ -210,9 +210,9 @@ public class MapValidatorTest {
     void isAnyValueBlankWithFilledStringsGivenPasses() throws ValidationException {
         final Map<Integer, String> filledMap = Map.of(1, "hello", 2, "world");
 
-        Validator.throwIf(filledMap, "filledMap").isNull().anyStringValue(
+        Validator.expect(filledMap, "filledMap").isNull().anyStringValue(
                 v -> v.isNull().isBlank());
-        Validator.throwIf(filledMap, "filledMap").isNotNullAnd().anyStringValue(
+        Validator.expect(filledMap, "filledMap").isNotNullAnd().anyStringValue(
                 v -> v.isNull().isLongerThan(20));
     }
 
@@ -221,13 +221,13 @@ public class MapValidatorTest {
         final Map<Integer, String> blankMap = Map.of(1, "\t\t\t", 2, "   \n", 3, "\t\n");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankMap, "blankMap").isNull().anyStringValue(
+                () -> Validator.expect(blankMap, "blankMap").isNull().anyStringValue(
                         v -> v.isNull().isBlank()),
                 List.of("Map", "inside", "blankMap", "must not be blank")
         );
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankMap, "blankMap").isNotNullAnd().anyStringValue(
+                () -> Validator.expect(blankMap, "blankMap").isNotNullAnd().anyStringValue(
                         v -> v.isNull().isBlank()),
                 List.of("Map", "inside", "blankMap", "must not be blank")
         );
@@ -241,7 +241,7 @@ public class MapValidatorTest {
         assertEquals(3, stringMap.size());
         assertNull(stringMap.get(3));
 
-        Validator.throwIf(stringMap, "stringMap").isNull().anyStringValue(
+        Validator.expect(stringMap, "stringMap").isNull().anyStringValue(
                 v -> v.isNotNullAnd().isBlank());
     }
 
@@ -254,7 +254,7 @@ public class MapValidatorTest {
         assertNull(longMap.get(3));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longMap, "longMap").isNull().anyNumericValue(
+                () -> Validator.expect(longMap, "longMap").isNull().anyNumericValue(
                         v -> v.isNull().isSmallerThan(500L)),
                 List.of("Map", "inside", "longMap", "is missing"));
     }

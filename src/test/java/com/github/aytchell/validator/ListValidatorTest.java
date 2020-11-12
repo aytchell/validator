@@ -14,7 +14,7 @@ public class ListValidatorTest {
         final List<String> nullList = null;
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(nullList, "nullList").isNull(),
+                () -> Validator.expect(nullList, "nullList").isNull(),
                 List.of("nullList", "is missing"));
     }
 
@@ -23,10 +23,10 @@ public class ListValidatorTest {
         final List<Integer> filledList = List.of(1, 2, 3, 2, 1);
         final List<String> nullList = null;
 
-        Validator.throwIf(filledList, "filledList").isNull().isEmpty();
+        Validator.expect(filledList, "filledList").isNull().isEmpty();
 
-        Validator.throwIf(filledList, "filledList").isNotNullAnd().isEmpty();
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().isEmpty();
+        Validator.expect(filledList, "filledList").isNotNullAnd().isEmpty();
+        Validator.expect(nullList, "nullList").isNotNullAnd().isEmpty();
     }
 
     @Test
@@ -34,11 +34,11 @@ public class ListValidatorTest {
         final List<Long> emptyList = List.of();
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(emptyList, "emptyList").isNull().isEmpty(),
+                () -> Validator.expect(emptyList, "emptyList").isNull().isEmpty(),
                 List.of("List", "emptyList", "must not be empty"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(emptyList, "emptyList").isNotNullAnd().isEmpty(),
+                () -> Validator.expect(emptyList, "emptyList").isNotNullAnd().isEmpty(),
                 List.of("List", "emptyList", "must not be empty"));
     }
 
@@ -47,10 +47,10 @@ public class ListValidatorTest {
         final List<Integer> bigList = List.of(1, 2, 3, 3, 3, 6, 7);
         final List<Integer> nullList = null;
 
-        Validator.throwIf(bigList, "bigList").isNull().containsLessThan(7);
+        Validator.expect(bigList, "bigList").isNull().containsLessThan(7);
 
-        Validator.throwIf(bigList, "bigList").isNotNullAnd().containsLessThan(7);
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().containsLessThan(20);
+        Validator.expect(bigList, "bigList").isNotNullAnd().containsLessThan(7);
+        Validator.expect(nullList, "nullList").isNotNullAnd().containsLessThan(20);
     }
 
     @Test
@@ -61,11 +61,11 @@ public class ListValidatorTest {
         assertEquals(setSize, String.valueOf(smallList.size()));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(smallList, "smallList").isNull().containsLessThan(20),
+                () -> Validator.expect(smallList, "smallList").isNull().containsLessThan(20),
                 List.of("List", "smallList", "must contain at least", "20", setSize));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(smallList, "smallList").isNotNullAnd().containsLessThan(20),
+                () -> Validator.expect(smallList, "smallList").isNotNullAnd().containsLessThan(20),
                 List.of("List", "smallList", "must contain at least", "20", setSize));
     }
 
@@ -74,10 +74,10 @@ public class ListValidatorTest {
         final List<Long> smallList = List.of(1L, 2L, 3L, 4L);
         final List<Long> nullList = null;
 
-        Validator.throwIf(smallList, "smallList").isNull().containsMoreThan(4);
+        Validator.expect(smallList, "smallList").isNull().containsMoreThan(4);
 
-        Validator.throwIf(smallList, "smallList").isNotNullAnd().containsMoreThan(7);
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().containsMoreThan(2);
+        Validator.expect(smallList, "smallList").isNotNullAnd().containsMoreThan(7);
+        Validator.expect(nullList, "nullList").isNotNullAnd().containsMoreThan(2);
     }
 
     @Test
@@ -88,11 +88,11 @@ public class ListValidatorTest {
         assertEquals(setSize, String.valueOf(bigList.size()));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(bigList, "bigList").isNull().containsMoreThan(7),
+                () -> Validator.expect(bigList, "bigList").isNull().containsMoreThan(7),
                 List.of("List", "bigList", "must not contain more than", "7", setSize));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(bigList, "bigList").isNotNullAnd().containsMoreThan(2),
+                () -> Validator.expect(bigList, "bigList").isNotNullAnd().containsMoreThan(2),
                 List.of("List", "bigList", "must not contain more than", "2", setSize));
     }
 
@@ -102,9 +102,9 @@ public class ListValidatorTest {
         final List<String> stringList = List.of("one", "two", "three", "five", "eight", "and so on");
         final List<Integer> nullList = null;
 
-        Validator.throwIf(longList, "longList").isNull().isContained(6L);
-        Validator.throwIf(stringList, "stringList").isNull().isContained("six");
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().isContained(2020);
+        Validator.expect(longList, "longList").isNull().isContained(6L);
+        Validator.expect(stringList, "stringList").isNull().isContained("six");
+        Validator.expect(nullList, "nullList").isNotNullAnd().isContained(2020);
     }
 
     @Test
@@ -113,11 +113,11 @@ public class ListValidatorTest {
         final List<String> stringList = List.of("one", "two", "three", "five", "six", "eight", "and so on");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longList, "longList").isNotNullAnd().isContained(6L),
+                () -> Validator.expect(longList, "longList").isNotNullAnd().isContained(6L),
                 List.of("List", "longList", "must not contain", "6"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(stringList, "stringList").isNotNullAnd().isContained("six"),
+                () -> Validator.expect(stringList, "stringList").isNotNullAnd().isContained("six"),
                 List.of("List", "stringList", "must not contain", "six"));
     }
 
@@ -127,9 +127,9 @@ public class ListValidatorTest {
         final List<String> stringList = List.of("one", "two", "three", "five", "eight", "and so on");
         final List<Integer> nullList = null;
 
-        Validator.throwIf(longList, "longList").isNull().isMissing(5L);
-        Validator.throwIf(stringList, "stringList").isNull().isMissing("five");
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().isMissing(2020);
+        Validator.expect(longList, "longList").isNull().isMissing(5L);
+        Validator.expect(stringList, "stringList").isNull().isMissing("five");
+        Validator.expect(nullList, "nullList").isNotNullAnd().isMissing(2020);
     }
 
     @Test
@@ -138,11 +138,11 @@ public class ListValidatorTest {
         final List<String> stringList = List.of("one", "two", "three", "eight", "and so on");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longList, "longList").isNotNullAnd().isMissing(5L),
+                () -> Validator.expect(longList, "longList").isNotNullAnd().isMissing(5L),
                 List.of("List", "longList", "must contain", "5"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(stringList, "stringList").isNotNullAnd().isMissing("five"),
+                () -> Validator.expect(stringList, "stringList").isNotNullAnd().isMissing("five"),
                 List.of("List", "stringList", "must contain", "five"));
     }
 
@@ -152,15 +152,15 @@ public class ListValidatorTest {
         final List<Long> longList = List.of();
         final List<String> stringList = List.of();
 
-        Validator.throwIf(integerList, "integerList").isNull().anyNumericEntry(
+        Validator.expect(integerList, "integerList").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(longList, "longList").isNull().anyNumericEntry(
+        Validator.expect(longList, "longList").isNull().anyNumericEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isSmallerThan(5).isGreaterThan(3));
 
-        Validator.throwIf(stringList, "stringList").isNull().anyStringEntry(
+        Validator.expect(stringList, "stringList").isNull().anyStringEntry(
                 // this should fail with anything but a non-null empty list
                 v -> v.isNull().isEmpty().isLongerThan(0));
     }
@@ -171,9 +171,9 @@ public class ListValidatorTest {
         final List<Long> longList = List.of(68L, 69L, 70L, 80L);
         final List<Long> nullList = null;
 
-        Validator.throwIf(integerList, "integerList").isNull().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
-        Validator.throwIf(longList, "longList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
-        Validator.throwIf(nullList, "nullList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
+        Validator.expect(integerList, "integerList").isNull().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
+        Validator.expect(longList, "longList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
+        Validator.expect(nullList, "nullList").isNotNullAnd().anyNumericEntry(v -> v.isNull().isSmallerThan(5));
     }
 
     @Test
@@ -182,12 +182,12 @@ public class ListValidatorTest {
         final List<Long> longList = List.of(11L, 12L, 13L, 14L);
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(integerList, "integerList").isNull()
+                () -> Validator.expect(integerList, "integerList").isNull()
                         .anyNumericEntry(v -> v.isNull().isSmallerThan(24)),
                 List.of("List", "inside", "integerList", "is too small", "24", "23"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longList, "longList").isNotNullAnd()
+                () -> Validator.expect(longList, "longList").isNotNullAnd()
                         .anyNumericEntry(v -> v.isNull().isSmallerThan(12)),
                 List.of("List", "inside", "longList", "is too small", "11", "12"));
     }
@@ -196,9 +196,9 @@ public class ListValidatorTest {
     void isAnyEntryBlankWithFilledStringsGivenPasses() throws ValidationException {
         final List<String> filledList = List.of("hello", "world");
 
-        Validator.throwIf(filledList, "filledList").isNull().anyStringEntry(
+        Validator.expect(filledList, "filledList").isNull().anyStringEntry(
                 v -> v.isNull().isBlank());
-        Validator.throwIf(filledList, "filledList").isNotNullAnd().anyStringEntry(
+        Validator.expect(filledList, "filledList").isNotNullAnd().anyStringEntry(
                 v -> v.isNull().isLongerThan(20));
     }
 
@@ -207,13 +207,13 @@ public class ListValidatorTest {
         final List<String> blankList = List.of("\t\t\t", "   \n", "\t\n");
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankList, "blankList").isNull().anyStringEntry(
+                () -> Validator.expect(blankList, "blankList").isNull().anyStringEntry(
                         v -> v.isNull().isBlank()),
                 List.of("List", "inside", "blankList", "must not be blank")
         );
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankList, "blankList").isNotNullAnd().anyStringEntry(
+                () -> Validator.expect(blankList, "blankList").isNotNullAnd().anyStringEntry(
                         v -> v.isNull().isBlank()),
                 List.of("List", "inside", "blankList", "must not be blank")
         );

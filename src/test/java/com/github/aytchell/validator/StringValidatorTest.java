@@ -14,7 +14,7 @@ public class StringValidatorTest {
         final String nullString = null;
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(nullString, "nullString").isNull(),
+                () -> Validator.expect(nullString, "nullString").isNull(),
                 List.of("nullString", "is missing"));
     }
 
@@ -24,12 +24,12 @@ public class StringValidatorTest {
         final String filledString = "filled";
         final String nullString = null;
 
-        Validator.throwIf(blankString, "blankString").isNull().isEmpty();
-        Validator.throwIf(filledString, "filledString").isNull().isEmpty();
+        Validator.expect(blankString, "blankString").isNull().isEmpty();
+        Validator.expect(filledString, "filledString").isNull().isEmpty();
 
-        Validator.throwIf(blankString, "blankString").isNotNullAnd().isEmpty();
-        Validator.throwIf(filledString, "filledString").isNotNullAnd().isEmpty();
-        Validator.throwIf(nullString, "nullString").isNotNullAnd().isEmpty();
+        Validator.expect(blankString, "blankString").isNotNullAnd().isEmpty();
+        Validator.expect(filledString, "filledString").isNotNullAnd().isEmpty();
+        Validator.expect(nullString, "nullString").isNotNullAnd().isEmpty();
     }
 
     @Test
@@ -37,12 +37,12 @@ public class StringValidatorTest {
         final String emptyString = "";
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(emptyString, "emptyString").isNull().isEmpty(),
+                () -> Validator.expect(emptyString, "emptyString").isNull().isEmpty(),
                 List.of("emptyString", "must not be empty")
         );
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(emptyString, "emptyString").isNotNullAnd().isEmpty(),
+                () -> Validator.expect(emptyString, "emptyString").isNotNullAnd().isEmpty(),
                 List.of("emptyString", "must not be empty")
         );
     }
@@ -52,10 +52,10 @@ public class StringValidatorTest {
         final String filledString = "filled";
         final String nullString = null;
 
-        Validator.throwIf(filledString, "filledString").isNull().isBlank();
+        Validator.expect(filledString, "filledString").isNull().isBlank();
 
-        Validator.throwIf(filledString, "filledString").isNotNullAnd().isBlank();
-        Validator.throwIf(nullString, "nullString").isNotNullAnd().isBlank();
+        Validator.expect(filledString, "filledString").isNotNullAnd().isBlank();
+        Validator.expect(nullString, "nullString").isNotNullAnd().isBlank();
     }
 
     @Test
@@ -63,12 +63,12 @@ public class StringValidatorTest {
         final String blankString = "\t \n";
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankString, "blankString").isNull().isBlank(),
+                () -> Validator.expect(blankString, "blankString").isNull().isBlank(),
                 List.of("blankString", "must not be blank")
         );
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(blankString, "blankString").isNotNullAnd().isBlank(),
+                () -> Validator.expect(blankString, "blankString").isNotNullAnd().isBlank(),
                 List.of("blankString", "must not be blank")
         );
     }
@@ -79,12 +79,12 @@ public class StringValidatorTest {
         final String emptyString = "";
         final String shortString = "short";
 
-        Validator.throwIf(emptyString, "emptyString").isNull().isLongerThan(10);
-        Validator.throwIf(shortString, "shortString").isNull().isLongerThan(10);
+        Validator.expect(emptyString, "emptyString").isNull().isLongerThan(10);
+        Validator.expect(shortString, "shortString").isNull().isLongerThan(10);
 
-        Validator.throwIf(emptyString, "emptyString").isNotNullAnd().isLongerThan(10);
-        Validator.throwIf(shortString, "shortString").isNotNullAnd().isLongerThan(10);
-        Validator.throwIf(nullString, "nullString").isNotNullAnd().isLongerThan(10);
+        Validator.expect(emptyString, "emptyString").isNotNullAnd().isLongerThan(10);
+        Validator.expect(shortString, "shortString").isNotNullAnd().isLongerThan(10);
+        Validator.expect(nullString, "nullString").isNotNullAnd().isLongerThan(10);
     }
 
     @Test
@@ -95,12 +95,12 @@ public class StringValidatorTest {
         assertEquals(stringSize, String.valueOf(longString.length()));
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longString, "longString").isNull().isLongerThan(10),
+                () -> Validator.expect(longString, "longString").isNull().isLongerThan(10),
                 List.of("longString", "must not be longer than", "10", stringSize)
         );
 
         assertThrowsAndMessageContains(
-                () -> Validator.throwIf(longString, "longString").isNotNullAnd().isLongerThan(10),
+                () -> Validator.expect(longString, "longString").isNotNullAnd().isLongerThan(10),
                 List.of("longString", "must not be longer than", "10", stringSize)
         );
     }

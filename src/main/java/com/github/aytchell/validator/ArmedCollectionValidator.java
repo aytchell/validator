@@ -17,9 +17,9 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
             for (TYPE entry : getValue()) {
                 if (entry instanceof Integer) {
                     final Integer value = (Integer) entry;
-                    entryValidator.apply(Validator.throwIf(Long.valueOf(value)));
+                    entryValidator.apply(Validator.expect(Long.valueOf(value)));
                 } else if (entry instanceof Long) {
-                    entryValidator.apply(Validator.throwIf((Long) entry));
+                    entryValidator.apply(Validator.expect((Long) entry));
                 } else {
                     throw new ClassCastException(String.format(
                             "Tried to validate entries in %s '%s' as numeric values (but are '%s')",
@@ -40,7 +40,7 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
         try {
             for (TYPE entry : getValue()) {
                 if (entry instanceof String) {
-                    entryValidator.apply(Validator.throwIf((String) entry));
+                    entryValidator.apply(Validator.expect((String) entry));
                 } else {
                     throw new ClassCastException(
                             String.format("Tried to validate entries in %s '%s' as Strings (but are '%s')",
