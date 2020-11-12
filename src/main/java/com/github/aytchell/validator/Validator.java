@@ -16,6 +16,15 @@ public class Validator {
         }
     }
 
+    public static NullableObjectValidator<Short, LongValidator> throwIf(Short value, String name) {
+        return new NullableObjectValidator<>(value, name, DisarmedLongValidator.getINSTANCE()) {
+            @Override
+            protected LongValidator createValidator(Short value, String name) {
+                return new ArmedLongValidator(Long.valueOf(value), name);
+            }
+        };
+    }
+
     public static NullableObjectValidator<Integer, LongValidator> throwIf(Integer value, String name) {
         return new NullableObjectValidator<>(value, name, DisarmedLongValidator.getINSTANCE()) {
             @Override

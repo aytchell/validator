@@ -19,12 +19,15 @@ public class LongValidatorTest {
 
     @Test
     void isLowerThanGivenValidValuesPass() throws ValidationException {
+        final Short validShort = 12;
+        final Integer validInteger = 42;
         final Long validLong = 42L;
-        final Long validInteger = 42L;
         final Long nullLong = null;
 
         Validator.throwIf(validLong, "validLong").isNull().isLowerThan(2);
         Validator.throwIf(validLong, "validLong").isNull().isLowerThan(4L);
+        Validator.throwIf(validShort, "validShort").isNull().isLowerThan(2);
+        Validator.throwIf(validShort, "validShort").isNull().isLowerThan(4L);
         Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(2);
         Validator.throwIf(validInteger, "validInteger").isNull().isLowerThan(4L);
 
