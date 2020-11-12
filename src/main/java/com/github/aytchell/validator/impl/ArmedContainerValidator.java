@@ -30,7 +30,7 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
         if (value.contains(key)) {
             throw newExceptionWithNameAndType()
                     .setExpectation("contains not")
-                    .setExpectedValue(key.toString());
+                    .setExpectedValue(key);
         }
         return getValidator();
     }
@@ -39,7 +39,7 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
         if (!value.contains(key)) {
             throw newExceptionWithNameAndType()
                     .setExpectation("contains")
-                    .setExpectedValue(key.toString());
+                    .setExpectedValue(key);
         }
         return getValidator();
     }
@@ -48,10 +48,10 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
             throws ValidationException {
         if (value.size() < minNumberOfElements) {
             throw new ValidationException()
-                    .setActualValue(String.valueOf(value.size()))
+                    .setActualValue(value.size())
                     .setActualValuesName("size of " + getName())
                     .setExpectation("is at least")
-                    .setExpectedValue(String.valueOf(minNumberOfElements));
+                    .setExpectedValue(minNumberOfElements);
         }
         return getValidator();
     }
@@ -60,10 +60,10 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
             throws ValidationException {
         if (value.size() > maxNumberOfElements) {
             throw new ValidationException()
-                    .setActualValue(String.valueOf(value.size()))
+                    .setActualValue(value.size())
                     .setActualValuesName("size of " + getName())
                     .setExpectation("is at most")
-                    .setExpectedValue(String.valueOf(maxNumberOfElements));
+                    .setExpectedValue(maxNumberOfElements);
         }
         return getValidator();
     }

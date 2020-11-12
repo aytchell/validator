@@ -68,8 +68,8 @@ public class ValidationException extends Exception {
         return this;
     }
 
-    public ValidationException setExpectedValue(String expectedValue) {
-        this.expectedValue = expectedValue;
+    public ValidationException setExpectedValue(Object expectedValue) {
+        this.expectedValue = String.valueOf(expectedValue);
         return this;
     }
 
@@ -78,8 +78,8 @@ public class ValidationException extends Exception {
         return this;
     }
 
-    public ValidationException setActualValue(String actualValue) {
-        this.actualValue = actualValue;
+    public ValidationException setActualValue(Object actualValue) {
+        this.actualValue = String.valueOf(actualValue);
         return this;
     }
 

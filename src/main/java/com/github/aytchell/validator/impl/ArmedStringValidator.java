@@ -33,9 +33,9 @@ class ArmedStringValidator implements StringValidator {
         if (value.length() > maxLength) {
             throw new ValidationException()
                     .setActualValuesName("length of " + name)
-                    .setActualValue(String.valueOf(value.length()))
+                    .setActualValue(value.length())
                     .setExpectation("at most")
-                    .setExpectedValue(String.valueOf(maxLength));
+                    .setExpectedValue(maxLength);
         }
         return this;
     }
