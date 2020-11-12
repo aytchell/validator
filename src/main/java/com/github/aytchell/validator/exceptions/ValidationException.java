@@ -72,10 +72,10 @@ public class ValidationException extends Exception {
         //      '<actualValue>'
         if (actualValuesName != null) {
             final String info = buildValuesInfo();
-            if (info != null) {
-                return String.format("'%s' (%s)", actualValuesName, info);
-            } else {
+            if (info.isEmpty()) {
                 return String.format("'%s'", actualValuesName);
+            } else {
+                return String.format("'%s' (%s)", actualValuesName, info);
             }
         } else {
             // if the name and the value are null ... then we don't provide any hint
@@ -127,15 +127,7 @@ public class ValidationException extends Exception {
     }
 
     public ValidationException setExpectedValue(Object expectedValue) {
-        if (expectedValue instanceof String) {
-            this.expectedValue = String.format("'%s'", expectedValue);
-        } else {
-            if (expectedValue == null) {
-                this.expectedValue = "(null)";
-            } else {
-                this.expectedValue = String.valueOf(expectedValue);
-            }
-        }
+        this.expectedValue = mangleActualOrExpectedValue(expectedValue);
         return this;
     }
 
@@ -145,15 +137,7 @@ public class ValidationException extends Exception {
     }
 
     public ValidationException setActualValue(Object actualValue) {
-        if (actualValue instanceof String) {
-            this.actualValue = String.format("'%s'", actualValue);
-        } else {
-            if (actualValue == null) {
-                this.actualValue = "(null)";
-            } else {
-                this.actualValue = String.valueOf(actualValue);
-            }
-        }
+        this.actualValue = mangleActualOrExpectedValue(actualValue);
         return this;
     }
 
@@ -173,5 +157,15 @@ public class ValidationException extends Exception {
         this.surroundingContainerName = containerName;
         this.typeOfContainerEntry = entryType;
         return this;
+    }
+
+    private String mangleActualOrExpectedValue(Object givenValue) {
+        if (givenValue == null) {
+            return "(null)";
+        } else if (givenValue instanceof String) {
+            return String.format("'%s'", givenValue);
+        } else {
+                return String.valueOf(givenValue);
+        }
     }
 }
