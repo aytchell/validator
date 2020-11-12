@@ -38,7 +38,7 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isNullIsLowerThanGivenHighValuesThrows() throws ValidationException {
+    void isNullIsLowerThanGivenHighValuesThrows() {
         final Long validLong = 42L;
         final Integer validInteger = 112;
 
@@ -64,7 +64,7 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isNotNullAndIsLowerThanGivenHighValuesThrows() throws ValidationException {
+    void isNotNullAndIsLowerThanGivenHighValuesThrows() {
         final Long validLong = 42L;
         final Integer validInteger = 112;
 
@@ -90,6 +90,21 @@ public class LongValidatorTest {
     }
 
     @Test
+    void greaterEqThanWithOtherNameGiven() {
+        final Long validLong = 42L;
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validLong, "validLong").ifNotNull()
+                        .greaterEqThan(1024, "otherInt"),
+                List.of("validLong", "42", "is greater or equal", "otherInt", "1024"));
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validLong, "validLong").ifNotNull()
+                        .greaterEqThan(2000L, "otherLong"),
+                List.of("validLong", "42", "is greater or equal", "otherLong", "2000"));
+    }
+
+    @Test
     void isGreaterThanGivenValidValuesPass() throws ValidationException {
         final Long validLong = 42L;
         final Integer validInteger = 110;
@@ -107,7 +122,7 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isNullIsGreaterThanGivenLowValuesThrows() throws ValidationException {
+    void isNullIsGreaterThanGivenLowValuesThrows() {
         final Long validLong = 42L;
         final Integer validInteger = 1729;
 
@@ -133,7 +148,7 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isNotNullAndisGreaterThanGivenLowValuesThrows() throws ValidationException {
+    void isNotNullAndisGreaterThanGivenLowValuesThrows() {
         final Long validLong = 42L;
         final Integer validInteger = 1729;
 
@@ -159,6 +174,21 @@ public class LongValidatorTest {
     }
 
     @Test
+    void lessEqThanWithOtherNameGiven() {
+        final Long validLong = 4200L;
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validLong, "validLong").ifNotNull()
+                        .lessEqThan(1024, "otherInt"),
+                List.of("validLong", "4200", "is smaller or equal", "otherInt", "1024"));
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validLong, "validLong").ifNotNull()
+                        .lessEqThan(2000L, "otherLong"),
+                List.of("validLong", "4200", "is smaller or equal", "otherLong", "2000"));
+    }
+
+    @Test
     void isNotValidPortNumberGivenValidValuesPasses() throws ValidationException {
         final Long validLongPort = 19377L;
         final Integer validIntegerPort = 4711;
@@ -171,7 +201,7 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isNotValidPortNumberGivenLowValuesThrows() throws ValidationException {
+    void isNotValidPortNumberGivenLowValuesThrows() {
         final Long invalidLongPort = 0L;
         final Integer invalidIntegerPort = -5;
 
@@ -197,7 +227,7 @@ public class LongValidatorTest {
     }
 
     @Test
-    void isNotValidPortNumberGivenHighValuesThrows() throws ValidationException {
+    void isNotValidPortNumberGivenHighValuesThrows() {
         final Long invalidLongPort = 128247L;
         final Integer invalidIntegerPort = 65536;
 

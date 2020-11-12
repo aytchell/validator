@@ -11,12 +11,12 @@ class DisarmedLongValidator extends LongValidatorBase {
     private static final LongValidator INSTANCE = new DisarmedLongValidator();
 
     @Override
-    public LongValidator greaterEqThan(long lowerBound) {
+    public LongValidator greaterEqThan(long lowerBound, String otherName) {
         return this;
     }
 
     @Override
-    public LongValidator lessEqThan(long upperBound) {
+    public LongValidator lessEqThan(long upperBound, String otherName) {
         return this;
     }
 
