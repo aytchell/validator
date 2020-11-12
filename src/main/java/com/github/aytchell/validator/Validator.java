@@ -4,6 +4,11 @@ import com.github.aytchell.validator.impl.ValidatorImpl;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,6 +80,52 @@ public class Validator {
 
     public static NullableObjectValidator<String, StringValidator> expect(String value, String name,
             String extraInfo) {
+        return ValidatorImpl.expect(value, name, extraInfo);
+    }
+
+    // --- check LocalDate ---
+    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(LocalDate value) {
+        return ValidatorImpl.expect(value, null, null);
+    }
+
+    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(LocalDate value, String name) {
+        return ValidatorImpl.expect(value, name, null);
+    }
+
+    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(LocalDate value, String name,
+            String extraInfo) {
+        // return ValidatorImpl.expect(LocalDateTime.of(value, LocalTime.of(0, 0)), name, extraInfo);
+        return ValidatorImpl.expect(value, name, extraInfo);
+    }
+
+    // --- check LocalDateTime ---
+    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(LocalDateTime value) {
+        return ValidatorImpl.expect(value, null, null);
+    }
+
+    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(LocalDateTime value,
+            String name) {
+        return ValidatorImpl.expect(value, name, null);
+    }
+
+    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(LocalDateTime value,
+            String name, String extraInfo) {
+        //return ValidatorImpl.expect(ZonedDateTime.of(value, ZoneId.systemDefault()), name, extraInfo);
+        return ValidatorImpl.expect(value, name, extraInfo);
+    }
+
+    // --- check ZonedDateTime ---
+    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(ZonedDateTime value) {
+        return ValidatorImpl.expect(value, null, null);
+    }
+
+    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(ZonedDateTime value,
+            String name) {
+        return ValidatorImpl.expect(value, name, null);
+    }
+
+    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(ZonedDateTime value,
+            String name, String extraInfo) {
         return ValidatorImpl.expect(value, name, extraInfo);
     }
 

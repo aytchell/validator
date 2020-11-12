@@ -7,15 +7,22 @@ import com.github.aytchell.validator.MapValidator;
 import com.github.aytchell.validator.NullableObjectValidator;
 import com.github.aytchell.validator.SetValidator;
 import com.github.aytchell.validator.StringValidator;
+import com.github.aytchell.validator.ZonedDateTimeValidator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class ValidatorImpl {
+    // --- boolean values ---
     public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value, String name,
             String extraInfo) {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedBooleanValidator.getINSTANCE()) {
@@ -26,6 +33,7 @@ public class ValidatorImpl {
         };
     }
 
+    // --- numeric values ---
     public static NullableObjectValidator<Short, LongValidator> expect(Short value, String name, String extraInfo) {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedLongValidator.getINSTANCE()) {
             @Override
@@ -54,6 +62,7 @@ public class ValidatorImpl {
         };
     }
 
+    // --- string values ---
     public static NullableObjectValidator<String, StringValidator> expect(String value, String name,
             String extraInfo) {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedStringValidator.getINSTANCE()) {
@@ -64,6 +73,44 @@ public class ValidatorImpl {
         };
     }
 
+    // --- time related values ---
+    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(
+            LocalDate value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo,
+                DisarmedZonedDateTimeValidator.getINSTANCE()) {
+            @Override
+            protected ZonedDateTimeValidator createValidator(LocalDate value, String name, String extraInfo) {
+                final ZonedDateTime wrappedValue = ZonedDateTime.of(value,
+                        LocalTime.of(0, 0), ZoneId.systemDefault());
+                return new ArmedZonedDateTimeValidator(wrappedValue, name, extraInfo);
+            }
+        };
+    }
+
+    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(
+            LocalDateTime value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo,
+                DisarmedZonedDateTimeValidator.getINSTANCE()) {
+            @Override
+            protected ZonedDateTimeValidator createValidator(LocalDateTime value, String name, String extraInfo) {
+                final ZonedDateTime wrappedValue = ZonedDateTime.of(value, ZoneId.systemDefault());
+                return new ArmedZonedDateTimeValidator(wrappedValue, name, extraInfo);
+            }
+        };
+    }
+
+    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(
+            ZonedDateTime value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo,
+                DisarmedZonedDateTimeValidator.getINSTANCE()) {
+            @Override
+            protected ZonedDateTimeValidator createValidator(ZonedDateTime value, String name, String extraInfo) {
+                return new ArmedZonedDateTimeValidator(value, name, extraInfo);
+            }
+        };
+    }
+
+    // --- container values ---
     public static <E> NullableObjectValidator<List<E>, ListValidator<E>> expect(List<E> value, String name,
             String extraInfo) {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo, new DisarmedListValidator<E>()) {
