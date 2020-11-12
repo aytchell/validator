@@ -17,7 +17,7 @@ class ArmedLongValidator extends LongValidatorBase {
     public LongValidator greaterEqThan(long lowerBound) throws ValidationException {
         if (value < lowerBound) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("greater or eqal than")
+                    .setExpectation("is greater or equal than")
                     .setExpectedValue(lowerBound);
         }
         return this;
@@ -27,7 +27,7 @@ class ArmedLongValidator extends LongValidatorBase {
     public LongValidator lessEqThan(long upperBound) throws ValidationException {
         if (value > upperBound) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("smaller or equal than")
+                    .setExpectation("is smaller or equal than")
                     .setExpectedValue(upperBound);
         }
         return this;
@@ -38,7 +38,7 @@ class ArmedLongValidator extends LongValidatorBase {
         if ((value < MIN_TCP_PORT_NUMBER) || (value > MAX_TCP_PORT_NUMBER)) {
             throw newExceptionWithNameAndValue()
                     .setExpectation(
-                            String.format("a valid port number (%d to %d)",
+                            String.format("is a valid port number (%d to %d)",
                                     MIN_TCP_PORT_NUMBER, MAX_TCP_PORT_NUMBER));
         }
         return this;

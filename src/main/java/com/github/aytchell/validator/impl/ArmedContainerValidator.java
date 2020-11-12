@@ -21,7 +21,7 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
     public VALIDATOR notEmpty() throws ValidationException {
         if (value.isEmpty()) {
             throw newExceptionWithNameAndType()
-                    .setExpectation("not empty");
+                    .setExpectation("is not empty");
         }
         return getValidator();
     }

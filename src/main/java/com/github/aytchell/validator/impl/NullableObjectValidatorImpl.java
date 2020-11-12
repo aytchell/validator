@@ -16,7 +16,7 @@ abstract class NullableObjectValidatorImpl<VALUE, VALIDATOR> implements Nullable
         if (value == null) {
             throw new ValidationException()
                     .setActualValuesName(name)
-                    .setExpectation("not null");
+                    .setExpectation("is not null");
         }
         return createValidator(value, name);
     }

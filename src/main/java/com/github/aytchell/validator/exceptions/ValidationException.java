@@ -55,12 +55,41 @@ public class ValidationException extends Exception {
         //      '<actualValuesName>' (type: <valuesType>, value: <actualValue>) or
         //      '<actualValuesName>' (type: <valuesType>) or
         //      '<actualValuesName>' (value: <actualValue>) or
-        //      '<actualValues>'
-        return "<actualValueCoreString>";
+        //      '<actualValuesName>' or
+        //      '<actualValue>'
+        if (actualValuesName != null) {
+            if (valuesType != null) {
+                if (actualValue != null) {
+                    return String.format("'%s' (type: %s, value: %s)", actualValuesName, valuesType, actualValue);
+                } else {
+                    return String.format("'%s' (type: %s)", actualValuesName, valuesType);
+                }
+            } else if (actualValue != null) {
+                return String.format("'%s' (value: %s)", actualValuesName, actualValue);
+            } else {
+                return String.format("'%s'", actualValuesName);
+            }
+        } else {
+            // if the name and the value are null ... then we don't provide any hint
+            return (actualValue != null) ? actualValue : "(null)";
+        }
     }
 
-    private Object buildExpectedValueString() {
-        return "<expected value>";
+    private String buildExpectedValueString() {
+        // build one of these strings depending on what information is available:
+        //      '<expectedValuesName>' (value: <expectedValue>) or
+        //      '<expectedValuesName>'
+        //      <expectedValue>
+        if (expectedValuesName != null) {
+            if (expectedValue != null) {
+                return String.format("'%s' (value: %s)", expectedValuesName, expectedValue);
+            } else {
+                return String.format("'%s'", expectedValuesName);
+            }
+        } else {
+            // if the name and the value are null ... then we don't provide any hint
+            return (expectedValue != null) ? expectedValue : "";
+        }
     }
 
     public ValidationException setValuesType(String valuesType) {
@@ -69,7 +98,15 @@ public class ValidationException extends Exception {
     }
 
     public ValidationException setExpectedValue(Object expectedValue) {
-        this.expectedValue = String.valueOf(expectedValue);
+        if (expectedValue instanceof String) {
+            this.expectedValue = String.format("'%s'", expectedValue);
+        } else {
+            if (expectedValue == null) {
+                this.expectedValue = "(null)";
+            } else {
+                this.expectedValue = String.valueOf(expectedValue);
+            }
+        }
         return this;
     }
 
@@ -79,7 +116,15 @@ public class ValidationException extends Exception {
     }
 
     public ValidationException setActualValue(Object actualValue) {
-        this.actualValue = String.valueOf(actualValue);
+        if (actualValue instanceof String) {
+            this.actualValue = String.format("'%s'", actualValue);
+        } else {
+            if (actualValue == null) {
+                this.actualValue = "(null)";
+            } else {
+                this.actualValue = String.valueOf(actualValue);
+            }
+        }
         return this;
     }
 

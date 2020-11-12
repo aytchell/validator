@@ -32,7 +32,7 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
             }
             return getValidator();
         } catch (ValidationException exception) {
-            throw exception.setSurroundingContainerInfo(getName(), getContainerType(), "entry");
+            throw exception.setSurroundingContainerInfo(getContainerType(), getName(), "entry");
         }
     }
 
@@ -50,7 +50,7 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
             }
             return getValidator();
         } catch (ValidationException exception) {
-            throw exception.setSurroundingContainerInfo(getName(), getContainerType(), "entry");
+            throw exception.setSurroundingContainerInfo(getContainerType(), getName(), "entry");
         }
     }
 }

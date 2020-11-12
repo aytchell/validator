@@ -14,7 +14,7 @@ class ArmedStringValidator implements StringValidator {
     public StringValidator notEmpty() throws ValidationException {
         if (this.value.isEmpty()) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("not empty");
+                    .setExpectation("is not empty");
         }
         return this;
     }
@@ -23,7 +23,7 @@ class ArmedStringValidator implements StringValidator {
     public StringValidator notBlank() throws ValidationException {
         if (this.value.isBlank()) {
             throw newExceptionWithNameAndValue()
-                    .setExpectation("not blank");
+                    .setExpectation("is not blank");
         }
         return this;
     }
@@ -34,7 +34,7 @@ class ArmedStringValidator implements StringValidator {
             throw new ValidationException()
                     .setActualValuesName("length of " + name)
                     .setActualValue(value.length())
-                    .setExpectation("at most")
+                    .setExpectation("is at most")
                     .setExpectedValue(maxLength);
         }
         return this;
