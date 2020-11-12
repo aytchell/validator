@@ -6,6 +6,8 @@ import lombok.NonNull;
 @Getter
 // unfortunately lombok can't create "fluent setters" so we have to roll our own
 public class ValidationException extends Exception {
+    private String customMessage;
+
     private String typeOfContainerEntry;
     private String actualValuesName;
     private String valuesType;
@@ -23,8 +25,17 @@ public class ValidationException extends Exception {
         super();
     }
 
+    public ValidationException(String customMessage) {
+        super();
+        this.customMessage = customMessage;
+    }
+
     @Override
     public String getMessage() {
+        if (customMessage != null) {
+            return customMessage;
+        }
+
         // build this kind of string depending on what information is available:
         //      <typeOfContainerEntry> '<actualValuesName>' (type: <valuesType>, value: <actualValue>)
         //          in <surroundingContainerType> '<surroundingContainerName>'
