@@ -24,10 +24,10 @@ public class SetValidatorTest {
         final Set<Integer> filledSet = Set.of(1, 2, 3);
         final Set<String> nullSet = null;
 
-        Validator.expect(filledSet, "filledSet").notNull().isEmpty();
+        Validator.expect(filledSet, "filledSet").notNull().notEmpty();
 
-        Validator.expect(filledSet, "filledSet").ifNotNull().isEmpty();
-        Validator.expect(nullSet, "nullSet").ifNotNull().isEmpty();
+        Validator.expect(filledSet, "filledSet").ifNotNull().notEmpty();
+        Validator.expect(nullSet, "nullSet").ifNotNull().notEmpty();
     }
 
     @Test
@@ -35,11 +35,11 @@ public class SetValidatorTest {
         final Set<Long> emptySet = Set.of();
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(emptySet, "emptySet").notNull().isEmpty(),
+                () -> Validator.expect(emptySet, "emptySet").notNull().notEmpty(),
                 List.of("Set", "emptySet", "must not be empty"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(emptySet, "emptySet").ifNotNull().isEmpty(),
+                () -> Validator.expect(emptySet, "emptySet").ifNotNull().notEmpty(),
                 List.of("Set", "emptySet", "must not be empty"));
     }
 
@@ -48,10 +48,10 @@ public class SetValidatorTest {
         final Set<Integer> bigSet = Set.of(1, 2, 3, 4, 5, 6, 7);
         final Set<Integer> nullSet = null;
 
-        Validator.expect(bigSet, "bigSet").notNull().containsLessThan(7);
+        Validator.expect(bigSet, "bigSet").notNull().sizeAtLeast(7);
 
-        Validator.expect(bigSet, "bigSet").ifNotNull().containsLessThan(7);
-        Validator.expect(nullSet, "nullSet").ifNotNull().containsLessThan(20);
+        Validator.expect(bigSet, "bigSet").ifNotNull().sizeAtLeast(7);
+        Validator.expect(nullSet, "nullSet").ifNotNull().sizeAtLeast(20);
     }
 
     @Test
@@ -62,11 +62,11 @@ public class SetValidatorTest {
         assertEquals(setSize, String.valueOf(smallSet.size()));
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(smallSet, "smallSet").notNull().containsLessThan(20),
+                () -> Validator.expect(smallSet, "smallSet").notNull().sizeAtLeast(20),
                 List.of("Set", "smallSet", "must contain at least", "20", setSize));
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(smallSet, "smallSet").ifNotNull().containsLessThan(20),
+                () -> Validator.expect(smallSet, "smallSet").ifNotNull().sizeAtLeast(20),
                 List.of("Set", "smallSet", "must contain at least", "20", setSize));
     }
 
@@ -75,10 +75,10 @@ public class SetValidatorTest {
         final Set<Long> smallSet = Set.of(1L, 2L, 3L, 4L);
         final Set<Long> nullSet = null;
 
-        Validator.expect(smallSet, "smallSet").notNull().containsMoreThan(4);
+        Validator.expect(smallSet, "smallSet").notNull().sizeAtMost(4);
 
-        Validator.expect(smallSet, "smallSet").ifNotNull().containsMoreThan(7);
-        Validator.expect(nullSet, "nullSet").ifNotNull().containsMoreThan(2);
+        Validator.expect(smallSet, "smallSet").ifNotNull().sizeAtMost(7);
+        Validator.expect(nullSet, "nullSet").ifNotNull().sizeAtMost(2);
     }
 
     @Test
@@ -89,11 +89,11 @@ public class SetValidatorTest {
         assertEquals(setSize, String.valueOf(bigSet.size()));
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(bigSet, "bigSet").notNull().containsMoreThan(7),
+                () -> Validator.expect(bigSet, "bigSet").notNull().sizeAtMost(7),
                 List.of("Set", "bigSet", "must not contain more than", "7", setSize));
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(bigSet, "bigSet").ifNotNull().containsMoreThan(2),
+                () -> Validator.expect(bigSet, "bigSet").ifNotNull().sizeAtMost(2),
                 List.of("Set", "bigSet", "must not contain more than", "2", setSize));
     }
 
@@ -103,9 +103,9 @@ public class SetValidatorTest {
         final Set<String> stringSet = Set.of("one", "two", "three", "five", "eight", "and so on");
         final Set<Integer> nullSet = null;
 
-        Validator.expect(longSet, "longSet").notNull().isContained(6L);
-        Validator.expect(stringSet, "stringSet").notNull().isContained("six");
-        Validator.expect(nullSet, "nullSet").ifNotNull().isContained(2020);
+        Validator.expect(longSet, "longSet").notNull().misses(6L);
+        Validator.expect(stringSet, "stringSet").notNull().misses("six");
+        Validator.expect(nullSet, "nullSet").ifNotNull().misses(2020);
     }
 
     @Test
@@ -114,11 +114,11 @@ public class SetValidatorTest {
         final Set<String> stringSet = Set.of("one", "two", "three", "five", "six", "eight", "and so on");
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(longSet, "longSet").ifNotNull().isContained(6L),
+                () -> Validator.expect(longSet, "longSet").ifNotNull().misses(6L),
                 List.of("Set", "longSet", "must not contain", "6"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(stringSet, "stringSet").ifNotNull().isContained("six"),
+                () -> Validator.expect(stringSet, "stringSet").ifNotNull().misses("six"),
                 List.of("Set", "stringSet", "must not contain", "six"));
     }
 
@@ -128,9 +128,9 @@ public class SetValidatorTest {
         final Set<String> stringSet = Set.of("one", "two", "three", "five", "eight", "and so on");
         final Set<Integer> nullSet = null;
 
-        Validator.expect(longSet, "longSet").notNull().isMissing(5L);
-        Validator.expect(stringSet, "stringSet").notNull().isMissing("five");
-        Validator.expect(nullSet, "nullSet").ifNotNull().isMissing(2020);
+        Validator.expect(longSet, "longSet").notNull().contains(5L);
+        Validator.expect(stringSet, "stringSet").notNull().contains("five");
+        Validator.expect(nullSet, "nullSet").ifNotNull().contains(2020);
     }
 
     @Test
@@ -139,11 +139,11 @@ public class SetValidatorTest {
         final Set<String> stringSet = Set.of("one", "two", "three", "eight", "and so on");
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(longSet, "longSet").ifNotNull().isMissing(5L),
+                () -> Validator.expect(longSet, "longSet").ifNotNull().contains(5L),
                 List.of("Set", "longSet", "must contain", "5"));
 
         assertThrowsAndMessageContains(
-                () -> Validator.expect(stringSet, "stringSet").ifNotNull().isMissing("five"),
+                () -> Validator.expect(stringSet, "stringSet").ifNotNull().contains("five"),
                 List.of("Set", "stringSet", "must contain", "five"));
     }
 

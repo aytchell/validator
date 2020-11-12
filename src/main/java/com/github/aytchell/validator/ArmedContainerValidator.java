@@ -18,47 +18,51 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
     protected abstract VALIDATOR getValidator();
 
     @Override
-    public VALIDATOR isEmpty() throws ValidationException {
+    public VALIDATOR notEmpty() throws ValidationException {
         if (value.isEmpty()) {
             throw newExceptionWithNameAndType()
-                    .setExpectation("shall not be empty");
+                    .setExpectation("not empty");
         }
         return getValidator();
     }
 
-    public VALIDATOR isContained(TYPE key) throws ValidationException {
+    public VALIDATOR misses(TYPE key) throws ValidationException {
         if (value.contains(key)) {
             throw newExceptionWithNameAndType()
-                    .setExpectation("shall not contain")
+                    .setExpectation("misses")
                     .setExpectedValue(key.toString());
         }
         return getValidator();
     }
 
-    public VALIDATOR isMissing(TYPE key) throws ValidationException {
+    public VALIDATOR contains(TYPE key) throws ValidationException {
         if (!value.contains(key)) {
             throw newExceptionWithNameAndType()
-                    .setExpectation("shall contain")
+                    .setExpectation("contains")
                     .setExpectedValue(key.toString());
         }
         return getValidator();
     }
 
-    public VALIDATOR containsLessThan(int minNumberOfElements)
+    public VALIDATOR sizeAtLeast(int minNumberOfElements)
             throws ValidationException {
         if (value.size() < minNumberOfElements) {
-            throw newExceptionWithNameAndType()
-                    .setExpectation("shall contain more elements than")
+            throw new ValidationException()
+                    .setActualValue(String.valueOf(value.size()))
+                    .setActualValuesName("size of " + getName())
+                    .setExpectation("is at least")
                     .setExpectedValue(String.valueOf(minNumberOfElements));
         }
         return getValidator();
     }
 
-    public VALIDATOR containsMoreThan(int maxNumberOfElements)
+    public VALIDATOR sizeAtMost(int maxNumberOfElements)
             throws ValidationException {
         if (value.size() > maxNumberOfElements) {
-            throw newExceptionWithNameAndType()
-                    .setExpectation("shall not contain more elements than")
+            throw new ValidationException()
+                    .setActualValue(String.valueOf(value.size()))
+                    .setActualValuesName("size of " + getName())
+                    .setExpectation("is at most")
                     .setExpectedValue(String.valueOf(maxNumberOfElements));
         }
         return getValidator();

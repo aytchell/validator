@@ -9,27 +9,27 @@ abstract class DisarmedContainerValidator<TYPE, VALIDATOR> implements ContainerV
     protected abstract VALIDATOR getValidator();
 
     @Override
-    public VALIDATOR isEmpty() {
+    public VALIDATOR notEmpty() {
         return getValidator();
     }
 
     @Override
-    public VALIDATOR containsLessThan(int minNumberOfElements) {
+    public VALIDATOR sizeAtLeast(int minNumberOfElements) {
         return getValidator();
     }
 
     @Override
-    public VALIDATOR containsMoreThan(int maxNumberOfElements) {
+    public VALIDATOR sizeAtMost(int maxNumberOfElements) {
         return getValidator();
     }
 
     @Override
-    public VALIDATOR isContained(TYPE key) {
+    public VALIDATOR misses(TYPE key) {
         return getValidator();
     }
 
     @Override
-    public VALIDATOR isMissing(TYPE key) {
+    public VALIDATOR contains(TYPE key) {
         return getValidator();
     }
 }
