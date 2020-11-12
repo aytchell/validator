@@ -82,13 +82,13 @@ public class ValidationException extends Exception {
         //      <expectedValue>
         if (expectedValuesName != null) {
             if (expectedValue != null) {
-                return String.format("'%s' (value: %s)", expectedValuesName, expectedValue);
+                return String.format(" '%s' (value: %s)", expectedValuesName, expectedValue);
             } else {
-                return String.format("'%s'", expectedValuesName);
+                return String.format(" '%s'", expectedValuesName);
             }
         } else {
             // if the name and the value are null ... then we don't provide any hint
-            return (expectedValue != null) ? expectedValue : "";
+            return (expectedValue != null) ? (" " + expectedValue) : "";
         }
     }
 

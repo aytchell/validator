@@ -15,7 +15,7 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(nullList, "nullList").notNull(),
-                List.of("nullList", "is missing"));
+                List.of("nullList", "is not null"));
     }
 
     @Test
@@ -35,11 +35,11 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(emptyList, "emptyList").notNull().notEmpty(),
-                List.of("List", "emptyList", "must not be empty"));
+                List.of("List", "emptyList", "is not empty"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(emptyList, "emptyList").ifNotNull().notEmpty(),
-                List.of("List", "emptyList", "must not be empty"));
+                List.of("List", "emptyList", "is not empty"));
     }
 
     @Test
@@ -62,11 +62,11 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(smallList, "smallList").notNull().sizeAtLeast(20),
-                List.of("List", "smallList", "must contain at least", "20", setSize));
+                List.of("size of smallList", setSize, "is at least", "20"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(smallList, "smallList").ifNotNull().sizeAtLeast(20),
-                List.of("List", "smallList", "must contain at least", "20", setSize));
+                List.of("size of smallList", setSize, "is at least", "20"));
     }
 
     @Test
@@ -89,11 +89,11 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(bigList, "bigList").notNull().sizeAtMost(7),
-                List.of("List", "bigList", "must not contain more than", "7", setSize));
+                List.of("size of bigList", setSize, "is at most", "7"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(bigList, "bigList").ifNotNull().sizeAtMost(2),
-                List.of("List", "bigList", "must not contain more than", "2", setSize));
+                List.of("size of bigList", setSize, "is at most", "2"));
     }
 
     @Test
@@ -114,11 +114,11 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(longList, "longList").ifNotNull().containsNot(6L),
-                List.of("List", "longList", "must not contain", "6"));
+                List.of("longList", "List", "contains not", "6"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(stringList, "stringList").ifNotNull().containsNot("six"),
-                List.of("List", "stringList", "must not contain", "six"));
+                List.of("stringList", "List", "contains not", "six"));
     }
 
     @Test
@@ -139,11 +139,11 @@ public class ListValidatorTest {
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(longList, "longList").ifNotNull().contains(5L),
-                List.of("List", "longList", "must contain", "5"));
+                List.of("List", "longList", "contains", "5"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(stringList, "stringList").ifNotNull().contains("five"),
-                List.of("List", "stringList", "must contain", "five"));
+                List.of("List", "stringList", "contains", "five"));
     }
 
     @Test
@@ -184,12 +184,12 @@ public class ListValidatorTest {
         assertThrowsAndMessageContains(
                 () -> Validator.expect(integerList, "integerList").notNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(24)),
-                List.of("List", "inside", "integerList", "is too small", "24", "23"));
+                List.of("entry", "23", "in List", "integerList", "is greater or equal", "24"));
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(longList, "longList").ifNotNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(12)),
-                List.of("List", "inside", "longList", "is too small", "11", "12"));
+                List.of("entry", "11", "in List", "longList", "is greater or equal", "12"));
     }
 
     @Test
@@ -209,13 +209,13 @@ public class ListValidatorTest {
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankList, "blankList").notNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("List", "inside", "blankList", "must not be blank")
+                List.of("entry", "in List", "blankList", "is not blank")
         );
 
         assertThrowsAndMessageContains(
                 () -> Validator.expect(blankList, "blankList").ifNotNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("List", "inside", "blankList", "must not be blank")
+                List.of("entry", "in List", "blankList", "is not blank")
         );
     }
 }
