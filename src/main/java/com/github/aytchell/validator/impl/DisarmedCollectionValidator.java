@@ -1,4 +1,8 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
+
+import com.github.aytchell.validator.CollectionValidator;
+import com.github.aytchell.validator.LongEntryValidator;
+import com.github.aytchell.validator.StringEntryValidator;
 
 abstract class DisarmedCollectionValidator<TYPE, VALIDATOR>
         extends DisarmedContainerValidator<TYPE, VALIDATOR>

@@ -1,8 +1,9 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
+
+import com.github.aytchell.validator.ListValidator;
 
 import java.util.List;
 
-// This class shall only be instantiated by Validator
 class ArmedListValidator<E> extends ArmedCollectionValidator<E, ListValidator<E>> implements ListValidator<E> {
     ArmedListValidator(List<E> value, String name) {
         super("List", value, name);

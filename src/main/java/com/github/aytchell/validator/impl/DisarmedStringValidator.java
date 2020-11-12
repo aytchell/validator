@@ -1,10 +1,10 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.StringValidator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// This class shall only be instantiated by Validator
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class DisarmedStringValidator implements StringValidator {
     @Getter

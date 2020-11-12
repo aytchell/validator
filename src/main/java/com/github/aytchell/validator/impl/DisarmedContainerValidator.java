@@ -1,5 +1,6 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.ContainerValidator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

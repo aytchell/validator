@@ -1,5 +1,9 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.LongEntryValidator;
+import com.github.aytchell.validator.MapValidator;
+import com.github.aytchell.validator.StringEntryValidator;
+import com.github.aytchell.validator.Validator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,7 +12,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-// This class shall only be instantiated by Validator
 class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K, V>> implements MapValidator<K, V> {
     private final Map<K, V> theMap;
 

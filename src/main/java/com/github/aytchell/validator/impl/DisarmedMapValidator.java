@@ -1,10 +1,12 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.LongEntryValidator;
+import com.github.aytchell.validator.MapValidator;
+import com.github.aytchell.validator.StringEntryValidator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-// This class shall only be instantiated by Validator
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 class DisarmedMapValidator<K, V> extends DisarmedContainerValidator<K, MapValidator<K, V>>
         implements MapValidator<K, V> {

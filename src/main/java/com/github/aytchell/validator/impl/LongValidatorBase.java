@@ -1,8 +1,8 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.LongValidator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 
-// This class shall only be derived by package internal classes
 abstract class LongValidatorBase implements LongValidator {
     @Override
     public LongValidator gtEqThan(int lowerBound) throws ValidationException {

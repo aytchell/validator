@@ -1,5 +1,9 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.CollectionValidator;
+import com.github.aytchell.validator.LongEntryValidator;
+import com.github.aytchell.validator.StringEntryValidator;
+import com.github.aytchell.validator.Validator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 
 import java.util.Collection;

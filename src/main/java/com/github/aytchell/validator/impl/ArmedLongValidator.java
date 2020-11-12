@@ -1,10 +1,10 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.LongValidator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
-// This class shall only be instantiated by Validator
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 class ArmedLongValidator extends LongValidatorBase {
     private static final int MIN_TCP_PORT_NUMBER = 1;

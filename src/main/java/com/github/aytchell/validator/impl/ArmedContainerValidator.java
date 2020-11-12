@@ -1,5 +1,6 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.ContainerValidator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,7 +8,6 @@ import lombok.Getter;
 
 import java.util.Collection;
 
-// This class shall only be instantiated by Validator
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter(value = AccessLevel.PROTECTED)
 abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerValidator<TYPE, VALIDATOR> {

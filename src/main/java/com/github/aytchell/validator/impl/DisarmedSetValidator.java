@@ -1,9 +1,9 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
 
+import com.github.aytchell.validator.SetValidator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-// This class shall only be instantiated by Validator
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 class DisarmedSetValidator<T> extends DisarmedCollectionValidator<T, SetValidator<T>> implements SetValidator<T> {
     @Override

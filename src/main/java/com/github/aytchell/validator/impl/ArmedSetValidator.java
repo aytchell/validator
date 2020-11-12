@@ -1,8 +1,9 @@
-package com.github.aytchell.validator;
+package com.github.aytchell.validator.impl;
+
+import com.github.aytchell.validator.SetValidator;
 
 import java.util.Set;
 
-// This class shall only be instantiated by Validator
 class ArmedSetValidator<E> extends ArmedCollectionValidator<E, SetValidator<E>> implements SetValidator<E> {
     ArmedSetValidator(Set<E> value, String name) {
         super("Set", value, name);
