@@ -4,6 +4,7 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.function.LongPredicate;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 
@@ -206,7 +207,6 @@ public class LongValidatorTest {
                 List.of("validLong", "42", "is less than", "otherLong", "20"));
     }
 
-
     @Test
     void isLessEqThanGivenValidValuesPass() throws ValidationException {
         final Short validShort = 10;
@@ -334,5 +334,65 @@ public class LongValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(invalidIntegerPort, "invalidIntegerPort").ifNotNull().validPortNumber(),
                 List.of("invalidIntegerPort", "65536", "is a valid port number"));
+    }
+
+    @Test
+    void passesWhenValueIsGoodPasses() throws ValidationException {
+        final Integer validInteger = 50;
+
+        Validator.expect(validInteger).notNull().passes(v -> (v % 2) == 0, "even");
+        Validator.expect(validInteger).notNull().passes(this::isEven, "even");
+        Validator.expect(validInteger).notNull().passes(LongValidatorTest::isStaticEven, "even");
+        Validator.expect(validInteger).notNull().passes(new IsEven(), "even");
+    }
+
+    @Test
+    void passesIfNotNullWithNullPasses() throws ValidationException {
+        final Long nullLong = null;
+
+        Validator.expect(nullLong).ifNotNull()
+                .passes(this::isEven, "even")
+                .passes(this::isOdd, "odd");
+    }
+
+    @Test
+    void passesWhenValueIsBadThrows() throws ValidationException {
+        final Integer validInteger = 75;
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validInteger).notNull().passes(v -> (v % 2) == 0, "is even"),
+                List.of("75", "is even"));
+        // Exception message is: Expecting that 75 is even (but is not)
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validInteger).notNull().passes(this::isEven, "is even"),
+                List.of("75", "is even"));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validInteger).notNull().passes(LongValidatorTest::isStaticEven, "is even"),
+                List.of("75", "is even"));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(validInteger).notNull().passes(new IsEven(), "is even"),
+                List.of("75", "is even"));
+    }
+
+    private static boolean isStaticEven(Long value) {
+        return (value % 2) == 0;
+    }
+
+    private boolean isEven(Long value) {
+        return (value % 2) == 0;
+    }
+
+    private boolean isOdd(Long value) {
+        return (value % 2) == 1;
+    }
+
+    private static class IsEven implements LongPredicate {
+        @Override
+        public boolean test(long value) {
+            return (value % 2) == 0;
+        }
     }
 }

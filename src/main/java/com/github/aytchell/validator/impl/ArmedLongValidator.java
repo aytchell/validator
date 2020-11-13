@@ -5,6 +5,8 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
+import java.util.function.LongPredicate;
+
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 class ArmedLongValidator extends LongValidatorBase {
     private static final int MIN_TCP_PORT_NUMBER = 1;
@@ -65,6 +67,15 @@ class ArmedLongValidator extends LongValidatorBase {
                     .setExpectation(
                             String.format("is a valid port number (%d to %d)",
                                     MIN_TCP_PORT_NUMBER, MAX_TCP_PORT_NUMBER));
+        }
+        return this;
+    }
+
+    @Override
+    public LongValidator passes(LongPredicate pred, String expectation) throws ValidationException {
+        if (!pred.test(value)) {
+            throw newExceptionWithBasics()
+                    .setExpectation(expectation + " (but is not)");
         }
         return this;
     }

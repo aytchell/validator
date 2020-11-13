@@ -2,6 +2,8 @@ package com.github.aytchell.validator;
 
 import com.github.aytchell.validator.exceptions.ValidationException;
 
+import java.util.function.LongPredicate;
+
 public interface LongValidator {
     // ----- greater than -----
     LongValidator greaterThan(long lowerBound) throws ValidationException;
@@ -25,4 +27,6 @@ public interface LongValidator {
 
     // ----- check for valid TCP/UDP port number -----
     LongValidator validPortNumber() throws ValidationException;
+
+    LongValidator passes(LongPredicate pred, String expectation) throws ValidationException;
 }

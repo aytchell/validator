@@ -1,9 +1,12 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.LongValidator;
+import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.function.LongPredicate;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class DisarmedLongValidator extends LongValidatorBase {
@@ -32,6 +35,11 @@ class DisarmedLongValidator extends LongValidatorBase {
 
     @Override
     public LongValidator validPortNumber() {
+        return this;
+    }
+
+    @Override
+    public LongValidator passes(LongPredicate pred, String expectation) {
         return this;
     }
 }
