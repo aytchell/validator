@@ -4,6 +4,7 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -123,5 +124,27 @@ public class StringValidatorTest {
                         .notNull().validUrl(),
                 List.of("no-url", "schema is missing", "is valid URL")
         );
+    }
+
+    @Test
+    void matchesGivenProperExamplesPass() throws ValidationException {
+        final String declaration = "private static final String foo = \"bar\"";
+        final String nullString = null;
+        final Pattern privateString = Pattern.compile("private.*String.*=.*");
+
+        Validator.expect(declaration).notNull().matches(privateString);
+
+        Validator.expect(nullString).ifNotNull().matches(privateString).lengthAtMost(2);
+        Validator.expect(nullString).ifNotNull().matches(privateString, "privateString").lengthAtMost(2);
+    }
+
+    @Test
+    void matchesGivenWrongInputThrows() {
+        final String declaration = "private static final String foo = \"bar\"";
+        final Pattern publicPattern = Pattern.compile(".*public.*");
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(declaration).notNull().matches(publicPattern, "publicPattern"),
+                List.of("private static", "matches regex", "'publicPattern'", "'.*public.*'"));
     }
 }

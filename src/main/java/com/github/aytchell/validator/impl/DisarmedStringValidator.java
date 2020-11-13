@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.regex.Pattern;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class DisarmedStringValidator implements StringValidator {
     @Getter
@@ -28,6 +30,16 @@ class DisarmedStringValidator implements StringValidator {
 
     @Override
     public StringValidator validUrl() throws ValidationException {
+        return this;
+    }
+
+    @Override
+    public StringValidator matches(Pattern pattern) throws ValidationException {
+        return this;
+    }
+
+    @Override
+    public StringValidator matches(Pattern pattern, String regexName) throws ValidationException {
         return this;
     }
 }
