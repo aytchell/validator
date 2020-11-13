@@ -43,12 +43,12 @@ public class DoubleValidatorTest {
     void lessThanWithWrongExampleThrows() {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(2.4).notNull().lessThan(2.3),
-                List.of("2.4", "is smaller than", "2.3"));
+                List.of("2.4", "is less than", "2.3"));
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(Math.sqrt(20), "sqrt(20)", "foo").ifNotNull()
                         .lessThan(Math.PI, "pi"),
-                List.of("sqrt(20)", "4.472135", "foo", "is smaller than", "pi", "3.14159"));
+                List.of("sqrt(20)", "4.472135", "foo", "is less than", "pi", "3.14159"));
     }
 
     @Test

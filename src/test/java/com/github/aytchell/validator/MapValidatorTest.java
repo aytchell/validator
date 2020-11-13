@@ -219,7 +219,7 @@ public class MapValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(shortMap, "shortMap").notNull()
                         .eachNumericValue(v -> v.notNull().lessThan(24)),
-                List.of("value", "55", "shortMap", "type: Map", "is smaller than", "24"));
+                List.of("value", "55", "shortMap", "type: Map", "is less than", "24"));
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(integerMap, "integerMap").notNull()

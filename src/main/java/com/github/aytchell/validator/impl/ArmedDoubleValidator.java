@@ -26,7 +26,7 @@ class ArmedDoubleValidator extends DoubleValidatorBase {
     public DoubleValidator lessThan(double upperBound, String otherName) throws ValidationException {
         if (value >= upperBound) {
             throw newExceptionWithBasics()
-                    .setExpectation("is smaller than")
+                    .setExpectation("is less than")
                     .setExpectedValuesName(otherName)
                     .setExpectedValue(upperBound);
         }

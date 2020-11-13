@@ -40,7 +40,7 @@ class ArmedLongValidator extends LongValidatorBase {
     public LongValidator lessThan(long upperBound, String otherName) throws ValidationException {
         if (value >= upperBound) {
             throw newExceptionWithBasics()
-                    .setExpectation("is smaller than")
+                    .setExpectation("is less than")
                     .setExpectedValuesName(otherName)
                     .setExpectedValue(upperBound);
         }
@@ -51,7 +51,7 @@ class ArmedLongValidator extends LongValidatorBase {
     public LongValidator lessEqThan(long upperBound, String otherName) throws ValidationException {
         if (value > upperBound) {
             throw newExceptionWithBasics()
-                    .setExpectation("is smaller or equal than")
+                    .setExpectation("is less or equal than")
                     .setExpectedValuesName(otherName)
                     .setExpectedValue(upperBound);
         }
