@@ -10,27 +10,27 @@ import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAn
 class ValidatorTest {
 
     @Test
-    void throwIfNullGivenValidStringPasses() throws ValidationException {
+    void expectNotNullGivenValidStringPasses() throws ValidationException {
         final String validString = "valid";
-        Validator.throwIfNull(validString, "validString");
+        Validator.expectNotNull(validString, "validString");
     }
 
     @Test
-    void throwIfNullGivenValidLongPasses() throws ValidationException {
+    void expectNotNullGivenValidLongPasses() throws ValidationException {
         final Long validLong = 42L;
-        Validator.throwIfNull(validLong, "validLong");
+        Validator.expectNotNull(validLong, "validLong");
     }
 
     @Test
-    void throwIfNullGivenNullThrows() {
+    void expectNotNullGivenNullThrows() {
         final String nullString = null;
 
         assertThrowsAndMessageReadsLike(
-                () -> Validator.throwIfNull(nullString, "nullString"),
+                () -> Validator.expectNotNull(nullString, "nullString"),
                 List.of("nullString", "is not null"));
 
         assertThrowsAndMessageReadsLike(
-                () -> Validator.throwIfNull(nullString, "nullString", "important info"),
+                () -> Validator.expectNotNull(nullString, "nullString", "important info"),
                 List.of("nullString", "important info", "is not null"));
     }
 }

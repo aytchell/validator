@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +15,12 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class Validator {
     // fallback for every type that has no 'expect' method
-    public static void throwIfNull(Object value, String valueName) throws ValidationException {
-        throwIfNull(value, valueName, null);
+    public static void expectNotNull(Object value, String valueName) throws ValidationException {
+        expectNotNull(value, valueName, null);
     }
 
     // fallback for every type that has no 'expect' method
-    public static void throwIfNull(Object value, String valueName, String extraInfo) throws ValidationException {
+    public static void expectNotNull(Object value, String valueName, String extraInfo) throws ValidationException {
         if (value == null) {
             throw new ValidationException()
                     .setActualValuesName(valueName)
