@@ -1,6 +1,7 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.BooleanValidator;
+import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,22 @@ class DisarmedBooleanValidator implements BooleanValidator {
     private static final BooleanValidator INSTANCE = new DisarmedBooleanValidator();
 
     @Override
-    public void isTrue() {
+    public BooleanValidator isTrue() {
+        return this;
     }
 
     @Override
-    public void isFalse() {
+    public BooleanValidator isFalse() {
+        return this;
+    }
+
+    @Override
+    public BooleanValidator matches(Boolean otherValue) throws ValidationException {
+        return this;
+    }
+
+    @Override
+    public BooleanValidator matches(Boolean otherValue, String otherName) throws ValidationException {
+        return this;
     }
 }

@@ -5,20 +5,22 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
+
 public class BooleanValidatorTest {
     @Test
     void isNullGivenNullThrows() {
         final Boolean nullBoolean = null;
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullBoolean).notNull(),
                 List.of("is not null"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullBoolean, "nullBoolean").notNull(),
                 List.of("nullBoolean", "is not null"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullBoolean, "nullBoolean", "extra info").notNull(),
                 List.of("nullBoolean", "extra info", "is not null"));
     }
@@ -39,12 +41,42 @@ public class BooleanValidatorTest {
 
     @Test
     void testForWrongValueFails() {
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(true, "trueValue").notNull().isFalse(),
                 List.of("trueValue", "value: true", "is false"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(false, "falseValue").notNull().isTrue(),
                 List.of("falseValue", "value: false", "is true"));
+    }
+
+    @Test
+    void matchesWithEqualValuesPass() throws ValidationException {
+        final Boolean trueValue = true;
+        final Boolean falseValue = false;
+        final Boolean nullBool = null;
+
+        Validator.expect(trueValue, "trueValue").notNull().matches(true);
+        Validator.expect(falseValue, "falseValue").notNull().matches(false);
+
+        Validator.expect(nullBool).ifNotNull()
+                .matches(true)
+                .matches(false, "falseValue");
+    }
+
+    @Test
+    void matchesWithDifferentValuesThrows() {
+        final Boolean trueValue = true;
+        final Boolean falseValue = false;
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(trueValue, "trueValue").notNull()
+                        .matches(false, "falseValue"),
+                List.of("'trueValue'", "true", "equals", "'falseValue'", "false"));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(falseValue, "falseValue").notNull()
+                        .matches(true, "trueValue"),
+                List.of("'falseValue'", "false", "equals", "'trueValue'", "true"));
     }
 }

@@ -12,7 +12,7 @@ class ArmedBooleanValidator implements BooleanValidator {
     private final String extraInfo;
 
     @Override
-    public void isTrue() throws ValidationException {
+    public BooleanValidator isTrue() throws ValidationException {
         if (!value) {
             throw new ValidationException()
                     .setActualValuesName(name)
@@ -20,10 +20,11 @@ class ArmedBooleanValidator implements BooleanValidator {
                     .setValuesExtraInfo(extraInfo)
                     .setExpectation("is " + Boolean.TRUE.toString());
         }
+        return this;
     }
 
     @Override
-    public void isFalse() throws ValidationException {
+    public BooleanValidator isFalse() throws ValidationException {
         if (value) {
             throw new ValidationException()
                     .setActualValuesName(name)
@@ -31,5 +32,25 @@ class ArmedBooleanValidator implements BooleanValidator {
                     .setValuesExtraInfo(extraInfo)
                     .setExpectation("is " + Boolean.FALSE.toString());
         }
+        return this;
+    }
+
+    @Override
+    public BooleanValidator matches(Boolean otherValue) throws ValidationException {
+        return matches(otherValue, null);
+    }
+
+    @Override
+    public BooleanValidator matches(Boolean otherValue, String otherName) throws ValidationException {
+        if (value != otherValue) {
+            throw new ValidationException()
+                    .setActualValuesName(name)
+                    .setActualValue(value)
+                    .setValuesExtraInfo(extraInfo)
+                    .setExpectation("equals")
+                    .setExpectedValue(otherValue)
+                    .setExpectedValuesName(otherName);
+        }
+        return this;
     }
 }
