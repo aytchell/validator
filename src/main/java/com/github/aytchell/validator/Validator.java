@@ -18,9 +18,15 @@ import java.util.Set;
 public class Validator {
     // fallback for every type that has no 'expect' method
     public static void throwIfNull(Object value, String valueName) throws ValidationException {
+        throwIfNull(value, valueName, null);
+    }
+
+    // fallback for every type that has no 'expect' method
+    public static void throwIfNull(Object value, String valueName, String extraInfo) throws ValidationException {
         if (value == null) {
             throw new ValidationException()
                     .setActualValuesName(valueName)
+                    .setValuesExtraInfo(extraInfo)
                     .setExpectation("is not null");
         }
     }

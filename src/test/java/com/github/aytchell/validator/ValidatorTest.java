@@ -28,5 +28,9 @@ class ValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.throwIfNull(nullString, "nullString"),
                 List.of("nullString", "is not null"));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.throwIfNull(nullString, "nullString", "important info"),
+                List.of("nullString", "important info", "is not null"));
     }
 }
