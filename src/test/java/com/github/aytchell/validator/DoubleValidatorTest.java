@@ -52,7 +52,7 @@ public class DoubleValidatorTest {
     }
 
     @Test
-    void ifNotNullPasseAllTests() throws ValidationException {
+    void ifNotNullPassesAllTests() throws ValidationException {
         final Double nullDouble = null;
 
         Validator.expect(nullDouble).ifNotNull().lessThan(4).greaterThan(5);

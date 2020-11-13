@@ -5,16 +5,22 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
-
 public class BooleanValidatorTest {
     @Test
     void isNullGivenNullThrows() {
         final Boolean nullBoolean = null;
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(nullBoolean).notNull(),
+                List.of("is not null"));
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullBoolean, "nullBoolean").notNull(),
                 List.of("nullBoolean", "is not null"));
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(nullBoolean, "nullBoolean", "extra info").notNull(),
+                List.of("nullBoolean", "extra info", "is not null"));
     }
 
     @Test

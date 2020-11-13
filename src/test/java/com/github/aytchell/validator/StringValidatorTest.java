@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StringValidatorTest {
@@ -14,8 +13,8 @@ public class StringValidatorTest {
         final String nullString = null;
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(nullString, "nullString").notNull(),
-                List.of("nullString", "is not null"));
+                () -> Validator.expect(nullString, "nullString", "extras").notNull(),
+                List.of("nullString", "extras", "is not null"));
     }
 
     @Test
@@ -42,8 +41,8 @@ public class StringValidatorTest {
         );
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(emptyString, "emptyString").ifNotNull().notEmpty(),
-                List.of("emptyString", "is not empty")
+                () -> Validator.expect(emptyString, "emptyString", "info").ifNotNull().notEmpty(),
+                List.of("emptyString", "info", "is not empty")
         );
     }
 
@@ -55,7 +54,7 @@ public class StringValidatorTest {
         Validator.expect(filledString, "filledString").notNull().notBlank();
 
         Validator.expect(filledString, "filledString").ifNotNull().notBlank();
-        Validator.expect(nullString, "nullString").ifNotNull().notBlank();
+        Validator.expect(nullString).ifNotNull().notBlank();
     }
 
     @Test

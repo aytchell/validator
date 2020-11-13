@@ -10,15 +10,16 @@ import java.util.Map;
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MapValidatorTest {
     @Test
     void isNullGivenNullThrows() {
         final Map<Integer, String> nullMap = null;
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(nullMap, "nullMap").notNull(),
-                List.of("nullMap", "is not null"));
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(nullMap, "nullMap", "extras").notNull(),
+                List.of("nullMap", "extras", "is not null"));
     }
 
     @Test
@@ -36,11 +37,11 @@ public class MapValidatorTest {
     void isEmptyGivenEmptyMapThrows() {
         final Map<Long, Integer> emptyMap = Map.of();
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptyMap, "emptyMap").notNull().notEmpty(),
                 List.of("emptyMap", "Map", "is not empty"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptyMap, "emptyMap").ifNotNull().notEmpty(),
                 List.of("emptyMap", "Map", "is not empty"));
     }
@@ -64,11 +65,11 @@ public class MapValidatorTest {
 
         assertEquals(mapSize, String.valueOf(smallMap.size()));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(smallMap, "smallMap").notNull().sizeAtLeast(8),
                 List.of("size of smallMap", mapSize, "is at least", "8"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(smallMap, "smallMap").ifNotNull().sizeAtLeast(8),
                 List.of("size of smallMap", mapSize, "is at least", "8"));
     }
@@ -92,11 +93,11 @@ public class MapValidatorTest {
 
         assertEquals(setSize, String.valueOf(bigMap.size()));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(bigMap, "bigMap").notNull().sizeAtMost(7),
                 List.of("size of bigMap", setSize, "is at most", "7"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(bigMap, "bigMap").ifNotNull().sizeAtMost(2),
                 List.of("size of bigMap", setSize, "is at most", "2"));
     }
@@ -121,11 +122,11 @@ public class MapValidatorTest {
         final Map<String, Integer> stringMap = Map.of("one", 1, "two", 2, "three", 3,
                 "five", 4, "six", 5, "eight", 6, "and so on", 7);
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longMap, "longMap").ifNotNull().containsNot(6L),
                 List.of("longMap", "Map", "contains not", "6"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(stringMap, "stringMap").ifNotNull().containsNot("six"),
                 List.of("stringMap", "Map", "contains not", "six"));
     }
@@ -150,11 +151,11 @@ public class MapValidatorTest {
         final Map<String, Integer> stringMap = Map.of("one", 1, "two", 2,
                 "three", 3, "eight", 4, "and so on", 5);
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longMap, "longMap").ifNotNull().contains(5L),
                 List.of("longMap", "Map", "contains", "5"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(stringMap, "stringMap").ifNotNull().contains("five"),
                 List.of("stringMap", "Map", "contains", "five"));
     }
@@ -186,21 +187,46 @@ public class MapValidatorTest {
         final Map<Integer, Long> nullMap = null;
 
         Validator.expect(integerMap, "integerMap").notNull().eachNumericValue(v -> v.notNull().greaterEqThan(5));
-        Validator.expect(longMap, "longMap").ifNotNull().eachNumericValue(v -> v.notNull().greaterEqThan(5));
+        Validator.expect(longMap).ifNotNull().eachNumericValue(v -> v.notNull().greaterEqThan(5));
+
         Validator.expect(nullMap, "nullMap").ifNotNull().eachNumericValue(v -> v.notNull().greaterEqThan(5));
+        Validator.expect(nullMap, "nullMap").ifNotNull().eachStringValue(v -> v.notNull().notBlank());
     }
 
     @Test
-    void isAnyValueBelowFiveWithLowEntriesThrows() throws ValidationException {
-        final Map<Integer, Integer> integerMap = Map.of(1, 67, 2, 56, 3, 45, 4, 34, 5, 23);
-        final Map<Integer, Long> longMap = Map.of(1, 11L, 2, 12L, 3, 13L, 4, 14L);
+    void eachNumericValueAppliedOnStringsWillThrow() throws ValidationException {
+        final Map<Integer, String> stringMap = Map.of(1, "68", 2, "69");
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrows(ClassCastException.class,
+                () -> Validator.expect(stringMap).ifNotNull().eachNumericValue(v -> v.notNull().greaterEqThan(5)));
+    }
+
+    @Test
+    void eachStringValueAppliedOnLongWillThrow() throws ValidationException {
+        final Map<Integer, Long> longMap = Map.of(1, 68L, 2, 69L);
+
+        assertThrows(ClassCastException.class,
+                () -> Validator.expect(longMap).ifNotNull().eachStringValue(v -> v.notNull().notBlank()));
+    }
+
+    @Test
+    void isAnyValueBelowFiveWithLowEntriesThrows() {
+        final short x = 55;
+        final Map<Integer, Short> shortMap = Map.of(1, x, 2, x, 3, x, 4, x);
+        final Map<Integer, Integer> integerMap = Map.of(1, 24, 66, 6, 3, 45);
+        final Map<Integer, Long> longMap = Map.of(1, 13L, 2, 12L, 3, 11L, 4, 14L);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(shortMap, "shortMap").notNull()
+                        .eachNumericValue(v -> v.notNull().lessThan(24)),
+                List.of("value", "55", "shortMap", "type: Map", "is smaller than", "24"));
+
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(integerMap, "integerMap").notNull()
                         .eachNumericValue(v -> v.notNull().greaterEqThan(24)),
-                List.of("value", "23", "integerMap", "type: Map", "is greater or equal", "24"));
+                List.of("value", "6", "integerMap", "type: Map", "is greater or equal", "24"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longMap, "longMap").ifNotNull()
                         .eachNumericValue(v -> v.notNull().greaterEqThan(12)),
                 List.of("value", "11", "longMap", "type: Map", "is greater or equal", "12"));
@@ -220,13 +246,13 @@ public class MapValidatorTest {
     void isAnyValueBlankWithBlankStringsGivenThrows() {
         final Map<Integer, String> blankMap = Map.of(1, "\t\t\t", 2, "   \n", 3, "\t\n");
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankMap, "blankMap").notNull().eachStringValue(
                         v -> v.notNull().notBlank()),
                 List.of("value", "blankMap", "type: Map", "is not blank")
         );
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankMap, "blankMap").ifNotNull().eachStringValue(
                         v -> v.notNull().notBlank()),
                 List.of("value", "blankMap", "type: Map", "is not blank")
@@ -253,7 +279,7 @@ public class MapValidatorTest {
         assertEquals(3, longMap.size());
         assertNull(longMap.get(3));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longMap, "longMap").notNull().eachNumericValue(
                         v -> v.notNull().greaterEqThan(500L)),
                 List.of("value", "longMap", "type: Map", "is not null"));

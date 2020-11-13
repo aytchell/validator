@@ -32,7 +32,7 @@ public class ZonedDateTimeValidatorTest {
     }
 
     @Test
-    void compareLocalDateCorrectly() throws ValidationException {
+    void compareDatesCorrectly() throws ValidationException {
         final LocalDate early = LocalDate.of(1912, 1, 1);
         final LocalDateTime earlier = LocalDateTime.of(1901, 1, 1, 12, 34);
         final ZonedDateTime earliest = ZonedDateTime.of(1896, 3, 4,
@@ -58,6 +58,41 @@ public class ZonedDateTimeValidatorTest {
     void compareLocalDateIncorrectly() throws ValidationException {
         final LocalDate early = LocalDate.of(1912, 1, 1);
         final LocalDate late = LocalDate.of(2050, 12, 31);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(early, "early", "start of things")
+                        .notNull().isAfter(late, "end of things"),
+                List.of("early", "1912", "start of things", "is after", "end of things", "2050"));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(late, "late", "future")
+                        .notNull().isBefore(early, "past"),
+                List.of("late", "2050", "future", "is before", "past", "1912"));
+    }
+
+    @Test
+    void compareLocalDateTimeIncorrectly() throws ValidationException {
+        final LocalDateTime early = LocalDateTime.of(1912, 1, 1, 12, 0);
+        final LocalDateTime late = LocalDateTime.of(2050, 12, 31, 12, 0);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(early, "early", "start of things")
+                        .notNull().isAfter(late, "end of things"),
+                List.of("early", "1912", "start of things", "is after", "end of things", "2050"));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(late, "late", "future")
+                        .notNull().isBefore(early, "past"),
+                List.of("late", "2050", "future", "is before", "past", "1912"));
+    }
+
+    @Test
+    void compareZonedDateTimeIncorrectly() throws ValidationException {
+        final ZonedDateTime early = ZonedDateTime.of(1912, 1, 1, 12, 0,
+                0, 0, ZoneId.of("GMT+2"));
+
+        final ZonedDateTime late = ZonedDateTime.of(2050, 12, 31, 12, 0,
+                0, 0, ZoneId.of("GMT+2"));
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(early, "early", "start of things")

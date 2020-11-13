@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SetValidatorTest {
@@ -15,8 +14,8 @@ public class SetValidatorTest {
         final Set<String> nullSet = null;
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(nullSet, "nullSet").notNull(),
-                List.of("nullSet", "is not null"));
+                () -> Validator.expect(nullSet, "nullSet", "extras").notNull(),
+                List.of("nullSet", "extras", "is not null"));
     }
 
     @Test
@@ -174,7 +173,7 @@ public class SetValidatorTest {
 
         Validator.expect(integerSet, "integerSet").notNull().eachNumericEntry(v -> v.notNull().greaterEqThan(5));
         Validator.expect(longSet, "longSet").ifNotNull().eachNumericEntry(v -> v.notNull().greaterEqThan(5));
-        Validator.expect(nullSet, "nullSet").ifNotNull().eachNumericEntry(v -> v.notNull().greaterEqThan(5));
+        Validator.expect(nullSet).ifNotNull().eachNumericEntry(v -> v.notNull().greaterEqThan(5));
     }
 
     @Test

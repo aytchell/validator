@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ListValidatorTest {
@@ -14,8 +13,16 @@ public class ListValidatorTest {
         final List<String> nullList = null;
 
         ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(nullList).notNull(),
+                List.of("is not null"));
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullList, "nullList").notNull(),
                 List.of("nullList", "is not null"));
+
+        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(nullList, "nullList", "extra info").notNull(),
+                List.of("nullList", "extra info", "is not null"));
     }
 
     @Test
@@ -173,7 +180,9 @@ public class ListValidatorTest {
 
         Validator.expect(integerList, "integerList").notNull().eachNumericEntry(v -> v.notNull().greaterEqThan(5));
         Validator.expect(longList, "longList").ifNotNull().eachNumericEntry(v -> v.notNull().greaterEqThan(5));
+
         Validator.expect(nullList, "nullList").ifNotNull().eachNumericEntry(v -> v.notNull().greaterEqThan(5));
+        Validator.expect(nullList, "nullList").ifNotNull().eachStringEntry(v -> v.notNull().notBlank());
     }
 
     @Test
