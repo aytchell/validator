@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StringValidatorTest {
@@ -12,7 +13,7 @@ public class StringValidatorTest {
     void isNullGivenNullThrows() {
         final String nullString = null;
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullString, "nullString", "extras").notNull(),
                 List.of("nullString", "extras", "is not null"));
     }
@@ -35,12 +36,12 @@ public class StringValidatorTest {
     void isEmptyGivenEmptyStringThrows() {
         final String emptyString = "";
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptyString, "emptyString").notNull().notEmpty(),
                 List.of("emptyString", "is not empty")
         );
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptyString, "emptyString", "info").ifNotNull().notEmpty(),
                 List.of("emptyString", "info", "is not empty")
         );
@@ -61,12 +62,12 @@ public class StringValidatorTest {
     void isBlankGivenBlankStringThrows() {
         final String blankString = "\t \n";
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankString, "blankString").notNull().notBlank(),
                 List.of("blankString", "is not blank")
         );
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankString, "blankString").ifNotNull().notBlank(),
                 List.of("blankString", "is not blank")
         );
@@ -93,14 +94,34 @@ public class StringValidatorTest {
 
         assertEquals(stringSize, String.valueOf(longString.length()));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longString, "longString").notNull().lengthAtMost(10),
                 List.of("length of longString", stringSize, "is at most", "10")
         );
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longString, "longString").ifNotNull().lengthAtMost(10),
                 List.of("length of longString", stringSize, "is at most", "10")
+        );
+    }
+
+    @Test
+    void validUrlWithVAlidUrlGivenPasses() throws ValidationException {
+        final String url = "http://www.github.com/aytchell/validator";
+        final String nullString = null;
+
+        Validator.expect(url).notNull().validUrl();
+        Validator.expect(nullString).ifNotNull().validUrl().lengthAtMost(1);
+    }
+
+    @Test
+    void validUrlWithMalformedUrlGivenThrows() {
+        final String url = "://no valid url/";
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(url, "no-url", "schema is missing")
+                        .notNull().validUrl(),
+                List.of("no-url", "schema is missing", "is valid URL")
         );
     }
 }

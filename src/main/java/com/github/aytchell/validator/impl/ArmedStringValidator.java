@@ -5,6 +5,9 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 class ArmedStringValidator implements StringValidator {
     private final String value;
@@ -40,6 +43,17 @@ class ArmedStringValidator implements StringValidator {
                     .setExpectedValue(maxLength);
         }
         return this;
+    }
+
+    @Override
+    public StringValidator validUrl() throws ValidationException {
+        try {
+            new URL(value);
+            return this;
+        } catch (MalformedURLException e) {
+            throw newExceptionWithBasics()
+                    .setExpectation("is valid URL");
+        }
     }
 
     private ValidationException newExceptionWithBasics() {

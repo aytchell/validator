@@ -8,4 +8,6 @@ public interface StringValidator {
     StringValidator notBlank() throws ValidationException;
 
     StringValidator lengthAtMost(int maxLength) throws ValidationException;
+
+    StringValidator validUrl() throws ValidationException;
 }
