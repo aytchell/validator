@@ -10,7 +10,17 @@ import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAn
 public class LongValidatorTest {
     @Test
     void isNullGivenNullThrows() {
+        final Short nullShort = null;
+        final Integer nullInteger = null;
         final Long nullLong = null;
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(nullShort, "nullShort").notNull(),
+                List.of("nullShort", "is not null"));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(nullInteger, "nullInteger").notNull(),
+                List.of("nullInteger", "is not null"));
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullLong, "nullLong").notNull(),

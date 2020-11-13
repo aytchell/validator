@@ -94,7 +94,6 @@ public class Validator {
 
     public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(LocalDate value, String name,
             String extraInfo) {
-        // return ValidatorImpl.expect(LocalDateTime.of(value, LocalTime.of(0, 0)), name, extraInfo);
         return ValidatorImpl.expect(value, name, extraInfo);
     }
 
@@ -110,7 +109,6 @@ public class Validator {
 
     public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(LocalDateTime value,
             String name, String extraInfo) {
-        //return ValidatorImpl.expect(ZonedDateTime.of(value, ZoneId.systemDefault()), name, extraInfo);
         return ValidatorImpl.expect(value, name, extraInfo);
     }
 
