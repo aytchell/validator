@@ -83,6 +83,19 @@ public class Validator {
         return ValidatorImpl.expect(value, name, extraInfo);
     }
 
+    // --- check Double ---
+    public static NullableObjectValidator<Double, DoubleValidator> expect(Double value) {
+        return ValidatorImpl.expect(value, null, null);
+    }
+
+    public static NullableObjectValidator<Double, DoubleValidator> expect(Double value, String name) {
+        return ValidatorImpl.expect(value, name, null);
+    }
+
+    public static NullableObjectValidator<Double, DoubleValidator> expect(Double value, String name, String extraInfo) {
+        return ValidatorImpl.expect(value, name, extraInfo);
+    }
+
     // --- check String ---
     public static NullableObjectValidator<String, StringValidator> expect(String value) {
         return ValidatorImpl.expect(value, null, null);

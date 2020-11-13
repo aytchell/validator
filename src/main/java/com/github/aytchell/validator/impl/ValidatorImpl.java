@@ -1,6 +1,7 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.BooleanValidator;
+import com.github.aytchell.validator.DoubleValidator;
 import com.github.aytchell.validator.ListValidator;
 import com.github.aytchell.validator.LongValidator;
 import com.github.aytchell.validator.MapValidator;
@@ -58,6 +59,15 @@ public class ValidatorImpl {
             @Override
             protected LongValidator createValidator(Long value, String name, String extraInfo) {
                 return new ArmedLongValidator(value, name, extraInfo);
+            }
+        };
+    }
+
+    public static NullableObjectValidator<Double, DoubleValidator> expect(Double value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, DisarmedDoubleValidator.getINSTANCE()) {
+            @Override
+            protected DoubleValidator createValidator(Double value, String name, String extraInfo) {
+                return new ArmedDoubleValidator(value, name, extraInfo);
             }
         };
     }
