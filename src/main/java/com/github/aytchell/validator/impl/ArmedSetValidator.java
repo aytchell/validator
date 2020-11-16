@@ -16,6 +16,11 @@ class ArmedSetValidator<E> extends ArmedCollectionValidator<E, SetValidator<E>> 
 
     @Override
     protected String compileNameOfElement(int index, String entryName) {
-        return String.format("%s.%s", getName(), entryName);
+        final String setName = getName();
+        if (setName != null) {
+            return String.format("%s.%s", setName, entryName);
+        } else {
+            return String.format("Set.%s", entryName);
+        }
     }
 }

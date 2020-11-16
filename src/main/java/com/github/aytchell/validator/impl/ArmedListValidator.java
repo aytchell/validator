@@ -1,8 +1,6 @@
 package com.github.aytchell.validator.impl;
 
-import com.github.aytchell.validator.CustomValidator;
 import com.github.aytchell.validator.ListValidator;
-import com.github.aytchell.validator.exceptions.ValidationException;
 
 import java.util.List;
 
@@ -18,6 +16,11 @@ class ArmedListValidator<E> extends ArmedCollectionValidator<E, ListValidator<E>
 
     @Override
     protected String compileNameOfElement(int index, String entryName) {
-        return String.format("%s[%d].%s", getName(), index, entryName);
+        final String listName = getName();
+        if (listName != null) {
+            return String.format("%s[%d].%s", listName, index, entryName);
+        } else {
+            return String.format("List[%d].%s", index, entryName);
+        }
     }
 }

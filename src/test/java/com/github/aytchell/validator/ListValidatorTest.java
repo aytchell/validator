@@ -168,6 +168,16 @@ public class ListValidatorTest {
     }
 
     @Test
+    void eachNumericEntryWhenThrowsCanHandleMissingName() {
+        final List<Integer> integerList = List.of(67, 56, 45, 34, 23);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(integerList).notNull()
+                        .eachNumericEntry(v -> v.notNull().greaterEqThan(24)),
+                List.of("List[4].<23>", "value: 23", "is greater or equal", "24"));
+    }
+
+    @Test
     void eachNumericValueAppliedOnStringsWillThrow() {
         final List<String> stringList = List.of("68", "69");
 
@@ -225,12 +235,12 @@ public class ListValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(integerList, "integerList").notNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(24)),
-                List.of("entry", "23", "integerList", "type: List", "is greater or equal", "24"));
+                List.of("integerList[4].<23>", "is greater or equal", "24"));
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longList, "longList").ifNotNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(12)),
-                List.of("entry", "11", "longList", "type: List", "is greater or equal", "12"));
+                List.of("longList[0].<", "is greater or equal", "12"));
     }
 
     @Test
@@ -250,13 +260,13 @@ public class ListValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankList, "blankList").notNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("entry", "blankList", "type: List", "is not blank")
+                List.of("blankList[0].<", "is not blank")
         );
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankList, "blankList").ifNotNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("entry", "blankList", "type: List", "is not blank")
+                List.of("blankList[0].<", "is not blank")
         );
     }
 

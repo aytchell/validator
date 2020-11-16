@@ -18,56 +18,51 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
 
     @Override
     public VALIDATOR eachNumericEntry(LongEntryValidator entryValidator) throws ValidationException {
-        try {
-            for (TYPE entry : getValue()) {
-                if (entry instanceof Integer) {
-                    final Integer value = (Integer) entry;
-                    entryValidator.apply(Validator.expect(Long.valueOf(value)));
-                } else if (entry instanceof Long) {
-                    entryValidator.apply(Validator.expect((Long) entry));
-                } else {
-                    throw new ClassCastException(String.format(
-                            "Tried to validate entries in %s '%s' as numeric values (but are '%s')",
-                            getContainerType(), getName(), entry.getClass().getSimpleName()));
-                }
+        return iterate(entry -> {
+            if (entry instanceof Integer) {
+                final Integer value = (Integer) entry;
+                entryValidator.apply(Validator.expect(Long.valueOf(value)));
+            } else if (entry instanceof Long) {
+                entryValidator.apply(Validator.expect((Long) entry));
+            } else {
+                throw new ClassCastException(String.format(
+                        "Tried to validate entries in %s '%s' as numeric values (but are '%s')",
+                        getContainerType(), getName(), entry.getClass().getSimpleName()));
             }
-            return getValidator();
-        } catch (ValidationException exception) {
-            throw exception.setSurroundingContainerInfo
-                    (getContainerType(), getName(), getExtraInfo(), "entry");
-        }
+        });
     }
 
     @Override
     public VALIDATOR eachStringEntry(StringEntryValidator entryValidator) throws ValidationException {
-        try {
-            for (TYPE entry : getValue()) {
-                if (entry instanceof String) {
-                    entryValidator.apply(Validator.expect((String) entry));
-                } else {
-                    throw new ClassCastException(
-                            String.format("Tried to validate entries in %s '%s' as Strings (but are '%s')",
-                                    getContainerType(), getName(), entry.getClass().getSimpleName()));
-                }
+        return iterate(entry -> {
+            if (entry instanceof String) {
+                entryValidator.apply(Validator.expect((String) entry));
+            } else {
+                throw new ClassCastException(
+                        String.format("Tried to validate entries in %s '%s' as Strings (but are '%s')",
+                                getContainerType(), getName(), entry.getClass().getSimpleName()));
             }
-            return getValidator();
-        } catch (ValidationException exception) {
-            throw exception.setSurroundingContainerInfo(
-                    getContainerType(), getName(), getExtraInfo(), "entry");
-        }
+        });
     }
 
     @Override
-    public VALIDATOR eachCustomEntry(CustomValidator<TYPE> customValidator) throws ValidationException {
+    public VALIDATOR eachCustomEntry(CustomValidator<TYPE> entryValidator) throws ValidationException {
+        return iterate(entryValidator::apply);
+    }
+
+    private VALIDATOR iterate(EntryValidator<TYPE> validator) throws ValidationException {
         int index = 0;
         for (TYPE entry : getValue()) {
             try {
-                customValidator.apply(entry);
+                validator.apply(entry);
                 ++index;
             } catch (ValidationException exception) {
                 final String entryName = exception.getActualValuesName();
                 if (entryName != null) {
                     exception.setActualValuesName(compileNameOfElement(index, entryName));
+                } else {
+                    exception.setActualValuesName(compileNameOfElement(index,
+                            "<" + String.valueOf(entry) + ">"));
                 }
                 throw exception;
             }
@@ -76,4 +71,9 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     abstract protected String compileNameOfElement(int index, String entryName);
+
+    @FunctionalInterface
+    private interface EntryValidator<TYPE> {
+        void apply(TYPE entry) throws ValidationException;
+    }
 }

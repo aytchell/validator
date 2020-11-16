@@ -1,8 +1,6 @@
 package com.github.aytchell.validator.impl;
 
-import com.github.aytchell.validator.CustomValidator;
 import com.github.aytchell.validator.ListValidator;
-import com.github.aytchell.validator.SetValidator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

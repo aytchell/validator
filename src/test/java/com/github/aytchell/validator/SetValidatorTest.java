@@ -216,12 +216,22 @@ public class SetValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(integerSet, "integerSet").notNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(24)),
-                List.of("entry", "23", "integerSet", "type: Set", "is greater or equal", "24"));
+                List.of("integerSet.<23>", "is greater or equal", "24"));
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longSet, "longSet").ifNotNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(12)),
-                List.of("entry", "11", "longSet", "type: Set", "is greater or equal", "12"));
+                List.of("longSet.<11>", "is greater or equal", "12"));
+    }
+
+    @Test
+    void eachNumericEntryWhenThrowsCanHandleMissingName() {
+        final Set<Integer> integerSet = Set.of(67, 56, 45, 34, 23);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(integerSet).notNull()
+                        .eachNumericEntry(v -> v.notNull().greaterEqThan(24)),
+                List.of("Set.<23>", "value: 23", "is greater or equal", "24"));
     }
 
     @Test
@@ -241,13 +251,13 @@ public class SetValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankSet, "blankSet").notNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("entry", "blankSet", "type: Set", "is not blank")
+                List.of("blankSet.<", "is not blank")
         );
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankSet, "blankSet").ifNotNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
-                List.of("entry", "blankSet", "type: Set", "is not blank")
+                List.of("blankSet.<", "is not blank")
         );
     }
 
