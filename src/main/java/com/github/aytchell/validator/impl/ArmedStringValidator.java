@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,15 @@ class ArmedStringValidator implements StringValidator {
                     .setExpectation("matches regex")
                     .setExpectedValue(pattern.pattern())
                     .setExpectedValuesName(otherName);
+        }
+        return this;
+    }
+
+    @Override
+    public StringValidator passes(Predicate<String> pred, String expectation) throws ValidationException {
+        if (!pred.test(value)) {
+            throw newExceptionWithBasics()
+                    .setExpectation(expectation + " (but is not)");
         }
         return this;
     }
