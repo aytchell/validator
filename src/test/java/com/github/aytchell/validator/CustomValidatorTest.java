@@ -99,6 +99,39 @@ public class CustomValidatorTest {
         );
     }
 
+    @Test
+    void passesCanHandleRecursiveChecks() {
+        final Node root = new Node(1, List.of(
+                new Node(2, List.of(
+                        new Node(3, List.of()),
+                        new Node(4, List.of(
+                                new Node(5, null),
+                                new Node(6, null)
+                        ))
+                )),
+                new Node(7, List.of(
+                        new Node(8, List.of()),
+                        new Node(9, List.of(
+                                new Node(10, List.of(
+                                        new Node(6546, null)
+                                )),
+                                new Node(12, null)
+                        ))
+                ))
+        ));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(root, "root").notNull().passes(CustomValidatorTest::isValidTree),
+                List.of("'root.childNodes[1].childNodes[1].childNodes[0].childNodes[0].value'", "value: 6546",
+                        "is less than 1000"));
+    }
+
+    private static void isValidTree(Node root) throws ValidationException {
+        Validator.expect(root.value, "value").notNull().lessThan(1000);
+        Validator.expect(root.childNodes, "childNodes").ifNotNull().eachCustomEntry(
+                CustomValidatorTest::isValidTree);
+    }
+
     @Value
     private static class Thingy {
         String name;
@@ -109,5 +142,11 @@ public class CustomValidatorTest {
     private static class Wrapper {
         String name;
         List<Thingy> thing;
+    }
+
+    @Value
+    private static class Node {
+        Integer value;
+        List<Node> childNodes;
     }
 }

@@ -285,7 +285,7 @@ public class ListValidatorTest {
     }
 
     @Test
-    void eacCustomEntryIfnOtGivenPassesAll() throws ValidationException {
+    void eacCustomEntryIfNotGivenPassesAll() throws ValidationException {
         final List<Long> nullList = null;
 
         Validator.expect(nullList, "nullList").ifNotNull().eachCustomEntry(

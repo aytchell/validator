@@ -276,7 +276,7 @@ public class SetValidatorTest {
     }
 
     @Test
-    void eacCustomEntryIfnOtGivenPassesAll() throws ValidationException {
+    void eacCustomEntryIfNotGivenPassesAll() throws ValidationException {
         final Set<Long> nullSet = null;
 
         Validator.expect(nullSet, "nullSet").ifNotNull().eachCustomEntry(
