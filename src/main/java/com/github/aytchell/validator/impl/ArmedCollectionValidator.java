@@ -56,4 +56,24 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
                     getContainerType(), getName(), getExtraInfo(), "entry");
         }
     }
+
+    @Override
+    public VALIDATOR eachCustomEntry(CustomValidator<TYPE> customValidator) throws ValidationException {
+        int index = 0;
+        for (TYPE entry : getValue()) {
+            try {
+                customValidator.apply(entry);
+                ++index;
+            } catch (ValidationException exception) {
+                final String entryName = exception.getActualValuesName();
+                if (entryName != null) {
+                    exception.setActualValuesName(compileNameOfElement(index, entryName));
+                }
+                throw exception;
+            }
+        }
+        return getValidator();
+    }
+
+    abstract protected String compileNameOfElement(int index, String entryName);
 }

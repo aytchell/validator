@@ -6,4 +6,6 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
     VALIDATOR eachNumericEntry(LongEntryValidator validator) throws ValidationException;
 
     VALIDATOR eachStringEntry(StringEntryValidator validator) throws ValidationException;
+
+    VALIDATOR eachCustomEntry(CustomValidator<TYPE> customValidator) throws ValidationException;
 }

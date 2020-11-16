@@ -13,4 +13,9 @@ class ArmedSetValidator<E> extends ArmedCollectionValidator<E, SetValidator<E>> 
     protected SetValidator<E> getValidator() {
         return this;
     }
+
+    @Override
+    protected String compileNameOfElement(int index, String entryName) {
+        return String.format("%s.%s", getName(), entryName);
+    }
 }

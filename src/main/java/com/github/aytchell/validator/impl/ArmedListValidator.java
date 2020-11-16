@@ -7,11 +7,8 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import java.util.List;
 
 class ArmedListValidator<E> extends ArmedCollectionValidator<E, ListValidator<E>> implements ListValidator<E> {
-    private final List<E> theList;
-
     ArmedListValidator(List<E> value, String name, String extraInfo) {
         super("List", value, name, extraInfo);
-        theList = value;
     }
 
     @Override
@@ -20,18 +17,7 @@ class ArmedListValidator<E> extends ArmedCollectionValidator<E, ListValidator<E>
     }
 
     @Override
-    public ListValidator<E> eachCustomEntry(CustomValidator<E> customValidator) throws ValidationException {
-        for (int i = 0; i < theList.size(); ++i) {
-            try {
-                customValidator.apply(theList.get(i));
-            } catch (ValidationException exception) {
-                final String entryName = exception.getActualValuesName();
-                if (entryName != null) {
-                    exception.setActualValuesName(String.format("%s[%d].%s", getName(), i, entryName));
-                }
-                throw exception;
-            }
-        }
-        return this;
+    protected String compileNameOfElement(int index, String entryName) {
+        return String.format("%s[%d].%s", getName(), index, entryName);
     }
 }
