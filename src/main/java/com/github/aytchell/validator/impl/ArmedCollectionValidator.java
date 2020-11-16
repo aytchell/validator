@@ -1,7 +1,7 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.CollectionValidator;
-import com.github.aytchell.validator.CustomValidator;
+import com.github.aytchell.validator.CustomEntryValidator;
 import com.github.aytchell.validator.LongEntryValidator;
 import com.github.aytchell.validator.StringEntryValidator;
 import com.github.aytchell.validator.Validator;
@@ -46,7 +46,7 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     @Override
-    public VALIDATOR eachCustomEntry(CustomValidator<TYPE> entryValidator) throws ValidationException {
+    public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> entryValidator) throws ValidationException {
         return iterate(entryValidator::apply);
     }
 

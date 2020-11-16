@@ -7,5 +7,5 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
 
     VALIDATOR eachStringEntry(StringEntryValidator validator) throws ValidationException;
 
-    VALIDATOR eachCustomEntry(CustomValidator<TYPE> entryValidator) throws ValidationException;
+    VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> entryValidator) throws ValidationException;
 }
