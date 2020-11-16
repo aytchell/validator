@@ -92,4 +92,17 @@ public class NullableObjectValidatorTest {
     void ifNotNullWhenNullGivenSkipsTest() throws ValidationException {
         Validator.expect(nullBool).ifNotNull().isTrue();
     }
+
+    @Test
+    void ifTrueWithFalseSkipsAllFurtherTests() throws ValidationException {
+        final String nullString = null;
+        final String blankString = " ";
+
+        Validator.expect(nullString).ifTrue(false).ifTrue(true).notNull();
+        Validator.expect(nullString).ifTrue(false).ifFalse(false).notNull();
+        Validator.expect(nullString).ifTrue(false).ifGivenAndTrue(true).notNull();
+        Validator.expect(nullString).ifTrue(false).ifNotGivenOrFalse(false).notNull();
+        Validator.expect(nullString).ifTrue(false).notNull();
+        Validator.expect(blankString).ifTrue(false).ifNotNull().notBlank();
+    }
 }
