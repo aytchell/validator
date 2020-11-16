@@ -18,6 +18,16 @@ public class DoubleValidatorTest {
     }
 
     @Test
+    void testIfConditionNotMetIsSkipped() throws ValidationException {
+        final Double doubleValue = 3.159256;
+
+        Validator.expect(doubleValue).ifTrue(false).ifNotNull().greaterThan(5.01);
+        Validator.expect(doubleValue).ifTrue(false).ifNotNull().greaterThan(5.01, "5 smth");
+        Validator.expect(doubleValue).ifTrue(false).ifNotNull().lessThan(2.18);
+        Validator.expect(doubleValue).ifTrue(false).ifNotNull().lessThan(2.18, "2 smth");
+    }
+
+    @Test
     void greaterThanWithValidExamplesPass() throws ValidationException {
         Validator.expect(Math.PI, "pi").notNull().greaterThan(
                 3, "approximation according to the bible");
@@ -28,7 +38,7 @@ public class DoubleValidatorTest {
     void greaterThanWithWrongExampleThrows() {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(Math.sqrt(2), "sqrt(2)", "thingy").notNull()
-                .greaterThan(Math.PI, "pi"),
+                        .greaterThan(Math.PI, "pi"),
                 List.of("sqrt(2)", "1.41421", "thingy", "is greater than", "pi", "3.14159"));
     }
 
@@ -44,17 +54,5 @@ public class DoubleValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(2.4).notNull().lessThan(2.3),
                 List.of("2.4", "is less than", "2.3"));
-
-        assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(Math.sqrt(20), "sqrt(20)", "foo").ifNotNull()
-                        .lessThan(Math.PI, "pi"),
-                List.of("sqrt(20)", "4.472135", "foo", "is less than", "pi", "3.14159"));
-    }
-
-    @Test
-    void ifNotNullPassesAllTests() throws ValidationException {
-        final Double nullDouble = null;
-
-        Validator.expect(nullDouble).ifNotNull().lessThan(4).greaterThan(5);
     }
 }

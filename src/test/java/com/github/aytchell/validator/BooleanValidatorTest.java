@@ -26,17 +26,20 @@ public class BooleanValidatorTest {
     }
 
     @Test
-    void testForCorrectValuePasses() throws ValidationException {
-        Validator.expect(true).notNull().isTrue();
-        Validator.expect(false).notNull().isFalse();
+    void testIfConditionNotMetIsSkipped() throws ValidationException {
+        final Boolean falseBool = false;
+        final Boolean trueBool = true;
+
+        Validator.expect(falseBool).ifTrue(false).ifNotNull().isTrue();
+        Validator.expect(trueBool).ifTrue(false).ifNotNull().isFalse();
+        Validator.expect(trueBool).ifTrue(false).ifNotNull().matches(falseBool);
+        Validator.expect(trueBool).ifTrue(false).ifNotNull().matches(falseBool, "falseBool");
     }
 
     @Test
-    void testIfNotNullIsSkipped() throws ValidationException {
-        final Boolean nullBool = null;
-
-        Validator.expect(nullBool).ifNotNull().isTrue();
-        Validator.expect(nullBool).ifNotNull().isFalse();
+    void testForCorrectValuePasses() throws ValidationException {
+        Validator.expect(true).notNull().isTrue();
+        Validator.expect(false).notNull().isFalse();
     }
 
     @Test
@@ -58,10 +61,6 @@ public class BooleanValidatorTest {
 
         Validator.expect(trueValue, "trueValue").notNull().matches(true);
         Validator.expect(falseValue, "falseValue").notNull().matches(false);
-
-        Validator.expect(nullBool).ifNotNull()
-                .matches(true)
-                .matches(false, "falseValue");
     }
 
     @Test

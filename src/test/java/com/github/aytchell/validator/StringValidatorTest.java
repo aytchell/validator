@@ -20,6 +20,21 @@ public class StringValidatorTest {
     }
 
     @Test
+    void testIfConditionNotMetIsSkipped() throws ValidationException {
+        final String emptyString = "";
+        final String blankString = "\t\t\t\t\t\t\t";
+        final Pattern privateString = Pattern.compile("private.*String.*=.*");
+
+        Validator.expect(emptyString).ifTrue(false).ifNotNull().notEmpty();
+        Validator.expect(blankString).ifTrue(false).ifNotNull().notBlank();
+        Validator.expect(blankString).ifTrue(false).ifNotNull().lengthAtMost(2);
+        Validator.expect(blankString).ifTrue(false).ifNotNull().validUrl();
+        Validator.expect(blankString).ifTrue(false).ifNotNull().matches(privateString);
+        Validator.expect(blankString).ifTrue(false).ifNotNull().matches(privateString, "private");
+        Validator.expect(blankString).ifTrue(false).ifNotNull().passes(String::isEmpty, "is empty");
+    }
+
+    @Test
     void isEmptyGivenFilledStringPasses() throws ValidationException {
         final String blankString = "\t \n";
         final String filledString = "filled";
@@ -27,10 +42,6 @@ public class StringValidatorTest {
 
         Validator.expect(blankString, "blankString").notNull().notEmpty();
         Validator.expect(filledString, "filledString").notNull().notEmpty();
-
-        Validator.expect(blankString, "blankString").ifNotNull().notEmpty();
-        Validator.expect(filledString, "filledString").ifNotNull().notEmpty();
-        Validator.expect(nullString, "nullString").ifNotNull().notEmpty();
     }
 
     @Test
@@ -41,22 +52,13 @@ public class StringValidatorTest {
                 () -> Validator.expect(emptyString, "emptyString").notNull().notEmpty(),
                 List.of("emptyString", "is not empty")
         );
-
-        assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(emptyString, "emptyString", "info").ifNotNull().notEmpty(),
-                List.of("emptyString", "info", "is not empty")
-        );
     }
 
     @Test
     void isBlankGivenFilledStringPasses() throws ValidationException {
         final String filledString = "filled";
-        final String nullString = null;
 
         Validator.expect(filledString, "filledString").notNull().notBlank();
-
-        Validator.expect(filledString, "filledString").ifNotNull().notBlank();
-        Validator.expect(nullString).ifNotNull().notBlank();
     }
 
     @Test
@@ -65,11 +67,6 @@ public class StringValidatorTest {
 
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankString, "blankString").notNull().notBlank(),
-                List.of("blankString", "is not blank")
-        );
-
-        assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(blankString, "blankString").ifNotNull().notBlank(),
                 List.of("blankString", "is not blank")
         );
     }
@@ -82,10 +79,6 @@ public class StringValidatorTest {
 
         Validator.expect(emptyString, "emptyString").notNull().lengthAtMost(10);
         Validator.expect(shortString, "shortString").notNull().lengthAtMost(10);
-
-        Validator.expect(emptyString, "emptyString").ifNotNull().lengthAtMost(10);
-        Validator.expect(shortString, "shortString").ifNotNull().lengthAtMost(10);
-        Validator.expect(nullString, "nullString").ifNotNull().lengthAtMost(10);
     }
 
     @Test
@@ -99,20 +92,13 @@ public class StringValidatorTest {
                 () -> Validator.expect(longString, "longString").notNull().lengthAtMost(10),
                 List.of("length of longString", stringSize, "is at most", "10")
         );
-
-        assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(longString, "longString").ifNotNull().lengthAtMost(10),
-                List.of("length of longString", stringSize, "is at most", "10")
-        );
     }
 
     @Test
     void validUrlWithVAlidUrlGivenPasses() throws ValidationException {
         final String url = "http://www.github.com/aytchell/validator";
-        final String nullString = null;
 
         Validator.expect(url).notNull().validUrl();
-        Validator.expect(nullString).ifNotNull().validUrl().lengthAtMost(1);
     }
 
     @Test
@@ -129,13 +115,9 @@ public class StringValidatorTest {
     @Test
     void matchesGivenProperExamplesPass() throws ValidationException {
         final String declaration = "private static final String foo = \"bar\"";
-        final String nullString = null;
         final Pattern privateString = Pattern.compile("private.*String.*=.*");
 
         Validator.expect(declaration).notNull().matches(privateString);
-
-        Validator.expect(nullString).ifNotNull().matches(privateString).lengthAtMost(2);
-        Validator.expect(nullString).ifNotNull().matches(privateString, "privateString").lengthAtMost(2);
     }
 
     @Test
@@ -146,5 +128,21 @@ public class StringValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(declaration).notNull().matches(publicPattern, "publicPattern"),
                 List.of("private static", "matches regex", "'publicPattern'", "'.*public.*'"));
+    }
+
+    @Test
+    void passesGivenCorrectStringPass() throws ValidationException {
+        final String blankString = "\t\t\n";
+
+        Validator.expect(blankString).notNull().passes(String::isBlank, "is blank");
+    }
+
+    @Test
+    void passesGivenWrongStringThrows() {
+        final String filledString = "not blank";
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(filledString).notNull().passes(String::isBlank, "is blank"),
+                List.of("'not blank'", "is blank", "but is not"));
     }
 }

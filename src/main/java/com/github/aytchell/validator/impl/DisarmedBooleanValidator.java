@@ -22,12 +22,12 @@ class DisarmedBooleanValidator implements BooleanValidator {
     }
 
     @Override
-    public BooleanValidator matches(Boolean otherValue) throws ValidationException {
+    public BooleanValidator matches(Boolean otherValue) {
         return this;
     }
 
     @Override
-    public BooleanValidator matches(Boolean otherValue, String otherName) throws ValidationException {
+    public BooleanValidator matches(Boolean otherValue, String otherName) {
         return this;
     }
 }
