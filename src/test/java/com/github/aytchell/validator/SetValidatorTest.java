@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SetValidatorTest {
     @Test
@@ -146,6 +147,35 @@ public class SetValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(stringSet, "stringSet").ifNotNull().contains("five"),
                 List.of("stringSet", "Set", "contains", "five"));
+    }
+
+    @Test
+    void iteratingTestsCanHandleEmptySet() throws ValidationException {
+        final Set<Integer> emptySet = Set.of();
+
+        Validator.expect(emptySet).notNull().eachNumericEntry(v -> v.notNull().greaterThan(1));
+        Validator.expect(emptySet).notNull().eachStringEntry(v -> v.notNull().notEmpty());
+        Validator.expect(emptySet).notNull().eachCustomEntry(v -> {
+            throw new ValidationException("boom");
+        });
+    }
+
+    @Test
+    void eachNumericValueAppliedOnStringsWillThrow() {
+        final Set<String> stringSet = Set.of("68", "69");
+
+        assertThrows(ClassCastException.class,
+                () -> Validator.expect(stringSet).ifNotNull().eachNumericEntry(
+                        v -> v.notNull().greaterEqThan(5)));
+    }
+
+    @Test
+    void eachStringValueAppliedOnLongWillThrow() {
+        final Set<Long> longSet = Set.of(68L, 69L);
+
+        assertThrows(ClassCastException.class,
+                () -> Validator.expect(longSet).ifNotNull().eachStringEntry(
+                        v -> v.notNull().notBlank()));
     }
 
     @Test

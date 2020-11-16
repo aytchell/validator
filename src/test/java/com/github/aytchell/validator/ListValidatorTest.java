@@ -8,6 +8,7 @@ import java.util.List;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ListValidatorTest {
     @Test
@@ -161,7 +162,27 @@ public class ListValidatorTest {
 
         Validator.expect(emptyList).notNull().eachNumericEntry(v -> v.notNull().greaterThan(1));
         Validator.expect(emptyList).notNull().eachStringEntry(v -> v.notNull().notEmpty());
-        Validator.expect(emptyList).notNull().eachCustomEntry(v -> { throw new ValidationException("boom"); });
+        Validator.expect(emptyList).notNull().eachCustomEntry(v -> {
+            throw new ValidationException("boom");
+        });
+    }
+
+    @Test
+    void eachNumericValueAppliedOnStringsWillThrow() {
+        final List<String> stringList = List.of("68", "69");
+
+        assertThrows(ClassCastException.class,
+                () -> Validator.expect(stringList).ifNotNull().eachNumericEntry(
+                        v -> v.notNull().greaterEqThan(5)));
+    }
+
+    @Test
+    void eachStringValueAppliedOnLongWillThrow() {
+        final List<Long> longList = List.of(68L, 69L);
+
+        assertThrows(ClassCastException.class,
+                () -> Validator.expect(longList).ifNotNull().eachStringEntry(
+                        v -> v.notNull().notBlank()));
     }
 
     @Test
@@ -258,7 +279,9 @@ public class ListValidatorTest {
         final List<Long> nullList = null;
 
         Validator.expect(nullList, "nullList").ifNotNull().eachCustomEntry(
-                v -> { throw new ValidationException("boom"); });
+                v -> {
+                    throw new ValidationException("boom");
+                });
     }
 
     @Test
