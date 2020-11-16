@@ -12,6 +12,26 @@ abstract class NullableObjectValidatorImpl<VALUE, VALIDATOR> implements Nullable
     private final String extraInfo;
     private final VALIDATOR disarmedValidator;
 
+    public NullableObjectValidator<VALUE, VALIDATOR> ifTrue(boolean condition) {
+        if (condition) {
+            return this;
+        } else {
+            return new DisarmedNullableObjectValidator<>(disarmedValidator);
+        }
+    }
+
+    public NullableObjectValidator<VALUE, VALIDATOR> ifFalse(boolean condition) {
+        return ifTrue(!condition);
+    }
+
+    public NullableObjectValidator<VALUE, VALIDATOR> ifGivenAndTrue(Boolean condition) {
+        return ifTrue(condition != null && condition);
+    }
+
+    public NullableObjectValidator<VALUE, VALIDATOR> ifNotGivenOrFalse(Boolean condition) {
+        return ifFalse(condition != null && condition);
+    }
+
     @Override
     public VALIDATOR notNull() throws ValidationException {
         if (value == null) {
