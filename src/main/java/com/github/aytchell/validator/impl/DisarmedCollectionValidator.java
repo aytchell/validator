@@ -1,6 +1,7 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.CollectionValidator;
+import com.github.aytchell.validator.CustomValidator;
 import com.github.aytchell.validator.LongEntryValidator;
 import com.github.aytchell.validator.StringEntryValidator;
 
