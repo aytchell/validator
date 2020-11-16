@@ -15,8 +15,8 @@ public class CustomValidatorTest {
 
         Validator.expect(noThing, "noThing").ifNotNull().passes(
                 v -> {
-                    Validator.expect(noThing.name, "name").notNull().notBlank();
-                    Validator.expect(noThing.value, "value").notNull().greaterThan(12).lessThan(2);
+                    Validator.expect(v.name, "name").notNull().notBlank();
+                    Validator.expect(v.value, "value").notNull().greaterThan(12).lessThan(2);
                 }
         );
     }
@@ -25,10 +25,10 @@ public class CustomValidatorTest {
     void passesWithValidObjectWorks() throws ValidationException {
         final Thingy thing = new Thingy("name", 4711);
 
-        Validator.expect(thing, "thing").notNull().passes(
+        Validator.expect(thing, "thing", "some extra info").notNull().passes(
                 v -> {
-                    Validator.expect(thing.name, "name").notNull().notBlank();
-                    Validator.expect(thing.value, "value").notNull().greaterThan(12);
+                    Validator.expect(v.name, "name").notNull().notBlank();
+                    Validator.expect(v.value, "value").notNull().greaterThan(12);
                 }
         );
     }
@@ -40,8 +40,8 @@ public class CustomValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(thing, "thing").notNull().passes(
                         v -> {
-                            Validator.expect(thing.name, "name").notNull().notBlank();
-                            Validator.expect(thing.value, "value").notNull().greaterThan(12);
+                            Validator.expect(v.name, "name").notNull().notBlank();
+                            Validator.expect(v.value, "value").notNull().greaterThan(12);
                         }
                 ),
                 List.of("'thing.value", "value: 3", "is greater than 12"));
@@ -54,8 +54,8 @@ public class CustomValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(thing).notNull().passes(
                         v -> {
-                            Validator.expect(thing.name, "name").notNull().notBlank();
-                            Validator.expect(thing.value, "value").notNull().greaterThan(12);
+                            Validator.expect(v.name, "name").notNull().notBlank();
+                            Validator.expect(v.value, "value").notNull().greaterThan(12);
                         }
                 ),
                 List.of("'Object.value", "value: 3", "is greater than 12"));
@@ -68,8 +68,8 @@ public class CustomValidatorTest {
         assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(thing, "thing", "named thing no 3").notNull().passes(
                         v -> {
-                            Validator.expect(thing.name).notNull().notBlank();
-                            Validator.expect(thing.value).notNull().greaterThan(12);
+                            Validator.expect(v.name).notNull().notBlank();
+                            Validator.expect(v.value).notNull().greaterThan(12);
                         }
                 ),
                 List.of("'thing.<3>", "value: 3", "info: (about thing) named thing no 3", "is greater than 12"));
