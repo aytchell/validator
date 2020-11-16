@@ -195,4 +195,18 @@ public class Validator {
             String extraInfo) {
         return ValidatorImpl.expect(value, name, extraInfo);
     }
+
+    // --- custom Object ---
+    public static <E> NullableObjectValidator<E, CustomValidator<E>> expect(E value) {
+        return ValidatorImpl.expect(value, null, null);
+    }
+
+    public static <E> NullableObjectValidator<E, CustomValidator<E>> expect(E value, String name) {
+        return ValidatorImpl.expect(value, name, null);
+    }
+
+    public static <E> NullableObjectValidator<E, CustomValidator<E>> expect(E value, String name,
+            String extraInfo) {
+        return ValidatorImpl.expect(value, name, extraInfo);
+    }
 }

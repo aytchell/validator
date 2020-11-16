@@ -1,6 +1,7 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.BooleanValidator;
+import com.github.aytchell.validator.CustomValidator;
 import com.github.aytchell.validator.DoubleValidator;
 import com.github.aytchell.validator.ListValidator;
 import com.github.aytchell.validator.LongValidator;
@@ -147,6 +148,16 @@ public class ValidatorImpl {
             @Override
             protected MapValidator<K, V> createValidator(Map<K, V> stringStringMap, String name, String extraInfo) {
                 return new ArmedMapValidator<>(value, name, extraInfo);
+            }
+        };
+    }
+
+    public static <E> NullableObjectValidator<E, CustomValidator<E>> expect(E value, String name,
+            String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo, new DisarmedCustomValidator<>()) {
+            @Override
+            protected CustomValidator<E> createValidator(E value, String name, String extraInfo) {
+                return new ArmedCustomValidator<>(value, name, extraInfo);
             }
         };
     }
