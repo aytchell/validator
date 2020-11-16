@@ -1,11 +1,13 @@
 package com.github.aytchell.validator;
 
 import com.github.aytchell.validator.exceptions.ValidationException;
+import lombok.Value;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
 
+import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SetValidatorTest {
@@ -13,7 +15,7 @@ public class SetValidatorTest {
     void isNullGivenNullThrows() {
         final Set<String> nullSet = null;
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(nullSet, "nullSet", "extras").notNull(),
                 List.of("nullSet", "extras", "is not null"));
     }
@@ -33,11 +35,11 @@ public class SetValidatorTest {
     void isEmptyGivenEmptySetThrows() {
         final Set<Long> emptySet = Set.of();
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptySet, "emptySet").notNull().notEmpty(),
                 List.of("emptySet", "Set", "is not empty"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(emptySet, "emptySet").ifNotNull().notEmpty(),
                 List.of("emptySet", "Set", "is not empty"));
     }
@@ -60,11 +62,11 @@ public class SetValidatorTest {
 
         assertEquals(setSize, String.valueOf(smallSet.size()));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(smallSet, "smallSet").notNull().sizeAtLeast(20),
                 List.of("size of smallSet", setSize, "is at least", "20"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(smallSet, "smallSet").ifNotNull().sizeAtLeast(20),
                 List.of("size of smallSet", setSize, "is at least", "20"));
     }
@@ -87,11 +89,11 @@ public class SetValidatorTest {
 
         assertEquals(setSize, String.valueOf(bigSet.size()));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(bigSet, "bigSet").notNull().sizeAtMost(7),
                 List.of("size of bigSet", setSize, "is at most", "7"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(bigSet, "bigSet").ifNotNull().sizeAtMost(2),
                 List.of("size of bigSet", setSize, "is at most", "2"));
     }
@@ -112,11 +114,11 @@ public class SetValidatorTest {
         final Set<Long> longSet = Set.of(1L, 2L, 3L, 5L, 6L, 8L, 13L, 21L);
         final Set<String> stringSet = Set.of("one", "two", "three", "five", "six", "eight", "and so on");
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longSet, "longSet").ifNotNull().containsNot(6L),
                 List.of("longSet", "Set", "contains not", "6"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(stringSet, "stringSet").ifNotNull().containsNot("six"),
                 List.of("stringSet", "Set", "contains not", "six"));
     }
@@ -137,11 +139,11 @@ public class SetValidatorTest {
         final Set<Long> longSet = Set.of(1L, 2L, 3L, 8L, 13L, 21L);
         final Set<String> stringSet = Set.of("one", "two", "three", "eight", "and so on");
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longSet, "longSet").ifNotNull().contains(5L),
                 List.of("longSet", "Set", "contains", "5"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(stringSet, "stringSet").ifNotNull().contains("five"),
                 List.of("stringSet", "Set", "contains", "five"));
     }
@@ -181,12 +183,12 @@ public class SetValidatorTest {
         final Set<Integer> integerSet = Set.of(67, 56, 45, 34, 23);
         final Set<Long> longSet = Set.of(11L, 12L, 13L, 14L);
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(integerSet, "integerSet").notNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(24)),
                 List.of("entry", "23", "integerSet", "type: Set", "is greater or equal", "24"));
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(longSet, "longSet").ifNotNull()
                         .eachNumericEntry(v -> v.notNull().greaterEqThan(12)),
                 List.of("entry", "11", "longSet", "type: Set", "is greater or equal", "12"));
@@ -206,16 +208,60 @@ public class SetValidatorTest {
     void isAnyEntryBlankWithBlankStringsGivenThrows() {
         final Set<String> blankSet = Set.of("\t\t\t", "   \n", "\t\n");
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankSet, "blankSet").notNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
                 List.of("entry", "blankSet", "type: Set", "is not blank")
         );
 
-        ExceptionMessageCheck.assertThrowsAndMessageReadsLike(
+        assertThrowsAndMessageReadsLike(
                 () -> Validator.expect(blankSet, "blankSet").ifNotNull().eachStringEntry(
                         v -> v.notNull().notBlank()),
                 List.of("entry", "blankSet", "type: Set", "is not blank")
         );
+    }
+
+    @Test
+    void eachCustomEntryCorrectThingiesGivenPasses() throws ValidationException {
+        final Set<Thingy> thingies = Set.of(
+                new Thingy("one", 1),
+                new Thingy("two", 2),
+                new Thingy("three", 3));
+
+        Validator.expect(thingies, "thingies").notNull().eachCustomEntry(
+                e -> {
+                    Validator.expect(e.getName(), "name").notNull().notBlank();
+                    Validator.expect(e.getValue(), "value").notNull().greaterThan(0);
+                });
+    }
+
+    @Test
+    void eacCustomEntryIfnOtGivenPassesAll() throws ValidationException {
+        final Set<Long> nullSet = null;
+
+        Validator.expect(nullSet, "nullSet").ifNotNull().eachCustomEntry(
+                v -> { throw new ValidationException("boom"); });
+    }
+
+    @Test
+    void eachCustomEntryIncorrectThingiesGivenThrows() throws ValidationException {
+        final Set<Thingy> thingies = Set.of(
+                new Thingy("two", 2),
+                new Thingy("one", 1),
+                new Thingy("three", 3));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(thingies, "thingies").notNull().eachCustomEntry(
+                        e -> {
+                            Validator.expect(e.getName(), "name").notNull().notBlank();
+                            Validator.expect(e.getValue(), "value").notNull().greaterThan(1);
+                        }),
+                List.of("that 'thingies.value' ", "value: 1", "is greater than", "1"));
+    }
+
+    @Value
+    private static class Thingy {
+        String name;
+        Integer value;
     }
 }
