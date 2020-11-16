@@ -4,5 +4,5 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 
 @FunctionalInterface
 public interface LongEntryValidator {
-    LongValidator apply(NullableObjectValidator<Long, LongValidator> validator) throws ValidationException;
+    void apply(NullableObjectValidator<Long, LongValidator> validator) throws ValidationException;
 }
