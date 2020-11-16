@@ -75,9 +75,39 @@ public class CustomValidatorTest {
                 List.of("'thing.<3>", "value: 3", "info: (about thing) named thing no 3", "is greater than 12"));
     }
 
+    @Test
+    void passesCanHandleMultipleLayeredObjects() {
+        final Wrapper wrapper = new Wrapper("wrapper", List.of(
+                new Thingy("seven", 7),
+                new Thingy("five", 5),
+                new Thingy("three", 3)
+        ));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(wrapper, "wrapper").notNull().passes(
+                        w -> {
+                            Validator.expect(w.name, "name").notNull().notBlank();
+                            Validator.expect(w.thing, "thing").notNull().eachCustomEntry(
+                                    t -> {
+                                        Validator.expect(t.name, "name").notNull().notBlank();
+                                        Validator.expect(t.value, "value").notNull().greaterThan(5);
+                                    }
+                            );
+                        }
+                ),
+                List.of("'wrapper.thing[1].value'", "value: 5", "is greater than 5")
+        );
+    }
+
     @Value
     private static class Thingy {
         String name;
         Integer value;
+    }
+
+    @Value
+    private static class Wrapper {
+        String name;
+        List<Thingy> thing;
     }
 }
