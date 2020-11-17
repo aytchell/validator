@@ -13,7 +13,17 @@ abstract class DoubleValidatorBase implements DoubleValidator {
     }
 
     @Override
+    public DoubleValidator greaterEqThan(double lowerBound) throws ValidationException {
+        return greaterEqThan(lowerBound, null);
+    }
+
+    @Override
     public DoubleValidator lessThan(double upperBound) throws ValidationException {
         return lessThan(upperBound, null);
+    }
+
+    @Override
+    public DoubleValidator lessEqThan(double upperBound) throws ValidationException {
+        return lessEqThan(upperBound, null);
     }
 }

@@ -288,7 +288,8 @@ There are plenty of unit tests. Please consult them for further examples:
     </dependency>
 ```
 
-The jar is not deployed anywhere so you have to compile it yourself and deploy it to your local `.m2` or artifact server.
+The jar is not deployed anywhere so you have to compile it yourself and install it to your local `.m2` or
+deploy it to your artifact server.
 
 ## License
 

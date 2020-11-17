@@ -23,10 +23,32 @@ class ArmedDoubleValidator extends DoubleValidatorBase {
     }
 
     @Override
+    public DoubleValidator greaterEqThan(double lowerBound, String otherName) throws ValidationException {
+        if (value < lowerBound) {
+            throw newExceptionWithBasics()
+                    .setExpectation("is greater or equal than")
+                    .setExpectedValuesName(otherName)
+                    .setExpectedValue(lowerBound);
+        }
+        return this;
+    }
+
+    @Override
     public DoubleValidator lessThan(double upperBound, String otherName) throws ValidationException {
         if (value >= upperBound) {
             throw newExceptionWithBasics()
                     .setExpectation("is less than")
+                    .setExpectedValuesName(otherName)
+                    .setExpectedValue(upperBound);
+        }
+        return this;
+    }
+
+    @Override
+    public DoubleValidator lessEqThan(double upperBound, String otherName) throws ValidationException {
+        if (value > upperBound) {
+            throw newExceptionWithBasics()
+                    .setExpectation("is less or equal than")
                     .setExpectedValuesName(otherName)
                     .setExpectedValue(upperBound);
         }
