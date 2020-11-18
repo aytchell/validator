@@ -13,6 +13,8 @@ The basic concept goes like this:
 void someApiMethod(String aString, Long aValue) throws ValidationException {
     Validator.expect(aString, "aString").notNull().notBlank().lengthAtMost(255);
     Validator.expect(aValue, "aValue", "exta info").notNull().greaterThan(2048);
+
+    // do work with 'aString' and 'aValue'
 }
 ```
 
@@ -32,6 +34,8 @@ Note that
    the expected relation (`is greater than`)
  * It will contain the name of the value (as given to `.expect()`)
  * The method `.expect()` takes an optional third parameter with extra information
+ * YOu have to call `.notNull()` before any other check. This is enforced by
+   the API and the used tpyes.
 
 ## Basic validations
 
