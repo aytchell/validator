@@ -22,6 +22,13 @@ public class CustomValidatorTest {
     }
 
     @Test
+    void customValidatorCanCheckEnums() throws ValidationException {
+        final Status status = Status.SUCCESS;
+
+        Validator.expect(status, "status").notNull();
+    }
+
+    @Test
     void passesWithValidObjectWorks() throws ValidationException {
         final Thingy thing = new Thingy("name", 4711);
 
@@ -130,6 +137,12 @@ public class CustomValidatorTest {
         Validator.expect(root.value, "value").notNull().lessThan(1000);
         Validator.expect(root.childNodes, "childNodes").ifNotNull().eachCustomEntry(
                 CustomValidatorTest::isValidTree);
+    }
+
+    private enum Status {
+        SUCCESS,
+        CLIENT_ERROR,
+        INTERNAL_ERROR
     }
 
     @Value

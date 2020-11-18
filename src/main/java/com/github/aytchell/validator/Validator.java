@@ -12,23 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The API class of this library
+ * <p>
+ * his is the main entry class for input validation as provided by this library. (Nearly) every check of an input value
+ * starts with {@code Validate.expect(...)}. The only exception is the convenience
+ */
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class Validator {
-    // fallback for every type that has no 'expect' method
-    public static void expectNotNull(Object value, String valueName) throws ValidationException {
-        expectNotNull(value, valueName, null);
-    }
-
-    // fallback for every type that has no 'expect' method
-    public static void expectNotNull(Object value, String valueName, String extraInfo) throws ValidationException {
-        if (value == null) {
-            throw new ValidationException()
-                    .setActualValuesName(valueName)
-                    .setValuesExtraInfo(extraInfo)
-                    .setExpectation("is not null");
-        }
-    }
-
     // --- check Boolean ---
     public static NullableObjectValidator<Boolean, BooleanValidator> expect(Boolean value) {
         return ValidatorImpl.expect(value, null, null);
