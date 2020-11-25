@@ -2,16 +2,75 @@ package com.github.aytchell.validator;
 
 import com.github.aytchell.validator.exceptions.ValidationException;
 
-public interface NullableObjectValidator<VALUE, VALIDATOR> {
-    NullableObjectValidator<VALUE, VALIDATOR> ifTrue(boolean condition);
+/**
+ * The first step in a chain of checks
+ * <p>
+ * After calling one of the {@code expect} methods of {@link Validator} you'll get an instance of this class. It
+ * represents the first stage of testing the value. By choosing the method you call you control if further checks are
+ * always executed or only if specific conditions are met.
+ *
+ * @param <TYPE> the type of the value which will be checked by this class
+ * @param <VALIDATOR> the specialized validator corresponding to the value's type
+ */
+public interface NullableObjectValidator<TYPE, VALIDATOR> {
+    /**
+     * Perform all following checks only if the given {@code condition} is {@code true}
+     * <p>
+     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * NullableObjectValidator#ifNotNull()} to perform "real" checks.
+     *
+     * @param condition this condition says whether the following tests are executed or skipped
+     * @return this same instance so you can do further checks
+     */
+    NullableObjectValidator<TYPE, VALIDATOR> ifTrue(boolean condition);
 
-    NullableObjectValidator<VALUE, VALIDATOR> ifFalse(boolean condition);
+    /**
+     * Perform all following checks only if the given {@code condition} is {@code false}
+     * <p>
+     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * NullableObjectValidator#ifNotNull()} to perform "real" checks.
+     *
+     * @param condition this condition says whether the following tests are skipped or executed
+     * @return this same instance so you can do further checks
+     */
+    NullableObjectValidator<TYPE, VALIDATOR> ifFalse(boolean condition);
 
-    NullableObjectValidator<VALUE, VALIDATOR> ifGivenAndTrue(Boolean condition);
+    /**
+     * Perform all following checks only if the given {@code condition} is not null and {@code true}
+     * <p>
+     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * NullableObjectValidator#ifNotNull()} to perform "real" checks.
+     *
+     * @param condition this condition says whether the following tests are executed or skipped
+     * @return this same instance so you can do further checks
+     */
+    NullableObjectValidator<TYPE, VALIDATOR> ifGivenAndTrue(Boolean condition);
 
-    NullableObjectValidator<VALUE, VALIDATOR> ifNotGivenOrFalse(Boolean condition);
+    /**
+     * Perform all following checks only if the given {@code condition} is either null or (if given) {@code false}
+     * <p>
+     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * NullableObjectValidator#ifNotNull()} to perform "real" checks.
+     *
+     * @param condition this condition says whether the following tests are skipped or executed
+     * @return this same instance so you can do further checks
+     */
+    NullableObjectValidator<TYPE, VALIDATOR> ifNotGivenOrFalse(Boolean condition);
 
+    /**
+     * Ensure that the given value is not null; otherwise throw an exception
+     *
+     * @return a specialized validator to check values of type {@code TYPE} (see the appropriate {@code expect} method
+     *         of {@link Validator}
+     * @throws ValidationException if the given value is null
+     */
     VALIDATOR notNull() throws ValidationException;
 
+    /**
+     * Perform all following checks only if the given value is not null; otherwise skip them
+     *
+     * @return a specialized validator to check values of type {@code TYPE} (see the appropriate {@code expect} method
+     *         of {@link Validator}
+     */
     VALIDATOR ifNotNull();
 }
