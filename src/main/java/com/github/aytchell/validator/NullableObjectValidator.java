@@ -58,16 +58,16 @@ public interface NullableObjectValidator<TYPE, VALIDATOR> {
     NullableObjectValidator<TYPE, VALIDATOR> ifNotGivenOrFalse(Boolean condition);
 
     /**
-     * Ensure that the given value is not null; otherwise throw an exception
+     * Ensure that the value under test is not null; otherwise throw an exception
      *
      * @return a specialized validator to check values of type {@code TYPE} (see the appropriate {@code expect} method
      *         of {@link Validator}
-     * @throws ValidationException if the given value is null
+     * @throws ValidationException if the value under test is null
      */
     VALIDATOR notNull() throws ValidationException;
 
     /**
-     * Perform all following checks only if the given value is not null; otherwise skip them
+     * Perform all following checks only if the value under test is not null; otherwise skip them
      *
      * @return a specialized validator to check values of type {@code TYPE} (see the appropriate {@code expect} method
      *         of {@link Validator}
