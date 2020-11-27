@@ -1,6 +1,7 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.StringValidator;
+import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,16 @@ class DisarmedStringValidator implements StringValidator {
 
     @Override
     public StringValidator lengthAtMost(int maxLength) {
+        return this;
+    }
+
+    @Override
+    public StringValidator bytesAtMost(int maxBytes, Encoding encoding) {
+        return this;
+    }
+
+    @Override
+    public StringValidator codePointsAtMost(int maxCodepoints) {
         return this;
     }
 

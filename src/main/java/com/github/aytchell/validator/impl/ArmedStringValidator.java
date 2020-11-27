@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +50,36 @@ class ArmedStringValidator implements StringValidator {
     }
 
     @Override
+    public StringValidator bytesAtMost(int maxBytes, Encoding encoding) throws ValidationException {
+        final long numBytes = countBytes(encoding);
+        if (numBytes > maxBytes) {
+            final String valuesName = String.format("number of bytes in %s (as %s)", name, encoding.getBeautyName());
+            throw new ValidationException()
+                    .setActualValuesName(valuesName)
+                    .setActualValue(numBytes)
+                    .setValuesExtraInfo(extraInfo)
+                    .setExpectation("is at most")
+                    .setExpectedValue(maxBytes);
+        }
+        return this;
+    }
+
+    @Override
+    public StringValidator codePointsAtMost(int maxCodepoints) throws ValidationException {
+        final long numCodepoints = countCodepoints();
+        if (numCodepoints > maxCodepoints) {
+            final String valuesName = String.format("number of code points in %s", name);
+            throw new ValidationException()
+                    .setActualValuesName(valuesName)
+                    .setActualValue(numCodepoints)
+                    .setValuesExtraInfo(extraInfo)
+                    .setExpectation("is at most")
+                    .setExpectedValue(maxCodepoints);
+        }
+        return this;
+    }
+
+    @Override
     public StringValidator validUrl() throws ValidationException {
         try {
             new URL(value);
@@ -83,6 +114,20 @@ class ArmedStringValidator implements StringValidator {
                     .setExpectation(expectation + " (but is not)");
         }
         return this;
+    }
+
+    private long countBytes(Encoding encoding) {
+        switch (encoding) {
+            case UTF_8: return value.getBytes(StandardCharsets.UTF_8).length;
+            // take care: when UTF_16 is chosen, 'getBytes' prepends a BOM thus giving the wrong number of bytes
+            case UTF_16: return value.getBytes(StandardCharsets.UTF_16BE).length;
+            case UTF_32: return countCodepoints() * 4;
+        }
+        throw new IllegalStateException("Unknown encoding encountered");
+    }
+
+    private long countCodepoints() {
+        return value.codePoints().count();
     }
 
     private ValidationException newExceptionWithBasics() {

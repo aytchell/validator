@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StringValidatorTest {
     @Test
@@ -28,6 +29,8 @@ public class StringValidatorTest {
         Validator.expect(emptyString).ifTrue(false).ifNotNull().notEmpty();
         Validator.expect(blankString).ifTrue(false).ifNotNull().notBlank();
         Validator.expect(blankString).ifTrue(false).ifNotNull().lengthAtMost(2);
+        Validator.expect(blankString).ifTrue(false).ifNotNull().bytesAtMost(0, StringValidator.Encoding.UTF_8);
+        Validator.expect(blankString).ifTrue(false).ifNotNull().codePointsAtMost(0);
         Validator.expect(blankString).ifTrue(false).ifNotNull().validUrl();
         Validator.expect(blankString).ifTrue(false).ifNotNull().matches(privateString);
         Validator.expect(blankString).ifTrue(false).ifNotNull().matches(privateString, "private");
@@ -92,6 +95,41 @@ public class StringValidatorTest {
                 () -> Validator.expect(longString, "longString").notNull().lengthAtMost(10),
                 List.of("length of longString", stringSize, "is at most", "10")
         );
+    }
+
+    private static final String LATIN_SMALL_LETTER_A = "\u0061";
+    private static final String DEVANAGARI_LETTER_NA = "\u0928";
+    private static final String DEVANAGARI_VOWEL_SIGN_I = "\u093F";
+    private static final String DEVANAGARI_SYLLABLE_NI = DEVANAGARI_LETTER_NA + DEVANAGARI_VOWEL_SIGN_I;
+    private static final String CJK_UNIFIED_IDEOGRAPH_4E9C = "\u4E9C";
+    private static final String LINEAR_B_IDEOGRAM_EQUID = "\uD800\uDC83";
+
+    // See https://unicode.org/faq/char_combmark.html#7 for an explanation of this sample string
+    private static final String FAQ_SAMPLE_STRING =
+            LATIN_SMALL_LETTER_A + DEVANAGARI_SYLLABLE_NI + CJK_UNIFIED_IDEOGRAPH_4E9C + LINEAR_B_IDEOGRAM_EQUID;
+
+    @Test
+    void bytesAtMostWorkAsExpected() throws ValidationException {
+        // Expected number of bytes is taken from here: https://unicode.org/faq/char_combmark.html#7
+        Validator.expect(FAQ_SAMPLE_STRING).notNull().bytesAtMost(14, StringValidator.Encoding.UTF_8);
+        Validator.expect(FAQ_SAMPLE_STRING).notNull().bytesAtMost(12, StringValidator.Encoding.UTF_16);
+        Validator.expect(FAQ_SAMPLE_STRING).notNull().bytesAtMost(20, StringValidator.Encoding.UTF_32);
+
+        assertThrows(ValidationException.class, () -> Validator.expect(FAQ_SAMPLE_STRING).notNull()
+                .bytesAtMost(13, StringValidator.Encoding.UTF_8));
+        assertThrows(ValidationException.class, () -> Validator.expect(FAQ_SAMPLE_STRING).notNull()
+                .bytesAtMost(11, StringValidator.Encoding.UTF_16));
+        assertThrows(ValidationException.class, () -> Validator.expect(FAQ_SAMPLE_STRING).notNull()
+                .bytesAtMost(19, StringValidator.Encoding.UTF_32));
+    }
+
+    @Test
+    void codepointsAtMostWorkAsExpected() throws ValidationException {
+        // Expected number of code points is taken from here: https://unicode.org/faq/char_combmark.html#7
+        Validator.expect(FAQ_SAMPLE_STRING).notNull().codePointsAtMost(5);
+
+        assertThrows(ValidationException.class,
+                () -> Validator.expect(FAQ_SAMPLE_STRING).notNull().codePointsAtMost(4));
     }
 
     @Test
