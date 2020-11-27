@@ -210,10 +210,10 @@ public class LongValidatorTest {
     void passesWhenValueIsGoodPasses() throws ValidationException {
         final Integer validInteger = 50;
 
-        Validator.expect(validInteger).notNull().passes(v -> (v % 2) == 0, "even");
-        Validator.expect(validInteger).notNull().passes(this::isEven, "even");
-        Validator.expect(validInteger).notNull().passes(LongValidatorTest::isStaticEven, "even");
-        Validator.expect(validInteger).notNull().passes(new IsEven(), "even");
+        Validator.expect(validInteger).notNull().passes(v -> (v % 2) == 0, "is even");
+        Validator.expect(validInteger).notNull().passes(this::isEven, "is even");
+        Validator.expect(validInteger).notNull().passes(LongValidatorTest::isStaticEven, "is even");
+        Validator.expect(validInteger).notNull().passes(new IsEven(), "is even");
     }
 
     @Test
