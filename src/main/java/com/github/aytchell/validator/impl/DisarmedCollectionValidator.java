@@ -30,7 +30,7 @@ abstract class DisarmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     @Override
-    public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> entryValidator) {
+    public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> validator) {
         return getValidator();
     }
 }
