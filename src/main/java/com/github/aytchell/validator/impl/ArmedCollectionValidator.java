@@ -67,7 +67,10 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
 
     @Override
     public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> validator) throws ValidationException {
-        return iterate(validator::apply);
+        return iterate(entry -> {
+            Validator.expect(entry).notNull();
+            validator.apply(entry);
+        });
     }
 
     private VALIDATOR iterate(EntryValidator<TYPE> validator) throws ValidationException {

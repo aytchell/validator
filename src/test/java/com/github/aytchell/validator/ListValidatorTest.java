@@ -4,6 +4,7 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.Value;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
@@ -228,7 +229,7 @@ public class ListValidatorTest {
     }
 
     @Test
-    void isAnyEntryBelowFiveWithLowEntriesThrows() throws ValidationException {
+    void isAnyEntryBelowFiveWithLowEntriesThrows() {
         final List<Integer> integerList = List.of(67, 56, 45, 34, 23);
         final List<Long> longList = List.of(11L, 12L, 13L, 14L);
 
@@ -295,7 +296,7 @@ public class ListValidatorTest {
     }
 
     @Test
-    void eachCustomEntryIncorrectThingiesGivenThrows() throws ValidationException {
+    void eachCustomEntryIncorrectThingiesGivenThrows() {
         final List<Thingy> thingies = List.of(
                 new Thingy("two", 2),
                 new Thingy("one", 1),
@@ -308,6 +309,22 @@ public class ListValidatorTest {
                             Validator.expect(e.getValue(), "value").notNull().greaterThan(1);
                         }),
                 List.of("that 'thingies[1].value' ", "value: 1", "is greater than", "1"));
+    }
+
+    @Test
+    void eachCustomEntryCanHandleNull() throws ValidationException {
+        final List<Thingy> thingies = new ArrayList<>(List.of(
+                new Thingy("two", 2),
+                new Thingy("one", 1)));
+        thingies.add(null);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(thingies, "thingies").notNull().eachCustomEntry(
+                        e -> {
+                            Validator.expect(e.getName(), "name").notNull().notBlank();
+                            Validator.expect(e.getValue(), "value").notNull().greaterThan(0);
+                        }),
+                List.of("that 'thingies[2].<null>' ", "is not null"));
     }
 
     @Value
