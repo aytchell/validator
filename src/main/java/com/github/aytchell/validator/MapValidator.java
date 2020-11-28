@@ -47,7 +47,7 @@ public interface MapValidator<K, V> extends ContainerValidator<MapValidator<K, V
      Validator.expect(integerMap, "integerMap")
             .notNull()
             .eachNumericValue(
-                    v -> v.notNull().greaterEqThan(5));
+                    v -&gt; v.notNull().greaterEqThan(5));
      * </pre>
      *
      * @param validator a function similar to a Consumer which is applied to each value of the Map and
@@ -79,7 +79,7 @@ public interface MapValidator<K, V> extends ContainerValidator<MapValidator<K, V
      Validator.expect(filledMap, "filledMap")
             .ifNotNull()
             .eachStringValue(
-                    v -> v.notNull().lengthAtMost(20));
+                    v -&gt; v.notNull().lengthAtMost(20));
      * </pre>
      *
      * @param validator a function similar to a Consumer which is applied to each value of the Map and

@@ -48,7 +48,7 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
      Validator.expect(integerList)
             .notNull()
             .eachNumericEntry(
-                    v -> v.notNull().greaterEqThan(24));
+                    v -&gt; v.notNull().greaterEqThan(24));
      * </pre>
      *
      * @param entryValidator a function similar to a Consumer which is applied to each entry of the collection and
@@ -81,7 +81,7 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
      Validator.expect(filledList, "filledList")
             .ifNotNull()
             .eachStringEntry(
-                    v -> v.notNull().lengthAtMost(20));
+                    v -&gt; v.notNull().lengthAtMost(20));
      * </pre>
      *
      * @param entryValidator a function similar to a Consumer which is applied to each entry of the collection and
@@ -112,7 +112,7 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
      * Usage example:
      * <pre>
      Validator.expect(thingies, "thingies").notNull().eachCustomEntry(
-            e -> {
+            e -&gt; {
                    Validator.expect(e.getName(), "name").notNull().notBlank();
                    Validator.expect(e.getValue(), "value").notNull().greaterThan(0);
             });
