@@ -17,6 +17,26 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     @Override
+    public VALIDATOR contains(TYPE key) throws ValidationException {
+        if (!getValue().contains(key)) {
+            throw newExceptionWithBasics()
+                    .setExpectation("contains")
+                    .setExpectedValue(key);
+        }
+        return getValidator();
+    }
+
+    @Override
+    public VALIDATOR containsNot(TYPE key) throws ValidationException {
+        if (getValue().contains(key)) {
+            throw newExceptionWithBasics()
+                    .setExpectation("contains not")
+                    .setExpectedValue(key);
+        }
+        return getValidator();
+    }
+
+    @Override
     public VALIDATOR eachNumericEntry(LongEntryValidator entryValidator) throws ValidationException {
         return iterate(entry -> {
             if (entry instanceof Integer) {

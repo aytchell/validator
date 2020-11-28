@@ -10,6 +10,16 @@ abstract class DisarmedCollectionValidator<TYPE, VALIDATOR>
         implements CollectionValidator<TYPE, VALIDATOR> {
 
     @Override
+    public VALIDATOR contains(TYPE key) {
+        return getValidator();
+    }
+
+    @Override
+    public VALIDATOR containsNot(TYPE key) {
+        return getValidator();
+    }
+
+    @Override
     public VALIDATOR eachNumericEntry(LongEntryValidator validator) {
         return getValidator();
     }

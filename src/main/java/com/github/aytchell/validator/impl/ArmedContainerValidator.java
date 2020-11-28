@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter(value = AccessLevel.PROTECTED)
-abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerValidator<TYPE, VALIDATOR> {
+abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerValidator<VALIDATOR> {
     private final String containerType;
     private final Collection<TYPE> value;
     private final String name;
@@ -23,24 +23,6 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
         if (value.isEmpty()) {
             throw newExceptionWithBasics()
                     .setExpectation("is not empty");
-        }
-        return getValidator();
-    }
-
-    public VALIDATOR containsNot(TYPE key) throws ValidationException {
-        if (value.contains(key)) {
-            throw newExceptionWithBasics()
-                    .setExpectation("contains not")
-                    .setExpectedValue(key);
-        }
-        return getValidator();
-    }
-
-    public VALIDATOR contains(TYPE key) throws ValidationException {
-        if (!value.contains(key)) {
-            throw newExceptionWithBasics()
-                    .setExpectation("contains")
-                    .setExpectedValue(key);
         }
         return getValidator();
     }
@@ -71,7 +53,7 @@ abstract class ArmedContainerValidator<TYPE, VALIDATOR> implements ContainerVali
         return getValidator();
     }
 
-    private ValidationException newExceptionWithBasics() {
+    protected ValidationException newExceptionWithBasics() {
         return new ValidationException()
                 .setValuesType(containerType)
                 .setValuesExtraInfo(extraInfo)

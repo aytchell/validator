@@ -110,9 +110,9 @@ public class MapValidatorTest {
                 "five", 4, "eight", 5, "and so on", 6);
         final Map<Integer, Integer> nullMap = null;
 
-        Validator.expect(longMap, "longMap").notNull().containsNot(6L);
-        Validator.expect(stringMap, "stringMap").notNull().containsNot("six");
-        Validator.expect(nullMap, "nullMap").ifNotNull().containsNot(2020);
+        Validator.expect(longMap, "longMap").notNull().containsNotKey(6L);
+        Validator.expect(stringMap, "stringMap").notNull().containsNotKey("six");
+        Validator.expect(nullMap, "nullMap").ifNotNull().containsNotKey(2020);
     }
 
     @Test
@@ -123,12 +123,12 @@ public class MapValidatorTest {
                 "five", 4, "six", 5, "eight", 6, "and so on", 7);
 
         assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(longMap, "longMap").ifNotNull().containsNot(6L),
-                List.of("longMap", "Map", "contains not", "6"));
+                () -> Validator.expect(longMap, "longMap").ifNotNull().containsNotKey(6L),
+                List.of("longMap", "Map", "contains not key", "6"));
 
         assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(stringMap, "stringMap").ifNotNull().containsNot("six"),
-                List.of("stringMap", "Map", "contains not", "six"));
+                () -> Validator.expect(stringMap, "stringMap").ifNotNull().containsNotKey("six"),
+                List.of("stringMap", "Map", "contains not key", "six"));
     }
 
     @Test
@@ -139,9 +139,9 @@ public class MapValidatorTest {
                 "five", 4, "eight", 5, "and so on", 6);
         final Map<Integer, Integer> nullMap = null;
 
-        Validator.expect(longMap, "longMap").notNull().contains(5L);
-        Validator.expect(stringMap, "stringMap").notNull().contains("five");
-        Validator.expect(nullMap, "nullMap").ifNotNull().contains(2020);
+        Validator.expect(longMap, "longMap").notNull().containsKey(5L);
+        Validator.expect(stringMap, "stringMap").notNull().containsKey("five");
+        Validator.expect(nullMap, "nullMap").ifNotNull().containsKey(2020);
     }
 
     @Test
@@ -152,12 +152,12 @@ public class MapValidatorTest {
                 "three", 3, "eight", 4, "and so on", 5);
 
         assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(longMap, "longMap").ifNotNull().contains(5L),
-                List.of("longMap", "Map", "contains", "5"));
+                () -> Validator.expect(longMap, "longMap").ifNotNull().containsKey(5L),
+                List.of("longMap", "Map", "contains key", "5"));
 
         assertThrowsAndMessageReadsLike(
-                () -> Validator.expect(stringMap, "stringMap").ifNotNull().contains("five"),
-                List.of("stringMap", "Map", "contains", "five"));
+                () -> Validator.expect(stringMap, "stringMap").ifNotNull().containsKey("five"),
+                List.of("stringMap", "Map", "contains key", "five"));
     }
 
     @Test

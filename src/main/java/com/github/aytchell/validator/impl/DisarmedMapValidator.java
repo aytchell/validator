@@ -16,6 +16,16 @@ class DisarmedMapValidator<K, V> extends DisarmedContainerValidator<K, MapValida
     }
 
     @Override
+    public MapValidator<K, V> containsKey(K key) {
+        return this;
+    }
+
+    @Override
+    public MapValidator<K, V> containsNotKey(K key) {
+        return this;
+    }
+
+    @Override
     public MapValidator<K, V> eachNumericValue(LongEntryValidator validator) throws ValidationException {
         return this;
     }

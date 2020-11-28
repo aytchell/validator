@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-abstract class DisarmedContainerValidator<TYPE, VALIDATOR> implements ContainerValidator<TYPE, VALIDATOR> {
+abstract class DisarmedContainerValidator<TYPE, VALIDATOR> implements ContainerValidator<VALIDATOR> {
 
     protected abstract VALIDATOR getValidator();
 
@@ -21,16 +21,6 @@ abstract class DisarmedContainerValidator<TYPE, VALIDATOR> implements ContainerV
 
     @Override
     public VALIDATOR sizeAtMost(int maxNumberOfElements) {
-        return getValidator();
-    }
-
-    @Override
-    public VALIDATOR containsNot(TYPE key) {
-        return getValidator();
-    }
-
-    @Override
-    public VALIDATOR contains(TYPE key) {
         return getValidator();
     }
 }

@@ -22,6 +22,26 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
     }
 
     @Override
+    public MapValidator<K, V> containsKey(K key) throws ValidationException {
+        if (!getValue().contains(key)) {
+            throw newExceptionWithBasics()
+                    .setExpectation("contains key")
+                    .setExpectedValue(key);
+        }
+        return getValidator();
+    }
+
+    @Override
+    public MapValidator<K, V> containsNotKey(K key) throws ValidationException {
+        if (getValue().contains(key)) {
+            throw newExceptionWithBasics()
+                    .setExpectation("contains not key")
+                    .setExpectedValue(key);
+        }
+        return getValidator();
+    }
+
+    @Override
     public MapValidator<K, V> eachNumericValue(LongEntryValidator entryValidator) throws ValidationException {
         try {
             for (V value : theMap.values()) {
@@ -36,7 +56,7 @@ class ArmedMapValidator<K, V> extends ArmedContainerValidator<K, MapValidator<K,
                     entryValidator.apply(Validator.expect((Long) value));
                 } else {
                     throw new ClassCastException(String.format(
-                            "Tried to validate entries in Map '%s' as numeric values (but are '%s')",
+                            "Tried to validate values in Map '%s' as numeric values (but are '%s')",
                             getName(), value.getClass().getSimpleName()));
                 }
             }
