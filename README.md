@@ -34,8 +34,18 @@ Note that
    the expected relation (`is greater than`)
  * It will contain the name of the value (as given to `.expect()`)
  * The method `.expect()` takes an optional third parameter with extra information
- * YOu have to call `.notNull()` before any other check. This is enforced by
+ * You have to call `.notNull()` before any other check. This is enforced by
    the API and the used tpyes.
+
+## Maven
+
+```xml
+    <dependency>
+        <groupId>com.github.aytchell</groupId>
+        <artifactId>validator</artifactId>
+        <version>2.2.0</version>
+    </dependency>
+```
 
 ## Basic validations
 
@@ -281,19 +291,6 @@ There are plenty of unit tests. Please consult them for further examples:
  * [SetValidatorTest](src/test/java/com/github/aytchell/validator/SetValidatorTest.java)
  * [StringValidatorTest](src/test/java/com/github/aytchell/validator/StringValidatorTest.java)
  * [ZonedDateTimeValidatorTest](src/test/java/com/github/aytchell/validator/ZonedDateTimeValidatorTest.java)
-
-## Maven
-
-```xml
-    <dependency>
-        <groupId>com.github.aytchell</groupId>
-        <artifactId>validator</artifactId>
-        <version>2.1.1</version>
-    </dependency>
-```
-
-The jar is not deployed anywhere so you have to compile it yourself and install it to your local `.m2` or
-deploy it to your artifact server.
 
 ## License
 
