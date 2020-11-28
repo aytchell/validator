@@ -13,7 +13,7 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
      * Check that a given entry is contained in the collection under test
      *
      * @param key this entry is expected to be contained in the collection
-     * @return the same validator so calls can be chained
+     * @return the CollectionValidator itself so calls can be chained
      * @throws ValidationException in case the collection under test does <i>not</i> contain {@code key}
      */
     VALIDATOR contains(TYPE key) throws ValidationException;
@@ -22,7 +22,7 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
      * Check that a given entry is <i>not</i> contained in the collection under test
      *
      * @param key this entry is expected to be absent from the collection
-     * @return the same validator so calls can be chained
+     * @return the CollectionValidator itself so calls can be chained
      * @throws ValidationException in case the collection under test <i>does</i> contain {@code key}
      */
     VALIDATOR containsNot(TYPE key) throws ValidationException;
@@ -51,14 +51,14 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
                     v -> v.notNull().greaterEqThan(24));
      * </pre>
      *
-     * @param validator a function similar to a Consumer which is applied to each entry of the collection and
+     * @param entryValidator a function similar to a Consumer which is applied to each entry of the collection and
      *         throws if a value somehow fails the check
-     * @return the same validator so calls can be chained
+     * @return the CollectionValidator itself so calls can be chained
      * @throws ValidationException in case the given validator fails for one of the entries
      * @throws ClassCastException in case the collection does not contain numerical types
      * @see LongValidator
      */
-    VALIDATOR eachNumericEntry(LongEntryValidator validator) throws ValidationException;
+    VALIDATOR eachNumericEntry(LongEntryValidator entryValidator) throws ValidationException;
 
     /**
      * Check all entries of the collection while treating them as {@link String}s
@@ -84,14 +84,14 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
                     v -> v.notNull().lengthAtMost(20));
      * </pre>
      *
-     * @param validator a function similar to a Consumer which is applied to each entry of the collection and
+     * @param entryValidator a function similar to a Consumer which is applied to each entry of the collection and
      *         throws if a value somehow fails the check
-     * @return the same validator so calls can be chained
+     * @return the CollectionValidator itself so calls can be chained
      * @throws ValidationException in case the given validator fails for one of the entries
      * @throws ClassCastException in case the collection does not contain Strings
      * @see StringValidator
      */
-    VALIDATOR eachStringEntry(StringEntryValidator validator) throws ValidationException;
+    VALIDATOR eachStringEntry(StringEntryValidator entryValidator) throws ValidationException;
 
     /**
      * Check all entries of the collection while treating them as 'something but not numeric not string'
@@ -118,10 +118,10 @@ public interface CollectionValidator<TYPE, VALIDATOR> extends ContainerValidator
             });
      * </pre>
      *
-     * @param validator a function similar to a Consumer which is applied to each entry of the collection and
+     * @param entryValidator a function similar to a Consumer which is applied to each entry of the collection and
      *         throws if a value somehow fails the check
-     * @return the same validator so calls can be chained
+     * @return the CollectionValidator itself so calls can be chained
      * @throws ValidationException in case the given validator fails for one of the entries
      */
-    VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> validator) throws ValidationException;
+    VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> entryValidator) throws ValidationException;
 }

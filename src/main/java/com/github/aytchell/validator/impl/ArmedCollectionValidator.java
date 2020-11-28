@@ -67,10 +67,10 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     @Override
-    public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> validator) throws ValidationException {
+    public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> entryValidator) throws ValidationException {
         return iterate(entry -> {
             Validator.expect(entry).notNull();
-            validator.apply(entry);
+            entryValidator.apply(entry);
         });
     }
 

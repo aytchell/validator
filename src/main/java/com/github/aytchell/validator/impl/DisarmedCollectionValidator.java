@@ -20,17 +20,17 @@ abstract class DisarmedCollectionValidator<TYPE, VALIDATOR>
     }
 
     @Override
-    public VALIDATOR eachNumericEntry(LongEntryValidator validator) {
+    public VALIDATOR eachNumericEntry(LongEntryValidator entryValidator) {
         return getValidator();
     }
 
     @Override
-    public VALIDATOR eachStringEntry(StringEntryValidator validator) {
+    public VALIDATOR eachStringEntry(StringEntryValidator entryValidator) {
         return getValidator();
     }
 
     @Override
-    public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> validator) {
+    public VALIDATOR eachCustomEntry(CustomEntryValidator<TYPE> entryValidator) {
         return getValidator();
     }
 }
