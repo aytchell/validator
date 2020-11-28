@@ -3,7 +3,6 @@ package com.github.aytchell.validator.impl;
 import com.github.aytchell.validator.LongEntryValidator;
 import com.github.aytchell.validator.MapValidator;
 import com.github.aytchell.validator.StringEntryValidator;
-import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -26,12 +25,12 @@ class DisarmedMapValidator<K, V> extends DisarmedContainerValidator<K, MapValida
     }
 
     @Override
-    public MapValidator<K, V> eachNumericValue(LongEntryValidator validator) throws ValidationException {
+    public MapValidator<K, V> eachNumericValue(LongEntryValidator validator) {
         return this;
     }
 
     @Override
-    public MapValidator<K, V> eachStringValue(StringEntryValidator validator) throws ValidationException {
+    public MapValidator<K, V> eachStringValue(StringEntryValidator validator) {
         return this;
     }
 }

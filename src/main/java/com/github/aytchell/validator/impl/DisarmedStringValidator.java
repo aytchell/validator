@@ -1,7 +1,6 @@
 package com.github.aytchell.validator.impl;
 
 import com.github.aytchell.validator.StringValidator;
-import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
