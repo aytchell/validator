@@ -92,7 +92,7 @@ public class ValidatorImpl {
             @Override
             protected ZonedDateTimeValidator createValidator(LocalDate value, String name, String extraInfo) {
                 final ZonedDateTime wrappedValue = ZonedDateTime.of(value,
-                        LocalTime.of(0, 0), ZoneId.systemDefault());
+                        LocalTime.of(0, 0), ZoneId.of("UTC"));
                 return new ArmedZonedDateTimeValidator(wrappedValue, name, extraInfo);
             }
         };
@@ -104,7 +104,7 @@ public class ValidatorImpl {
                 DisarmedZonedDateTimeValidator.getINSTANCE()) {
             @Override
             protected ZonedDateTimeValidator createValidator(LocalDateTime value, String name, String extraInfo) {
-                final ZonedDateTime wrappedValue = ZonedDateTime.of(value, ZoneId.systemDefault());
+                final ZonedDateTime wrappedValue = ZonedDateTime.of(value, ZoneId.of("UTC"));
                 return new ArmedZonedDateTimeValidator(wrappedValue, name, extraInfo);
             }
         };

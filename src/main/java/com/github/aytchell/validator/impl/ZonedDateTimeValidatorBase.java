@@ -11,23 +11,23 @@ import java.time.ZonedDateTime;
 
 abstract class ZonedDateTimeValidatorBase implements ZonedDateTimeValidator {
     @Override
-    public ZonedDateTimeValidator isBefore(LocalDate otherDateTime) throws ValidationException {
-        return isBefore(otherDateTime, null);
+    public ZonedDateTimeValidator isBefore(LocalDate otherDate) throws ValidationException {
+        return isBefore(otherDate, null);
     }
 
     @Override
-    public ZonedDateTimeValidator isBefore(LocalDate otherDateTime, String otherName) throws ValidationException {
-        return isBefore(wrapValue(otherDateTime), otherName);
+    public ZonedDateTimeValidator isBefore(LocalDate otherDate, String otherName) throws ValidationException {
+        return isBefore(wrapValue(otherDate), otherName);
     }
 
     @Override
-    public ZonedDateTimeValidator isAfter(LocalDate otherDateTime) throws ValidationException {
-        return isAfter(otherDateTime, null);
+    public ZonedDateTimeValidator isAfter(LocalDate otherDate) throws ValidationException {
+        return isAfter(otherDate, null);
     }
 
     @Override
-    public ZonedDateTimeValidator isAfter(LocalDate otherDateTime, String otherName) throws ValidationException {
-        return isAfter(wrapValue(otherDateTime), otherName);
+    public ZonedDateTimeValidator isAfter(LocalDate otherDate, String otherName) throws ValidationException {
+        return isAfter(wrapValue(otherDate), otherName);
     }
 
     @Override
@@ -65,6 +65,6 @@ abstract class ZonedDateTimeValidatorBase implements ZonedDateTimeValidator {
     }
 
     private ZonedDateTime wrapValue(LocalDateTime value) {
-        return ZonedDateTime.of(value, ZoneId.systemDefault());
+        return ZonedDateTime.of(value, ZoneId.of("UTC"));
     }
 }

@@ -317,6 +317,9 @@ public class Validator {
     /**
      * Check if the given LocalDate passes the expectations
      *
+     * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
+     * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
+     *
      * @param value the value to be checked
      * @return An object instance which can be used to perform initial tests before "the real tests" start
      *         <p>
@@ -330,6 +333,9 @@ public class Validator {
 
     /**
      * Check if the given (named) LocalDate passes the expectations
+     *
+     * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
+     * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -345,6 +351,9 @@ public class Validator {
 
     /**
      * Check if the given (named and described) LocalDate passes the expectations.
+     *
+     * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
+     * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -366,6 +375,9 @@ public class Validator {
     /**
      * Check if the given LocalDateTime passes the expectations
      *
+     * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
+     * ZonedDateTime}. The timezone is set to UTC.
+     *
      * @param value the value to be checked
      * @return An object instance which can be used to perform initial tests before "the real tests" start
      *         <p>
@@ -379,6 +391,9 @@ public class Validator {
 
     /**
      * Check if the given (named) LocalDateTime value passes the expectations.
+     *
+     * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
+     * ZonedDateTime}. The timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -395,6 +410,9 @@ public class Validator {
 
     /**
      * Check if the given (named and described) LocalDateTime passes the expectations.
+     *
+     * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
+     * ZonedDateTime}. The timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
