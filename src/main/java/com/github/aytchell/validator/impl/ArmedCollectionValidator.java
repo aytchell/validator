@@ -8,6 +8,7 @@ import com.github.aytchell.validator.Validator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 
 import java.util.Collection;
+import java.util.Objects;
 
 abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
         extends ArmedContainerValidator<TYPE, VALIDATOR>
@@ -81,12 +82,9 @@ abstract class ArmedCollectionValidator<TYPE, VALIDATOR>
                 ++index;
             } catch (ValidationException exception) {
                 final String entryName = exception.getActualValuesName();
-                if (entryName != null) {
-                    exception.setActualValuesName(compileNameOfElement(index, entryName));
-                } else {
-                    exception.setActualValuesName(compileNameOfElement(index,
-                            "<" + String.valueOf(entry) + ">"));
-                }
+                exception.setActualValuesName(compileNameOfElement(
+                        index, Objects.requireNonNullElseGet(entryName, () -> "<" + entry + ">")
+                ));
                 throw exception;
             }
         }
