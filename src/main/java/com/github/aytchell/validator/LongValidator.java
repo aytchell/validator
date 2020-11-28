@@ -111,11 +111,11 @@ public interface LongValidator {
      * (but is not)" (examples to the above mentioned predicates would be "is a fibonacci number", "is even" or "is a
      * transaction id")
      *
-     * @param pred a custom predicate to check the value under test
+     * @param predicate a custom predicate to check the value under test
      * @param expectation a custom expectation string that will be used to build the error message. See the
      *         detailed method description for examples.
      * @return this validator so you can add more tests
      * @throws ValidationException if the value under test fails the given predicate
      */
-    LongValidator passes(LongPredicate pred, String expectation) throws ValidationException;
+    LongValidator passes(LongPredicate predicate, String expectation) throws ValidationException;
 }

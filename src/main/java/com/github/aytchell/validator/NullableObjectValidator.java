@@ -16,7 +16,7 @@ public interface NullableObjectValidator<TYPE, VALIDATOR> {
     /**
      * Perform all following checks only if the given {@code condition} is {@code true}
      * <p>
-     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * Note that you have to append a call to {@link NullableObjectValidator#notNull()} or {@link
      * NullableObjectValidator#ifNotNull()} to perform "real" checks.
      *
      * @param condition this condition says whether the following tests are executed or skipped
@@ -27,7 +27,7 @@ public interface NullableObjectValidator<TYPE, VALIDATOR> {
     /**
      * Perform all following checks only if the given {@code condition} is {@code false}
      * <p>
-     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * Note that you have to append a call to {@link NullableObjectValidator#notNull()} or {@link
      * NullableObjectValidator#ifNotNull()} to perform "real" checks.
      *
      * @param condition this condition says whether the following tests are skipped or executed
@@ -38,7 +38,7 @@ public interface NullableObjectValidator<TYPE, VALIDATOR> {
     /**
      * Perform all following checks only if the given {@code condition} is not null and {@code true}
      * <p>
-     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * Note that you have to append a call to {@link NullableObjectValidator#notNull()} or {@link
      * NullableObjectValidator#ifNotNull()} to perform "real" checks.
      *
      * @param condition this condition says whether the following tests are executed or skipped
@@ -49,7 +49,7 @@ public interface NullableObjectValidator<TYPE, VALIDATOR> {
     /**
      * Perform all following checks only if the given {@code condition} is either null or (if given) {@code false}
      * <p>
-     * Note that you have to append a call to {@ink NullableObjectValidator#notNull()} or {@ink
+     * Note that you have to append a call to {@link NullableObjectValidator#notNull()} or {@link
      * NullableObjectValidator#ifNotNull()} to perform "real" checks.
      *
      * @param condition this condition says whether the following tests are skipped or executed

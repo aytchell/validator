@@ -38,7 +38,7 @@ class DisarmedLongValidator extends LongValidatorBase {
     }
 
     @Override
-    public LongValidator passes(LongPredicate pred, String expectation) {
+    public LongValidator passes(LongPredicate predicate, String expectation) {
         return this;
     }
 }

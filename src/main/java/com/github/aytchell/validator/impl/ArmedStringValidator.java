@@ -108,8 +108,8 @@ class ArmedStringValidator implements StringValidator {
     }
 
     @Override
-    public StringValidator passes(Predicate<String> pred, String expectation) throws ValidationException {
-        if (!pred.test(value)) {
+    public StringValidator passes(Predicate<String> predicate, String expectation) throws ValidationException {
+        if (!predicate.test(value)) {
             throw newExceptionWithBasics()
                     .setExpectation(expectation + " (but is not)");
         }

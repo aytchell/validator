@@ -18,7 +18,7 @@ public interface StringValidator {
      *
      * @return this validator so you can add more tests
      * @throws ValidationException if the string under test is empty
-     * @see {@link String#isEmpty()}
+     * @see String#isEmpty()
      */
     StringValidator notEmpty() throws ValidationException;
 
@@ -27,7 +27,7 @@ public interface StringValidator {
      *
      * @return this validator so you can add more tests
      * @throws ValidationException if the string under test is blank
-     * @see {@link String#isBlank()}
+     * @see String#isBlank()
      */
     StringValidator notBlank() throws ValidationException;
 
@@ -45,7 +45,9 @@ public interface StringValidator {
      *
      * @return this validator so you can add more tests
      * @throws ValidationException if the string under test is longer than the given amount
-     * @see {@link String#length()}, {@link StringValidator#bytesAtMost}, {@link StringValidator#codePointsAtMost}
+     * @see String#length()
+     * @see StringValidator#bytesAtMost
+     * @see StringValidator#codePointsAtMost
      */
     StringValidator lengthAtMost(int maxLength) throws ValidationException;
 
@@ -60,7 +62,7 @@ public interface StringValidator {
      * @param maxBytes the maximum allowed number of bytes in the given {@code encoding}
      * @param encoding the encoding to serialize the string
      * @throws ValidationException if the string under test exceeds the given number of bytes
-     * @see {@link StringValidator#codePointsAtMost}
+     * @see StringValidator#codePointsAtMost
      */
     StringValidator bytesAtMost(int maxBytes, Encoding encoding) throws ValidationException;
 
@@ -76,7 +78,7 @@ public interface StringValidator {
      *
      * @param maxCodepoints the maximum allowed number of code points in the string under test
      * @throws ValidationException if the string under test exceeds the given number of code points
-     * @see {@link StringValidator#bytesAtMost}
+     * @see StringValidator#bytesAtMost
      */
     StringValidator codePointsAtMost(int maxCodepoints) throws ValidationException;
 
@@ -119,13 +121,13 @@ public interface StringValidator {
      * (but does not)" (an example to the above mentioned predicate would be "represents an integer smaller than
      * 1776").
      *
-     * @param pred a custom predicate to check the string under test
+     * @param predicate a custom predicate to check the string under test
      * @param expectation a custom expectation string that will be used to build the error message. See the
      *         detailed method description for examples.
      * @return this validator so you can add more tests
      * @throws ValidationException if the string under test fails the given predicate
      */
-    StringValidator passes(Predicate<String> pred, String expectation) throws ValidationException;
+    StringValidator passes(Predicate<String> predicate, String expectation) throws ValidationException;
 
     enum Encoding {
         UTF_8("UTF-8"),

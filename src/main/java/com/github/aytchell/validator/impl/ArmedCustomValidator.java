@@ -5,6 +5,8 @@ import com.github.aytchell.validator.CustomValidator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AllArgsConstructor;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 class ArmedCustomValidator<E> implements CustomValidator<E> {
     private final E value;
@@ -17,12 +19,8 @@ class ArmedCustomValidator<E> implements CustomValidator<E> {
             entryValidator.apply(value);
         } catch (ValidationException exception) {
             final String entryName = exception.getActualValuesName();
-            if (entryName != null) {
-                exception.setActualValuesName(compileNameOfElement(entryName));
-            } else {
-                exception.setActualValuesName(compileNameOfElement(
-                        "<" + String.valueOf(exception.getActualValue()) + ">"));
-            }
+            exception.setActualValuesName(compileNameOfElement(
+                    Objects.requireNonNullElseGet(entryName, () -> "<" + exception.getActualValue() + ">")));
             if (exception.getValuesExtraInfo() == null && extraInfo != null) {
                 exception.setValuesExtraInfo(compileExtraInfo());
             }

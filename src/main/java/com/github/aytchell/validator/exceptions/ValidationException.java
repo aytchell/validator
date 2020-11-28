@@ -59,7 +59,7 @@ public class ValidationException extends Exception {
         final String actualValueCoreString = buildActualValueCoreString();
 
         if (surroundingContainerName != null) {
-            // is the surrounding container's name is set, then the other two container infos are set, too
+            // if the surrounding container's name is set, then container's type and type of entry are set, too
             return String.format("%s %s in '%s' (type: %s%s)",
                     typeOfContainerEntry, actualValueCoreString,
                     surroundingContainerName, surroundingContainerType,

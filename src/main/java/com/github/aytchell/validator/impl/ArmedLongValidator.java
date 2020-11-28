@@ -72,8 +72,8 @@ class ArmedLongValidator extends LongValidatorBase {
     }
 
     @Override
-    public LongValidator passes(LongPredicate pred, String expectation) throws ValidationException {
-        if (!pred.test(value)) {
+    public LongValidator passes(LongPredicate predicate, String expectation) throws ValidationException {
+        if (!predicate.test(value)) {
             throw newExceptionWithBasics()
                     .setExpectation(expectation + " (but is not)");
         }

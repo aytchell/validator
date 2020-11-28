@@ -127,7 +127,7 @@ public class ValidatorImpl {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo, new DisarmedListValidator<E>()) {
             @Override
             protected ListValidator<E> createValidator(List<E> value, String name, String extraInfo) {
-                return new ArmedListValidator<E>(value, name, extraInfo);
+                return new ArmedListValidator<>(value, name, extraInfo);
             }
         };
     }
@@ -137,7 +137,7 @@ public class ValidatorImpl {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo, new DisarmedSetValidator<E>()) {
             @Override
             protected SetValidator<E> createValidator(Set<E> value, String name, String extraInfo) {
-                return new ArmedSetValidator<E>(value, name, extraInfo);
+                return new ArmedSetValidator<>(value, name, extraInfo);
             }
         };
     }

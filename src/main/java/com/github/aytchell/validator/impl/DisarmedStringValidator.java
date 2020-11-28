@@ -54,7 +54,7 @@ class DisarmedStringValidator implements StringValidator {
     }
 
     @Override
-    public StringValidator passes(Predicate<String> pred, String expectation) {
+    public StringValidator passes(Predicate<String> predicate, String expectation) {
         return this;
     }
 }

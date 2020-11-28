@@ -15,7 +15,7 @@ import java.util.Set;
  * The API class of this library
  * <p>
  * his is the entry class for input validation as provided by this library. Every check of an input value starts with
- * {@code Validate.expect(...)}. The return value will be a {@link NullableObjectValidator} that mathes the type of the
+ * {@code Validate.expect(...)}. The return value will be a {@link NullableObjectValidator} that matches the type of the
  * value to be checked.
  * <p>
  * There are a variety of different types supported and each type has a bunch of tests that can b performed. Every time
@@ -316,7 +316,7 @@ public class Validator {
 
     /**
      * Check if the given LocalDate passes the expectations
-     *
+     * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
      * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
@@ -333,7 +333,7 @@ public class Validator {
 
     /**
      * Check if the given (named) LocalDate passes the expectations
-     *
+     * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
      * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
@@ -351,7 +351,7 @@ public class Validator {
 
     /**
      * Check if the given (named and described) LocalDate passes the expectations.
-     *
+     * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
      * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
@@ -374,7 +374,7 @@ public class Validator {
 
     /**
      * Check if the given LocalDateTime passes the expectations
-     *
+     * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
      * ZonedDateTime}. The timezone is set to UTC.
      *
@@ -391,7 +391,7 @@ public class Validator {
 
     /**
      * Check if the given (named) LocalDateTime value passes the expectations.
-     *
+     * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
      * ZonedDateTime}. The timezone is set to UTC.
      *
@@ -410,7 +410,7 @@ public class Validator {
 
     /**
      * Check if the given (named and described) LocalDateTime passes the expectations.
-     *
+     * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
      * ZonedDateTime}. The timezone is set to UTC.
      *
