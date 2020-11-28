@@ -6,7 +6,7 @@
 
     <groupId>com.github.aytchell</groupId>
     <artifactId>validator</artifactId>
-    <version>2.2.1-SNAPSHOT</version>
+    <version>2.2.1</version>
     <packaging>jar</packaging>
 
     <name>Input validator</name>
@@ -40,7 +40,7 @@
         <connection>scm:git:git://github.com/aytchell/validator.git</connection>
         <developerConnection>scm:git:https://github.com/aytchell/validator.git</developerConnection>
         <url>http://github.com/aytchell/validator/tree/master</url>
-        <tag>releases/2.2.0</tag>
+        <tag>releases/2.2.1</tag>
     </scm>
 
     <distributionManagement>
