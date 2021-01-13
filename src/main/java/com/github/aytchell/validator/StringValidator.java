@@ -70,7 +70,7 @@ public interface StringValidator {
     StringValidator bytesAtMost(int maxBytes, Encoding encoding) throws ValidationException;
 
     /**
-     * Checks that the string under test containsKey a max amount of code points
+     * Checks that the string under test contains a max amount of code points
      * <p>
      * Each grapheme with its own entry in the unicode table represents one code point. So it can be roughly set equal
      * with what users would recognize as "a character" (although this gets complicated with asian fonts). The main
@@ -86,7 +86,7 @@ public interface StringValidator {
     StringValidator codePointsAtMost(int maxCodepoints) throws ValidationException;
 
     /**
-     * Checks that the given string containsKey a valid URL
+     * Checks that the given string contains a valid URL
      * <p>
      * This method tries to create a new {@link java.net.URL} and fails if an exception is thrown.
      *
