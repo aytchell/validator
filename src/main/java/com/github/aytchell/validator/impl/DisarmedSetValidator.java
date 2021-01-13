@@ -1,5 +1,8 @@
 package com.github.aytchell.validator.impl;
 
+// Copyright (c) 2020 Hannes Lerchl <hannes.lerchl@aytchell.de>
+// SPDX-License-Identifier: Apache-2.0
+
 import com.github.aytchell.validator.SetValidator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
