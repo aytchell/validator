@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -325,6 +326,81 @@ public class ListValidatorTest {
                             Validator.expect(e.getValue(), "value").notNull().greaterThan(0);
                         }),
                 List.of("that 'thingies[2].<null>' ", "is not null"));
+    }
+
+    @Test
+    void allEntriesAreUniqueOnEmptyListPasses() throws ValidationException {
+        final List<Integer> empty = List.of();
+        final List<Integer> nullList = null;
+
+        Validator.expect(empty, "thingies").notNull().allEntriesAreUnique();
+        Validator.expect(nullList, "thingies").ifNotNull().allEntriesAreUnique();
+        Validator.expect(nullList, "thingies").ifNotNull().allEntriesAreUnique(
+                Objects::equals, "foo", Objects::toString);
+    }
+
+    @Test
+    void allEntriesAreUniqueOnUniqueIntegersPasses() throws ValidationException {
+        final List<Integer> fibs = List.of(1, 2, 3, 5, 8, 13, 21, 34);
+        Validator.expect(fibs, "fibs").notNull().allEntriesAreUnique();
+    }
+
+    @Test
+    void allEntriesAreUniqueOnNonUniqueIntegersThrows() {
+        final List<Integer> fibs = List.of(1, 2, 3, 5, 8, 13, 21, 34, 8);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(fibs, "fibs").notNull().allEntriesAreUnique(),
+                List.of("that 'fibs[4]' ", "value: '8'", "is unique"));
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(fibs).notNull().allEntriesAreUnique(
+                        Integer::equals, null, Object::toString),
+                List.of("that 'List[4]' ", "value: '8'", "is unique"));
+    }
+
+    @Test
+    void allEntriesAreUniqueOnUniqueThingiessPass() throws ValidationException {
+        final List<Thingy> thingies = List.of(
+                new Thingy("two", 2),
+                new Thingy("one", 1),
+                new Thingy("three", 3),
+                new Thingy("three", 4));
+
+        Validator.expect(thingies, "thingies").notNull().allEntriesAreUnique();
+        Validator.expect(thingies, "thingies").notNull().allEntriesAreUnique(
+                (left, right) -> left.getValue().equals(right.getValue()), null,
+                t -> t.getValue().toString());
+    }
+
+    @Test
+    void allEntriesAreUniqueOnNearEqualThingiesThrows() throws ValidationException {
+        final List<Thingy> thingies = List.of(
+                new Thingy("two", 2),
+                new Thingy("one", 1),
+                new Thingy("three", 3),
+                new Thingy("three", 4),
+                new Thingy("three", 4));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(thingies, "thingies").notNull().allEntriesAreUnique(
+                        (left, right) -> left.getName().equals(right.getName()), "name", Thingy::getName),
+                List.of("that 'thingies[2].name' ", "value: 'three'", "is unique"));
+    }
+
+    @Test
+    void allEntriesAreUniqueOnNonUniqueThingiesThrows() throws ValidationException {
+        final List<Thingy> thingies = List.of(
+                new Thingy("two", 2),
+                new Thingy("one", 1),
+                new Thingy("three", 3),
+                new Thingy("three", 4),
+                new Thingy("three", 4));
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(thingies).notNull().allEntriesAreUnique(
+                        Thingy::equals,
+                        "(name,value)", t -> "(" + t.getName() + "," + t.getValue() + ")"),
+                List.of("that 'List[3].(name,value)' ", "value: '(three,4)'", "is unique"));
     }
 
     @Value
