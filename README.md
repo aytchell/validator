@@ -35,7 +35,7 @@ Note that
  * It will contain the name of the value (as given to `.expect()`)
  * The method `.expect()` takes an optional third parameter with extra information
  * You have to call `.notNull()` before any other check. This is enforced by
-   the API and the used tpyes.
+   the API and the used types.
 
 ## Maven
 
@@ -56,7 +56,7 @@ The currently supported 'basic' object types are
  * `String`
  * `LocalDate`, `LocalDateTime`, `ZonedDateTime`
  
- For each of these types a small set of 'usefull' checks is provided in a typesafe manner.
+ For each of these types a small set of useful checks is provided in a typesafe manner.
  A reasonably modern IDE will list you the available checks while typing the code.
  
  ## Checks of container types
@@ -93,7 +93,7 @@ the wrong method. Sorry for that...)
 
 ## Advanced validations
 
-In case the simple checks for and `String`, `Long` et al are not enough for your sophisticated 
+In case the simple checks for `String`, `Long` et al are not enough for your sophisticated 
 domain objects there are some more advanced validations:
 
 ### Custom predicate for numeric values
