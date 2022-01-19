@@ -189,7 +189,7 @@ are nested:
     @Value
     private static class Wrapper {
         String name;
-        List<Thingy> thing;
+        List<Thingy> things;
     }
 ```
 
@@ -205,7 +205,7 @@ with this validation code
         Validator.expect(wrapper, "wrapper").notNull().passes(
                 w -> {
                     Validator.expect(w.name, "name").notNull().notBlank();
-                    Validator.expect(w.thing, "thing").notNull().eachCustomEntry(
+                    Validator.expect(w.things, "things").notNull().eachCustomEntry(
                             t -> {
                                 Validator.expect(t.name, "name").notNull().notBlank();
                                 Validator.expect(t.value, "value").notNull().greaterThan(5);
@@ -216,7 +216,7 @@ with this validation code
 ```
 
 will give you this error message:
-> Expecting that 'wrapper.thing[1].value' (value: 5) is greater than 5
+> Expecting that 'wrapper.things[1].value' (value: 5) is greater than 5
 
 ## 'Recursive' validation
 

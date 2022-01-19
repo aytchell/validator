@@ -55,7 +55,7 @@ class ArmedListValidator<E> extends ArmedCollectionValidator<E, ListValidator<E>
                 throw new ValidationException()
                         .setActualValue(toString.apply(element))
                         .setActualValuesName(compileNameOfElement(outer, entryName))
-                        .setExpectation("is unique");
+                        .setExpectation("is unique in this list");
             }
         }
         return this;

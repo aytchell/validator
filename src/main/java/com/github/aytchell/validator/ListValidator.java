@@ -29,6 +29,7 @@ public interface ListValidator<T> extends CollectionValidator<T, ListValidator<T
      * @return this validator so you can add more tests
      * @throws ValidationException thrown if there is at least one pair of equal entries according to
      *                              the given {@code compare} predicate
+     * @since 2.3
      */
     ListValidator<T> allEntriesAreUnique(BiPredicate<T, T> compare, String entryName, Function<T, String> toString)
             throws ValidationException;
@@ -36,13 +37,17 @@ public interface ListValidator<T> extends CollectionValidator<T, ListValidator<T
     /**
      * Check whether all entries in the list are unique.
      * <p>
-     * Convenience version of {@link #allEntriesAreUnique(BiPredicate, String, Function)} with {@code compare}
-     * being {@code Object::equals}, {@code entryName} being {@code null} (so no name is shown) and
-     * {@code toString} being {@Object::toString}.
+     * Convenience version of {@link #allEntriesAreUnique(BiPredicate, String, Function)} with
+     * <ul>
+     *   <li>{@code compare} being {@code Object::equals},</li>
+     *   <li>{@code entryName} being {@code null} (so no name is shown) and</li>
+     *   <li>{@code toString} being {@code Object::toString}.</li>
+     * </ul>
      *
      * @return this validator so you can add more tests
      * @throws ValidationException thrown if there is at least one pair of equal entries according to
      *                              {@code Object::equals}
+     * @since 2.3
      */
     ListValidator<T> allEntriesAreUnique() throws ValidationException;
 }
