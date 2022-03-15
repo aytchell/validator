@@ -163,8 +163,8 @@ public class MapValidatorTest {
     @Test
     void isAnyValueWithEmptyMapGivenPasses() throws ValidationException {
         final Map<Integer, Integer> integerMap = Map.of();
-        final Map<Long, Integer> longMap = Map.of();
-        final Map<String, Integer> stringMap = Map.of();
+        final Map<Long, Long> longMap = Map.of();
+        final Map<String, String> stringMap = Map.of();
 
         Validator.expect(integerMap, "integerMap").notNull().eachNumericValue(
                 // this should fail with anything but a non-null empty list
