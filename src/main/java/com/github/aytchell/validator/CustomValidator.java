@@ -5,7 +5,11 @@ package com.github.aytchell.validator;
 
 import com.github.aytchell.validator.exceptions.ValidationException;
 
-@FunctionalInterface
+import java.util.function.Predicate;
+
 public interface CustomValidator<TYPE> {
     CustomValidator<TYPE> passes(CustomEntryValidator<TYPE> entryValidator) throws ValidationException;
+
+    CustomValidator<TYPE> passesPredicate(Predicate<TYPE> predicate, String expectation)
+            throws ValidationException;
 }

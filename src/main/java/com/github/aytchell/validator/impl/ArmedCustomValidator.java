@@ -9,6 +9,7 @@ import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AllArgsConstructor;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @AllArgsConstructor
 class ArmedCustomValidator<E> implements CustomValidator<E> {
@@ -28,6 +29,19 @@ class ArmedCustomValidator<E> implements CustomValidator<E> {
                 exception.setValuesExtraInfo(compileExtraInfo());
             }
             throw exception;
+        }
+        return this;
+    }
+
+    @Override
+    public CustomValidator<E> passesPredicate(Predicate<E> predicate, String expectation)
+            throws ValidationException {
+        if (!predicate.test(value)) {
+            throw new ValidationException()
+                    .setActualValuesName(name)
+                    .setActualValue(value)
+                    .setValuesExtraInfo(extraInfo)
+                    .setExpectation(expectation + " (but is not)");
         }
         return this;
     }

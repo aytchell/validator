@@ -22,6 +22,15 @@ public class CustomValidatorTest {
     }
 
     @Test
+    void passesPredicateIfNotNullWithNullWorks() throws ValidationException {
+        final Thingy noThing = null;
+
+        Validator.expect(noThing, "noThing").ifNotNull().passesPredicate(
+                CustomValidatorTest::isNamedClaus, "is named Claus"
+        );
+    }
+
+    @Test
     void customValidatorCanCheckEnums() throws ValidationException {
         final Status status = Status.SUCCESS;
 
@@ -41,6 +50,15 @@ public class CustomValidatorTest {
     }
 
     @Test
+    void passesPredicateWithValidObjectWorks() throws ValidationException {
+        final Thingy thing = new Thingy("Claus", 4711);
+
+        Validator.expect(thing, "thing", "some extra info").notNull().passesPredicate(
+                CustomValidatorTest::isNamedClaus, "is named Claus"
+        );
+    }
+
+    @Test
     void passesWithWrongObjectThrows() {
         final Thingy thing = new Thingy("name", 3);
 
@@ -52,6 +70,17 @@ public class CustomValidatorTest {
                         }
                 ),
                 List.of("'thing.value", "value: 3", "is greater than 12"));
+    }
+
+    @Test
+    void passesPredicateWithWrongObjectThrows() {
+        final Thingy thing = new Thingy("Mary", 3);
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(thing, "thing").notNull().passesPredicate(
+                        CustomValidatorTest::isNamedClaus, "is named Claus"
+                ),
+                List.of("'thing", "name=Mary", "is named Claus", "(but is not)"));
     }
 
     @Test
@@ -149,6 +178,10 @@ public class CustomValidatorTest {
     private static class Thingy {
         String name;
         Integer value;
+    }
+
+    private static boolean isNamedClaus(Thingy thingy) {
+        return "Claus".equals(thingy.getName());
     }
 
     @Value
