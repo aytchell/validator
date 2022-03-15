@@ -47,6 +47,11 @@ class DisarmedStringValidator implements StringValidator {
     }
 
     @Override
+    public StringValidator validUuid() {
+        return this;
+    }
+
+    @Override
     public StringValidator matches(Pattern pattern) {
         return this;
     }

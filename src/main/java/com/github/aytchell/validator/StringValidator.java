@@ -96,6 +96,16 @@ public interface StringValidator {
     StringValidator validUrl() throws ValidationException;
 
     /**
+     * Checks that the given string contains a valid UUID
+     * <p>
+     * This method tries to create a new {@link java.util.UUID} and fails if an exception is thrown.
+     *
+     * @return this validator so you can add more tests
+     * @throws ValidationException if the string under test is not accepted by UUID's `fromString` method
+     */
+    StringValidator validUuid() throws ValidationException;
+
+    /**
      * Checks the string under test against a regular expression
      *
      * @param pattern the compiled regular expression to be used for matching

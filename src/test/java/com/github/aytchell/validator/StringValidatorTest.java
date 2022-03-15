@@ -32,6 +32,7 @@ public class StringValidatorTest {
         Validator.expect(blankString).ifTrue(false).ifNotNull().bytesAtMost(0, StringValidator.Encoding.UTF_8);
         Validator.expect(blankString).ifTrue(false).ifNotNull().codePointsAtMost(0);
         Validator.expect(blankString).ifTrue(false).ifNotNull().validUrl();
+        Validator.expect(blankString).ifTrue(false).ifNotNull().validUuid();
         Validator.expect(blankString).ifTrue(false).ifNotNull().matches(privateString);
         Validator.expect(blankString).ifTrue(false).ifNotNull().matches(privateString, "private");
         Validator.expect(blankString).ifTrue(false).ifNotNull().passes(String::isEmpty, "is empty");
@@ -133,10 +134,17 @@ public class StringValidatorTest {
     }
 
     @Test
-    void validUrlWithVAlidUrlGivenPasses() throws ValidationException {
+    void validUrlWithValidUrlGivenPasses() throws ValidationException {
         final String url = "http://www.github.com/aytchell/validator";
 
         Validator.expect(url).notNull().validUrl();
+    }
+
+    @Test
+    void validUuidWithValidUuidGivenPasses() throws ValidationException {
+        final String uuid = "837f9f66-b32b-413d-948c-b216058c7a84";
+
+        Validator.expect(uuid).notNull().validUuid();
     }
 
     @Test
@@ -147,6 +155,17 @@ public class StringValidatorTest {
                 () -> Validator.expect(url, "no-url", "schema is missing")
                         .notNull().validUrl(),
                 List.of("no-url", "schema is missing", "is valid URL")
+        );
+    }
+
+    @Test
+    void validUuidWithMalformedUuidGivenThrows() {
+        final String no_uuid = "83zf9f66-b32b-4d-948c-b21605";
+
+        assertThrowsAndMessageReadsLike(
+                () -> Validator.expect(no_uuid, "no_uuid", "contains invalid character")
+                        .notNull().validUuid(),
+                List.of("no_uuid", "contains invalid character", "is valid UUID")
         );
     }
 

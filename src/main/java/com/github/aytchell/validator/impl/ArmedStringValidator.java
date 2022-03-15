@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,6 +91,18 @@ class ArmedStringValidator implements StringValidator {
         } catch (MalformedURLException e) {
             throw newExceptionWithBasics()
                     .setExpectation("is valid URL");
+        }
+    }
+
+    @Override
+    public StringValidator validUuid() throws ValidationException {
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            UUID.fromString(value);
+            return this;
+        } catch (IllegalArgumentException e) {
+            throw newExceptionWithBasics()
+                    .setExpectation("is valid UUID");
         }
     }
 
