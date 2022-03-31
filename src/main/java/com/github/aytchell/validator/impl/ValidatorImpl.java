@@ -12,15 +12,11 @@ import com.github.aytchell.validator.MapValidator;
 import com.github.aytchell.validator.NullableObjectValidator;
 import com.github.aytchell.validator.SetValidator;
 import com.github.aytchell.validator.StringValidator;
-import com.github.aytchell.validator.ZonedDateTimeValidator;
+import com.github.aytchell.validator.OffsetDateTimeValidator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -88,38 +84,50 @@ public class ValidatorImpl {
     }
 
     // --- time related values ---
-    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(
+    public static NullableObjectValidator<LocalDate, OffsetDateTimeValidator> expect(
             LocalDate value, String name, String extraInfo) {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo,
-                DisarmedZonedDateTimeValidator.getINSTANCE()) {
+                DisarmedOffsetDateTimeValidator.getINSTANCE()) {
             @Override
-            protected ZonedDateTimeValidator createValidator(LocalDate value, String name, String extraInfo) {
-                final ZonedDateTime wrappedValue = ZonedDateTime.of(value,
-                        LocalTime.of(0, 0), ZoneId.of("UTC"));
-                return new ArmedZonedDateTimeValidator(wrappedValue, name, extraInfo);
+            protected OffsetDateTimeValidator createValidator(LocalDate value, String name, String extraInfo) {
+                final OffsetDateTime wrappedValue = OffsetDateTime.of(value,
+                        LocalTime.of(0, 0), ZoneOffset.UTC);
+                return new ArmedOffsetDateTimeValidator(wrappedValue, name, extraInfo);
             }
         };
     }
 
-    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(
+    public static NullableObjectValidator<LocalDateTime, OffsetDateTimeValidator> expect(
             LocalDateTime value, String name, String extraInfo) {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo,
-                DisarmedZonedDateTimeValidator.getINSTANCE()) {
+                DisarmedOffsetDateTimeValidator.getINSTANCE()) {
             @Override
-            protected ZonedDateTimeValidator createValidator(LocalDateTime value, String name, String extraInfo) {
-                final ZonedDateTime wrappedValue = ZonedDateTime.of(value, ZoneId.of("UTC"));
-                return new ArmedZonedDateTimeValidator(wrappedValue, name, extraInfo);
+            protected OffsetDateTimeValidator createValidator(LocalDateTime value, String name, String extraInfo) {
+                final OffsetDateTime wrappedValue = OffsetDateTime.of(value, ZoneOffset.UTC);
+                return new ArmedOffsetDateTimeValidator(wrappedValue, name, extraInfo);
             }
         };
     }
 
-    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(
+    public static NullableObjectValidator<ZonedDateTime, OffsetDateTimeValidator> expect(
             ZonedDateTime value, String name, String extraInfo) {
         return new NullableObjectValidatorImpl<>(value, name, extraInfo,
-                DisarmedZonedDateTimeValidator.getINSTANCE()) {
+                DisarmedOffsetDateTimeValidator.getINSTANCE()) {
             @Override
-            protected ZonedDateTimeValidator createValidator(ZonedDateTime value, String name, String extraInfo) {
-                return new ArmedZonedDateTimeValidator(value, name, extraInfo);
+            protected OffsetDateTimeValidator createValidator(ZonedDateTime value, String name, String extraInfo) {
+                final OffsetDateTime wrappedValue = value.toOffsetDateTime();
+                return new ArmedOffsetDateTimeValidator(wrappedValue, name, extraInfo);
+            }
+        };
+    }
+
+    public static NullableObjectValidator<OffsetDateTime, OffsetDateTimeValidator> expect(
+            OffsetDateTime value, String name, String extraInfo) {
+        return new NullableObjectValidatorImpl<>(value, name, extraInfo,
+                DisarmedOffsetDateTimeValidator.getINSTANCE()) {
+            @Override
+            protected OffsetDateTimeValidator createValidator(OffsetDateTime value, String name, String extraInfo) {
+                return new ArmedOffsetDateTimeValidator(value, name, extraInfo);
             }
         };
     }

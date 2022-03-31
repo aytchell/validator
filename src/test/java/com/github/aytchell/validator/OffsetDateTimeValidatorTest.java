@@ -8,7 +8,7 @@ import java.util.List;
 
 import static com.github.aytchell.validator.ExceptionMessageCheck.assertThrowsAndMessageReadsLike;
 
-public class ZonedDateTimeValidatorTest {
+public class OffsetDateTimeValidatorTest {
     @Test
     void isNullGivenNullThrows() {
         final LocalDate nullLocalDate = null;
@@ -42,8 +42,8 @@ public class ZonedDateTimeValidatorTest {
         final ZonedDateTime archaic = ZonedDateTime.of(1796, 3, 4,
                 5, 34, 12, 12, ZoneId.of("GMT+3"));
 
-        final LocalDate late = LocalDate.of(2050, 12, 31);
-        final LocalDateTime later = LocalDateTime.of (2000, 12, 31, 1, 0);
+        final LocalDate late = LocalDate.of(2000, 12, 31);
+        final LocalDateTime later = LocalDateTime.of (2010, 12, 31, 1, 0);
         final OffsetDateTime latest = OffsetDateTime.of(2020, 12, 1, 5, 4,
                 3, 2, ZoneOffset.UTC);
         final ZonedDateTime future = ZonedDateTime.of(2050, 12, 31, 1, 0,

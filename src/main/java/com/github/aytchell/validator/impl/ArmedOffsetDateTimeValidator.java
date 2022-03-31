@@ -3,21 +3,21 @@ package com.github.aytchell.validator.impl;
 // Copyright (c) 2020 Hannes Lerchl <hannes.lerchl@aytchell.de>
 // SPDX-License-Identifier: Apache-2.0
 
-import com.github.aytchell.validator.ZonedDateTimeValidator;
+import com.github.aytchell.validator.OffsetDateTimeValidator;
 import com.github.aytchell.validator.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-class ArmedZonedDateTimeValidator extends ZonedDateTimeValidatorBase {
-    private final ZonedDateTime value;
+class ArmedOffsetDateTimeValidator extends OffsetDateTimeValidatorBase {
+    private final OffsetDateTime value;
     private final String name;
     private final String extraInfo;
 
     @Override
-    public ZonedDateTimeValidator isBefore(ZonedDateTime otherDateTime, String otherName) throws ValidationException {
+    public OffsetDateTimeValidator isBefore(OffsetDateTime otherDateTime, String otherName) throws ValidationException {
         if (!this.value.isBefore(otherDateTime)) {
             throw newExceptionWithBasics()
                     .setExpectedValuesName(otherName)
@@ -28,7 +28,7 @@ class ArmedZonedDateTimeValidator extends ZonedDateTimeValidatorBase {
     }
 
     @Override
-    public ZonedDateTimeValidator isAfter(ZonedDateTime otherDateTime, String otherName) throws ValidationException {
+    public OffsetDateTimeValidator isAfter(OffsetDateTime otherDateTime, String otherName) throws ValidationException {
         if (!this.value.isAfter(otherDateTime)) {
             throw newExceptionWithBasics()
                     .setExpectedValuesName(otherName)

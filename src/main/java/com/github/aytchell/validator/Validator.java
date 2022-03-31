@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -321,16 +322,16 @@ public class Validator {
      * Check if the given LocalDate passes the expectations
      * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
-     * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
+     * OffsetDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
      * @param value the value to be checked
      * @return An object instance which can be used to perform initial tests before "the real tests" start
      *         <p>
      *         If the actual value of the parameter under test does not pass the expectations, the error message of the
      *         thrown exception will contain the actual value and the expectation that failed
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(LocalDate value) {
+    public static NullableObjectValidator<LocalDate, OffsetDateTimeValidator> expect(LocalDate value) {
         return ValidatorImpl.expect(value, null, null);
     }
 
@@ -338,7 +339,7 @@ public class Validator {
      * Check if the given (named) LocalDate passes the expectations
      * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
-     * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
+     * OffsetDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -346,9 +347,9 @@ public class Validator {
      *         <p>
      *         If the actual value of the parameter under test does not pass the expectations, the error message of the
      *         thrown exception will contain the actual value, the {@code name} and the expectation that failed
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(LocalDate value, String name) {
+    public static NullableObjectValidator<LocalDate, OffsetDateTimeValidator> expect(LocalDate value, String name) {
         return ValidatorImpl.expect(value, name, null);
     }
 
@@ -356,7 +357,7 @@ public class Validator {
      * Check if the given (named and described) LocalDate passes the expectations.
      * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
-     * ZonedDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
+     * OffsetDateTime}. The time component is set to 0:00 and the timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -368,10 +369,10 @@ public class Validator {
      *         thrown exception will contain the actual value, the {@code name}, the expectation that failed and the
      *         {@code extraInfo} given to this method. The extra information could be used to tell the caller (in case
      *         of an error) additional semantics or the deeper meaning of the parameter.
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<LocalDate, ZonedDateTimeValidator> expect(LocalDate value, String name,
-            String extraInfo) {
+    public static NullableObjectValidator<LocalDate, OffsetDateTimeValidator> expect(LocalDate value, String name,
+                                                                                     String extraInfo) {
         return ValidatorImpl.expect(value, name, extraInfo);
     }
 
@@ -379,16 +380,16 @@ public class Validator {
      * Check if the given LocalDateTime passes the expectations
      * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
-     * ZonedDateTime}. The timezone is set to UTC.
+     * OffsetDateTime}. The timezone is set to UTC.
      *
      * @param value the value to be checked
      * @return An object instance which can be used to perform initial tests before "the real tests" start
      *         <p>
      *         If the actual value of the parameter under test does not pass the expectations, the error message of the
      *         thrown exception will contain the actual value and the expectation that failed
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(LocalDateTime value) {
+    public static NullableObjectValidator<LocalDateTime, OffsetDateTimeValidator> expect(LocalDateTime value) {
         return ValidatorImpl.expect(value, null, null);
     }
 
@@ -396,7 +397,7 @@ public class Validator {
      * Check if the given (named) LocalDateTime value passes the expectations.
      * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
-     * ZonedDateTime}. The timezone is set to UTC.
+     * OffsetDateTime}. The timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -404,10 +405,10 @@ public class Validator {
      *         <p>
      *         If the actual value of the parameter under test does not pass the expectations, the error message of the
      *         thrown exception will contain the actual value, the {@code name} and the expectation that failed
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(LocalDateTime value,
-            String name) {
+    public static NullableObjectValidator<LocalDateTime, OffsetDateTimeValidator> expect(LocalDateTime value,
+                                                                                         String name) {
         return ValidatorImpl.expect(value, name, null);
     }
 
@@ -415,7 +416,7 @@ public class Validator {
      * Check if the given (named and described) LocalDateTime passes the expectations.
      * <p>
      * To be comparable with other time formats the argument {@code value} is internally expanded to a {@link
-     * ZonedDateTime}. The timezone is set to UTC.
+     * OffsetDateTime}. The timezone is set to UTC.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -427,29 +428,35 @@ public class Validator {
      *         thrown exception will contain the actual value, the {@code name}, the expectation that failed and the
      *         {@code extraInfo} given to this method. The extra information could be used to tell the caller (in case
      *         of an error) additional semantics or the deeper meaning of the parameter.
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<LocalDateTime, ZonedDateTimeValidator> expect(LocalDateTime value,
-            String name, String extraInfo) {
+    public static NullableObjectValidator<LocalDateTime, OffsetDateTimeValidator> expect(LocalDateTime value,
+                                                                                         String name, String extraInfo) {
         return ValidatorImpl.expect(value, name, extraInfo);
     }
 
     /**
      * Check if the given ZonedDateTime passes the expectations
+     * <p>
+     * To be comparable with other time formats the argument {@code value} is internally converted to an {@link
+     * OffsetDateTime}.
      *
      * @param value the value to be checked
      * @return An object instance which can be used to perform initial tests before "the real tests" start
      *         <p>
      *         If the actual value of the parameter under test does not pass the expectations, the error message of the
      *         thrown exception will contain the actual value and the expectation that failed
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(ZonedDateTime value) {
+    public static NullableObjectValidator<ZonedDateTime, OffsetDateTimeValidator> expect(ZonedDateTime value) {
         return ValidatorImpl.expect(value, null, null);
     }
 
     /**
      * Check if the given (named) ZonedDateTime value passes the expectations.
+     * <p>
+     * To be comparable with other time formats the argument {@code value} is internally converted to an {@link
+     * OffsetDateTime}.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -457,15 +464,18 @@ public class Validator {
      *         <p>
      *         If the actual value of the parameter under test does not pass the expectations, the error message of the
      *         thrown exception will contain the actual value, the {@code name} and the expectation that failed
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(ZonedDateTime value,
-            String name) {
+    public static NullableObjectValidator<ZonedDateTime, OffsetDateTimeValidator> expect(
+            ZonedDateTime value, String name) {
         return ValidatorImpl.expect(value, name, null);
     }
 
     /**
      * Check if the given (named and described) ZonedDateTime passes the expectations.
+     * <p>
+     * To be comparable with other time formats the argument {@code value} is internally converted to an {@link
+     * OffsetDateTime}.
      *
      * @param value the value to be checked
      * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
@@ -477,10 +487,60 @@ public class Validator {
      *         thrown exception will contain the actual value, the {@code name}, the expectation that failed and the
      *         {@code extraInfo} given to this method. The extra information could be used to tell the caller (in case
      *         of an error) additional semantics or the deeper meaning of the parameter.
-     * @see ZonedDateTimeValidator for the available checks
+     * @see OffsetDateTimeValidator for the available checks
      */
-    public static NullableObjectValidator<ZonedDateTime, ZonedDateTimeValidator> expect(ZonedDateTime value,
-            String name, String extraInfo) {
+    public static NullableObjectValidator<ZonedDateTime, OffsetDateTimeValidator> expect(
+            ZonedDateTime value, String name, String extraInfo) {
+        return ValidatorImpl.expect(value, name, extraInfo);
+    }
+
+    /**
+     * Check if the given OffsetDateTime passes the expectations
+     *
+     * @param value the value to be checked
+     * @return An object instance which can be used to perform initial tests before "the real tests" start
+     *         <p>
+     *         If the actual value of the parameter under test does not pass the expectations, the error message of the
+     *         thrown exception will contain the actual value and the expectation that failed
+     * @see OffsetDateTimeValidator for the available checks
+     */
+    public static NullableObjectValidator<OffsetDateTime, OffsetDateTimeValidator> expect(OffsetDateTime value) {
+        return ValidatorImpl.expect(value, null, null);
+    }
+
+    /**
+     * Check if the given (named) OffsetDateTime value passes the expectations.
+     *
+     * @param value the value to be checked
+     * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
+     * @return An object instance which can be used to perform initial tests before "the real tests" start
+     *         <p>
+     *         If the actual value of the parameter under test does not pass the expectations, the error message of the
+     *         thrown exception will contain the actual value, the {@code name} and the expectation that failed
+     * @see OffsetDateTimeValidator for the available checks
+     */
+    public static NullableObjectValidator<OffsetDateTime, OffsetDateTimeValidator> expect(
+            OffsetDateTime value, String name) {
+        return ValidatorImpl.expect(value, name, null);
+    }
+
+    /**
+     * Check if the given (named and described) OffsetDateTime passes the expectations.
+     *
+     * @param value the value to be checked
+     * @param name The name of the value to be checked (e.g. the method parameter or the name in a json object)
+     * @param extraInfo Some extra information about the parameter under test that should go into the error
+     *         message
+     * @return An object instance which can be used to perform initial tests before "the real tests" start
+     *         <p>
+     *         If the actual value of the parameter under test does not pass the expectations, the error message of the
+     *         thrown exception will contain the actual value, the {@code name}, the expectation that failed and the
+     *         {@code extraInfo} given to this method. The extra information could be used to tell the caller (in case
+     *         of an error) additional semantics or the deeper meaning of the parameter.
+     * @see OffsetDateTimeValidator for the available checks
+     */
+    public static NullableObjectValidator<OffsetDateTime, OffsetDateTimeValidator> expect(
+            OffsetDateTime value, String name, String extraInfo) {
         return ValidatorImpl.expect(value, name, extraInfo);
     }
 
